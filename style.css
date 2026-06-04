@@ -1,8 +1,24 @@
 body {
   font-family: Arial, sans-serif;
+  background: #f2f2f2;
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  max-width: 700px;
+  margin: auto;
+  padding: 40px;
   text-align: center;
-  padding: 30px;
-  background: #f4f4f4;
+}
+
+h1 {
+  margin-bottom: 10px;
+}
+
+.subtitle {
+  color: #555;
+  margin-bottom: 30px;
 }
 
 button {
@@ -11,4 +27,8 @@ button {
   padding: 12px 18px;
   font-size: 16px;
   cursor: pointer;
+}
+
+#output {
+  margin-top: 30px;
 }
