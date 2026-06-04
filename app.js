@@ -1,5 +1,1 @@
-console.log("VERSIONE NUOVA CARICATA");
-
-document.getElementById("startBtn").addEventListener("click", () => {
-  document.getElementById("output").innerHTML = "<h1>NUOVA VERSIONE OK</h1>";
-});
+document.body.innerHTML = "<h1 style='color:red'>JS NUOVO CARICATO</h1>";
