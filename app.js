@@ -5,13 +5,18 @@ const questions = [
     correct: 0
   },
   {
-    q: "Qual è la moneta in Italia?",
+    q: "Qual è la moneta dell'Italia?",
     a: ["Euro", "Dollaro", "Lira", "Franco"],
     correct: 0
   },
   {
     q: "L'Italia è una Repubblica?",
     a: ["Sì", "No"],
+    correct: 0
+  },
+  {
+    q: "Chi fa le leggi in Italia?",
+    a: ["Parlamento", "Sindaco", "Calciatori", "Banche"],
     correct: 0
   }
 ];
@@ -54,9 +59,19 @@ function answer(i) {
 }
 
 function showResult() {
+  const percent = Math.round((score / questions.length) * 100);
+
+  let giudizio = "";
+
+  if (percent >= 80) giudizio = "Ottima consapevolezza civica";
+  else if (percent >= 60) giudizio = "Buona consapevolezza civica";
+  else if (percent >= 40) giudizio = "Consapevolezza media";
+  else giudizio = "Bassa consapevolezza civica";
+
   document.getElementById("output").innerHTML = `
     <h2>Risultato finale</h2>
     <p>Punteggio: ${score} / ${questions.length}</p>
-    <p>Percentuale: ${Math.round((score / questions.length) * 100)}%</p>
+    <p>Percentuale: ${percent}%</p>
+    <h3>${giudizio}</h3>
   `;
 }
