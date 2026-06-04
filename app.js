@@ -1,1 +1,3 @@
-document.body.innerHTML = "<h1 style='color:red'>JS NUOVO CARICATO</h1>";
+document.getElementById("startBtn").addEventListener("click", () => {
+  document.getElementById("output").innerHTML = "<h2>CLICK FUNZIONA ✔</h2>";
+});
