@@ -2,12 +2,13 @@ body {
   font-family: Arial, sans-serif;
   text-align: center;
   padding: 30px;
-  background: #f5f5f5;
+  background: #f4f4f4;
 }
 
 button {
+  display: block;
+  margin: 10px auto;
   padding: 12px 18px;
-  margin: 8px;
-  cursor: pointer;
   font-size: 16px;
+  cursor: pointer;
 }
