@@ -1,55 +1,55 @@
 // =========================
-// 📦 DATABASE PROFESSIONALE (REALITY CHECK)
+// 📦 DATABASE (REALITY INDEX 2.0)
 // =========================
 
 const bank = {
 
 Immigrazione: [
-  {q:"Secondo ISTAT, la percentuale di residenti stranieri in Italia è più vicina a:",a:["4–5%","8–9%","12–13%","20–25%"],c:1},
-  {q:"La percezione media del numero di immigrati in Italia tende a essere:",a:["Inferiore alla realtà","Corretta","Fortemente sovrastimata","Nulla"],c:2},
-  {q:"La maggior parte della popolazione straniera in Italia è concentrata:",a:["Nord Italia","Sud Italia","Distribuzione uniforme","Solo isole"],c:0}
+  {q:"Secondo ISTAT, la quota di residenti stranieri in Italia è circa:",a:["3–4%","8–9%","15–18%","25%+"],c:1},
+  {q:"La percezione media degli italiani sugli immigrati tende a essere:",a:["Sottostimata","Corretta","Sovrastimata","Nulla"],c:2},
+  {q:"La popolazione straniera in Italia è concentrata principalmente:",a:["Nord Italia","Sud Italia","Uniformemente","Solo grandi isole"],c:0}
 ],
 
 Criminalità: [
-  {q:"Negli ultimi 10–15 anni i reati denunciati in Italia sono:",a:["In forte aumento","Stabili","In diminuzione nel lungo periodo","Raddoppiati"],c:2},
+  {q:"Negli ultimi 15 anni i reati denunciati in Italia sono:",a:["In forte aumento","Stabili","In diminuzione","Raddoppiati"],c:2},
   {q:"La percezione della criminalità rispetto ai dati reali è:",a:["Inferiore","Allineata","Superiore","Inesistente"],c:2},
-  {q:"Gli omicidi in Italia negli ultimi decenni sono:",a:["In aumento","In calo","Raddoppiati","Immutati"],c:1}
+  {q:"Gli omicidi in Italia nel lungo periodo sono:",a:["In aumento","In calo","Raddoppiati","Immutati"],c:1}
 ],
 
 Economia: [
-  {q:"Il debito pubblico italiano rispetto al PIL è circa:",a:["60–70%","90–100%","130–140%","180–200%"],c:2},
-  {q:"L’inflazione europea post-pandemia è stata:",a:["Stabile","Deflazione costante","Forte variabilità e picchi","Zero"],c:2},
-  {q:"Il PIL italiano negli ultimi anni è:",a:["Crescita forte","Stabile con oscillazioni","Crollo costante","Inesistente"],c:1}
+  {q:"Il debito pubblico italiano rispetto al PIL è circa:",a:["60%","90%","130%","180%"],c:2},
+  {q:"Il PIL italiano negli ultimi anni è:",a:["Crescita costante","Oscillante ma stabile","Crollo totale","Zero crescita"],c:1},
+  {q:"L’inflazione europea recente è stata:",a:["Stabile","Deflazione","Forte variabilità","Nulla"],c:2}
 ],
 
 Società: [
-  {q:"La percezione del rischio sociale in Europa rispetto ai dati reali è:",a:["Inferiore","Allineata","Superiore","Assente"],c:2},
-  {q:"Secondo studi europei, la percezione della criminalità è:",a:["Sottostimata","Allineata","Sovrastimata","Corretta sempre"],c:2},
-  {q:"La fiducia nelle istituzioni in Italia è generalmente:",a:["Alta","Media-bassa","Massima UE","Perfetta"],c:1}
+  {q:"La percezione del rischio sociale rispetto ai dati reali è:",a:["Inferiore","Allineata","Superiore","Non misurabile"],c:2},
+  {q:"La fiducia nelle istituzioni in Italia è:",a:["Alta","Media-bassa","Massima UE","Perfetta"],c:1},
+  {q:"Le paure sociali sono spesso:",a:["Allineate ai dati","Amplificate","Inesistenti","Sempre corrette"],c:1}
 ],
 
 Lavoro: [
-  {q:"Il tasso di occupazione in Italia rispetto UE è:",a:["Più alto","Più basso","Uguale","Massimo UE"],c:1},
-  {q:"I salari reali negli ultimi 20 anni in Italia sono:",a:["In forte crescita","Stagnanti o debolmente cresciuti","Raddoppiati","Inesistenti"],c:1},
-  {q:"La precarietà lavorativa è percepita come:",a:["Inferiore","Allineata","Superiore alla realtà","Assente"],c:2}
+  {q:"Il tasso di occupazione italiano rispetto UE è:",a:["Più alto","Più basso","Uguale","Massimo"],c:1},
+  {q:"I salari reali in Italia negli ultimi 20 anni sono:",a:["Cresciuti molto","Stagnanti","Raddoppiati","Inesistenti"],c:1},
+  {q:"La precarietà lavorativa è percepita come:",a:["Inferiore","Allineata","Superiore","Assente"],c:2}
 ],
 
 Istituzioni: [
-  {q:"Il Parlamento Europeo ha funzione:",a:["Legislativa condivisa","Militare","Assoluta","Nulla"],c:0},
-  {q:"L’UE è:",a:["Stato federale completo","Unione di Stati sovrani","Una nazione unica","Un esercito unico"],c:1},
-  {q:"La BCE controlla:",a:["Politica monetaria euro","Governi locali","Esercito UE","Scuole"],c:0}
+  {q:"L’UE è:",a:["Stato federale","Unione di Stati","Nazione unica","Organizzazione militare"],c:1},
+  {q:"La BCE controlla:",a:["Politica monetaria","Esercito","Scuole","Giustizia"],c:0},
+  {q:"Il Parlamento Europeo ha funzione:",a:["Legislativa condivisa","Militare","Assoluta","Nulla"],c:0}
 ],
 
 Sanità: [
-  {q:"Il SSN è finanziato principalmente da:",a:["Tasse","Privati esclusivi","Donazioni","UE totale"],c:0},
-  {q:"Il sistema sanitario italiano è:",a:["Pubblico universale","Privato totale","Solo assicurazioni","Militare"],c:0},
-  {q:"La percezione della qualità sanitaria rispetto ai dati reali è:",a:["Inferiore","Allineata","Sovrastimata o distorta","Perfetta"],c:2}
+  {q:"Il SSN è finanziato principalmente da:",a:["Tasse","Privati","Donazioni","UE esclusiva"],c:0},
+  {q:"Il sistema sanitario italiano è:",a:["Pubblico universale","Privato totale","Assicurazioni USA","Militare"],c:0},
+  {q:"La percezione della sanità rispetto ai dati reali è:",a:["Inferiore","Allineata","Sovrastimata","Perfetta"],c:2}
 ],
 
 Istruzione: [
-  {q:"La scuola pubblica italiana è finanziata da:",a:["Stato","Privati","Banche","UE esclusiva"],c:0},
+  {q:"La scuola italiana è finanziata da:",a:["Stato","Privati","Banche","UE"],c:0},
   {q:"Il livello istruzione Italia rispetto UE è:",a:["Più alto","Più basso","Uguale","Massimo"],c:1},
-  {q:"Il tasso di laureati in Italia è:",a:["Tra i più bassi UE","Tra i più alti","Massimo mondiale","Inesistente"],c:0}
+  {q:"Il tasso di laureati in Italia è:",a:["Basso UE","Alto UE","Massimo","Inesistente"],c:0}
 ]
 
 };
@@ -88,8 +88,7 @@ function start(){
     });
   });
 
-  all = shuffle(all);
-  questions = all.slice(0, TOTAL);
+  questions = shuffle(all).slice(0, TOTAL);
 
   questions.forEach(q=>{
     if(!categoryScore[q.cat]){
@@ -110,17 +109,18 @@ function showQuestion(){
   const q = questions[index];
 
   document.getElementById("output").innerHTML = `
-    <div class="question-card">
+    <div class="card">
 
       <div class="progress">
-        Domanda ${index+1} / ${questions.length}
+        ${index+1} / ${questions.length}
       </div>
 
-      <h3>${q.cat}</h3>
-      <p>${q.q}</p>
+      <div class="category">${q.cat}</div>
+
+      <div class="question">${q.q}</div>
 
       ${q.a.map((x,i)=>`
-        <button class="answer-btn" onclick="answer(${i})">${x}</button>
+        <button class="btn" onclick="answer(${i})">${x}</button>
       `).join("")}
 
     </div>
@@ -154,7 +154,7 @@ function answer(i){
 
 
 // =========================
-// REPORT
+// REPORT + GRAFICO
 // =========================
 
 function showReport(){
@@ -167,59 +167,90 @@ function showReport(){
     percent>=40?"Media consapevolezza civica":
     "Bassa consapevolezza civica";
 
-  let html = "";
-
-  Object.keys(categoryScore).forEach(cat=>{
-    let c = categoryScore[cat];
-    let p = Math.round((c.right/c.total)*100);
-    html += `<p><b>${cat}</b>: ${p}%</p>`;
-  });
+  let labels = Object.keys(categoryScore);
+  let values = labels.map(c => Math.round((categoryScore[c].right/categoryScore[c].total)*100));
 
   document.getElementById("output").innerHTML = `
-    <div class="question-card" id="report">
+    <div class="card" id="report">
 
       <h2>Certificato di Consapevolezza Civica</h2>
 
-      <p>Punteggio: ${percent}%</p>
-      <h3>${level}</h3>
+      <div class="bigscore">${percent}%</div>
+      <div class="level">${level}</div>
 
       <hr>
 
-      ${html}
+      <div class="grid">
+        ${labels.map(c=>{
+          let p = Math.round((categoryScore[c].right/categoryScore[c].total)*100);
+          return `<div>${c}: ${p}%</div>`;
+        }).join("")}
+      </div>
+
+      <canvas id="chart" width="300" height="300"></canvas>
 
       <button onclick="downloadPDF()">Scarica PDF</button>
 
     </div>
   `;
+
+  drawChart(labels, values);
 }
 
 
 // =========================
-// PDF MIGLIORATO
+// 📊 GRAFICO A TORTA
+// =========================
+
+function drawChart(labels, values){
+
+  const ctx = document.getElementById("chart").getContext("2d");
+
+  const total = values.reduce((a,b)=>a+b,0);
+
+  let start = 0;
+
+  values.forEach((v,i)=>{
+
+    const slice = (v/total)*Math.PI*2;
+
+    ctx.beginPath();
+    ctx.moveTo(150,150);
+    ctx.fillStyle = `hsl(${i*45},40%,60%)`;
+    ctx.arc(150,150,120,start,start+slice);
+    ctx.fill();
+
+    start += slice;
+  });
+
+}
+
+
+// =========================
+// PDF UFFICIALE
 // =========================
 
 function downloadPDF(){
 
   const report = document.getElementById("report");
 
-  const w = window.open("", "", "width=1000,height=1300");
+  const w = window.open("", "", "width=1100,height=1300");
 
   w.document.write(`
     <html>
     <head>
-      <title>Report Civico</title>
+      <title>Report Civico Ufficiale</title>
 
       <style>
 
         body{
           font-family: Arial;
-          background:#f4f4f4;
+          background:#f3f3f3;
           margin:0;
-          padding:0;
         }
 
         .page{
-          width:800px;
+          width:850px;
           margin:40px auto;
           background:white;
           padding:60px;
@@ -232,30 +263,15 @@ function downloadPDF(){
           color:#2f3b2f;
         }
 
-        .box{
+        .big{
+          font-size:48px;
           text-align:center;
-          border:2px solid #9eb888;
-          padding:25px;
-          margin:25px 0;
-          border-radius:12px;
-        }
-
-        .score{
-          font-size:40px;
-          font-weight:bold;
           color:#758966;
         }
 
         .level{
-          font-size:18px;
-          margin-top:10px;
-        }
-
-        .footer{
           text-align:center;
-          font-size:12px;
-          color:#888;
-          margin-top:30px;
+          margin-bottom:20px;
         }
 
       </style>
@@ -268,18 +284,13 @@ function downloadPDF(){
 
         <h1>Certificato di Consapevolezza Civica</h1>
 
-        <div class="box">
-          <div class="score">${Math.round(score/questions.length*100)}%</div>
-          <div class="level">${document.querySelector("#report h3").innerText}</div>
-        </div>
+        <div class="big">${Math.round(score/questions.length*100)}%</div>
 
-        <div>
-          ${report.innerHTML}
-        </div>
+        <div class="level">${document.querySelector("#report .level").innerText}</div>
 
-        <div class="footer">
-          Documento generato automaticamente dal sistema civico
-        </div>
+        <hr>
+
+        ${report.innerHTML}
 
       </div>
 
