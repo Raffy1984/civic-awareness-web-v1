@@ -1,79 +1,84 @@
-// =========================
-// 🏛️ CIVIC PERCEPTION SYSTEM - ISTITUZIONALE
-// =========================
+// ===============================
+// 🏛️ GOVERNMENT DASHBOARD SYSTEM v3
+// ===============================
+
+
+// ===============================
+// 🎨 PALETTE ISTITUZIONALE
+// ===============================
 
 const COLORS = {
-  Immigrazione: "#2f3b2f",
-  Criminalità: "#3e5c3e",
-  Economia: "#4f6b4f",
-  Società: "#5c7a5c",
-  Lavoro: "#6b8a6b",
-  Istituzioni: "#7a9a7a",
-  Sanità: "#8aa68a",
-  Istruzione: "#9ab79a"
+  Immigrazione: "#1f3a5f",
+  Criminalità: "#b23a48",
+  Economia: "#2f6f4e",
+  Società: "#6a4c93",
+  Lavoro: "#e09f3e",
+  Istituzioni: "#3a86ff",
+  Sanità: "#2a9d8f",
+  Istruzione: "#8ac926"
 };
 
 
-// =========================
-// 📦 DATABASE ISTITUZIONALE
-// =========================
+// ===============================
+// 📦 DATABASE
+// ===============================
 
 const bank = {
 
 Immigrazione: [
-  {q:"Secondo ISTAT la quota di residenti stranieri è circa:",a:["4–5%","8–9%","15–18%","25%+"],c:1,source:"ISTAT"},
-  {q:"La percezione media del fenomeno immigrazione è:",a:["Inferiore alla realtà","Corretta","Sovrastimata","Non misurabile"],c:2,source:"CENSIS"},
-  {q:"La distribuzione degli stranieri è principalmente:",a:["Nord Italia","Sud Italia","Uniforme","Solo grandi città"],c:0,source:"ISTAT"}
+  {q:"Quota stranieri in Italia (ISTAT):",a:["4–5%","8–9%","15–18%","25%+"],c:1,source:"ISTAT"},
+  {q:"Percezione immigrazione è:",a:["Inferiore","Corretta","Sovrastimata","Nulla"],c:2,source:"CENSIS"},
+  {q:"Distribuzione immigrati:",a:["Nord","Sud","Uniforme","Solo città estere"],c:0,source:"ISTAT"}
 ],
 
 Criminalità: [
-  {q:"Negli ultimi 15 anni i reati denunciati sono:",a:["In aumento","Stabili","In diminuzione","Raddoppiati"],c:2,source:"MINISTERO INTERNO"},
-  {q:"La percezione della criminalità è:",a:["Inferiore","Allineata","Superiore","Non rilevabile"],c:2,source:"CENSIS"},
-  {q:"Gli omicidi in Italia sono:",a:["In crescita","In calo","Raddoppiati","Stabili"],c:1,source:"ISTAT"}
+  {q:"Reati ultimi 15 anni:",a:["Aumento","Stabili","Diminuzione","Raddoppio"],c:2,source:"MININTERNO"},
+  {q:"Percezione criminalità:",a:["Inferiore","Allineata","Superiore","Nulla"],c:2,source:"CENSIS"},
+  {q:"Omicidi:",a:["Crescono","Calano","Raddoppiano","Stabili"],c:1,source:"ISTAT"}
 ],
 
 Economia: [
-  {q:"Il debito pubblico italiano è circa:",a:["90%","110%","130%","180%"],c:2,source:"EUROSTAT"},
-  {q:"Il PIL italiano negli ultimi anni è:",a:["Forte crescita","Oscillante","Crollo","Zero"],c:1,source:"ISTAT"},
-  {q:"L’inflazione recente è stata:",a:["Stabile","Deflazione","Variabile con picchi","Nulla"],c:2,source:"BCE"}
+  {q:"Debito/PIL:",a:["90%","110%","130%","180%"],c:2,source:"EUROSTAT"},
+  {q:"PIL:",a:["Crescita","Oscillante","Crollo","Zero"],c:1,source:"ISTAT"},
+  {q:"Inflazione:",a:["Stabile","Deflazione","Variabile","Nulla"],c:2,source:"BCE"}
 ],
 
 Società: [
-  {q:"La percezione del rischio sociale è:",a:["Inferiore","Allineata","Superiore","Non misurabile"],c:2,source:"CENSIS"},
-  {q:"Le paure sociali sono:",a:["Allineate","Amplificate","Inesistenti","Perfette"],c:1,source:"EUROBAROMETRO"},
-  {q:"La fiducia istituzionale è:",a:["Alta","Media-bassa","Massima UE","Perfetta"],c:1,source:"CENSIS"}
+  {q:"Rischio sociale percepito:",a:["Inferiore","Allineato","Superiore","Nulla"],c:2,source:"CENSIS"},
+  {q:"Paure sociali:",a:["Allineate","Amplificate","Inesistenti","Perfette"],c:1,source:"EUROBAROMETRO"},
+  {q:"Fiducia istituzioni:",a:["Alta","Media-bassa","Alta UE","Perfetta"],c:1,source:"CENSIS"}
 ],
 
 Lavoro: [
-  {q:"Il tasso occupazionale Italia vs UE è:",a:["Più alto","Più basso","Uguale","Massimo"],c:1,source:"EUROSTAT"},
-  {q:"I salari reali sono:",a:["Cresciuti","Stagnanti","Raddoppiati","Inesistenti"],c:1,source:"OCSE"},
-  {q:"La precarietà è:",a:["Inferiore","Allineata","Superiore","Assente"],c:2,source:"OCSE"}
+  {q:"Occupazione UE vs Italia:",a:["Più alta","Più bassa","Uguale","Massima"],c:1,source:"EUROSTAT"},
+  {q:"Salari:",a:["Crescita","Stagnanti","Raddoppio","Nulli"],c:1,source:"OCSE"},
+  {q:"Precarietà:",a:["Inferiore","Allineata","Superiore","Assente"],c:2,source:"OCSE"}
 ],
 
 Istituzioni: [
-  {q:"L’UE è:",a:["Stato federale","Unione di Stati","Nazione unica","Esercito unico"],c:1,source:"UE"},
-  {q:"La BCE controlla:",a:["Politica monetaria","Esercito","Scuole","Giustizia"],c:0,source:"BCE"},
-  {q:"Il Parlamento Europeo è:",a:["Legislativo condiviso","Militare","Assoluto","Inutile"],c:0,source:"UE"}
+  {q:"UE è:",a:["Stato","Unione Stati","Nazione","Esercito"],c:1,source:"UE"},
+  {q:"BCE:",a:["Monetaria","Militare","Scuola","Giustizia"],c:0,source:"BCE"},
+  {q:"Parlamento UE:",a:["Legislativo","Militare","Assoluto","Nullo"],c:0,source:"UE"}
 ],
 
 Sanità: [
-  {q:"Il SSN è finanziato da:",a:["Tasse","Privati","Donazioni","UE"],c:0,source:"MINISTERO SALUTE"},
-  {q:"Il sistema sanitario è:",a:["Pubblico universale","Privato totale","USA style","Militare"],c:0,source:"MINISTERO SALUTE"},
-  {q:"La percezione della sanità è:",a:["Inferiore","Allineata","Sovrastimata","Perfetta"],c:2,source:"CENSIS"}
+  {q:"SSN:",a:["Tasse","Privato","Donazioni","UE"],c:0,source:"MINSALUTE"},
+  {q:"Sistema sanitario:",a:["Pubblico","Privato","USA","Militare"],c:0,source:"MINSALUTE"},
+  {q:"Percezione sanità:",a:["Inferiore","Allineata","Sovrastimata","Perfetta"],c:2,source:"CENSIS"}
 ],
 
 Istruzione: [
-  {q:"La scuola è finanziata da:",a:["Stato","Privati","Banche","UE"],c:0,source:"MINISTERO ISTRUZIONE"},
-  {q:"Il livello istruzione Italia vs UE è:",a:["Più alto","Più basso","Uguale","Massimo"],c:1,source:"OCSE"},
-  {q:"Il tasso laureati è:",a:["Basso UE","Alto UE","Massimo","Zero"],c:0,source:"EUROSTAT"}
+  {q:"Scuola finanziata da:",a:["Stato","Privati","Banche","UE"],c:0,source:"MIUR"},
+  {q:"Livello istruzione:",a:["Più alto","Più basso","Uguale","Massimo"],c:1,source:"OCSE"},
+  {q:"Laureati:",a:["Bassi","Alti","Massimi","Zero"],c:0,source:"EUROSTAT"}
 ]
 
 };
 
 
-// =========================
-// VARIABILI GLOBALI
-// =========================
+// ===============================
+// 📊 STATE SYSTEM
+// ===============================
 
 const TOTAL = 20;
 
@@ -81,16 +86,17 @@ let questions = [];
 let index = 0;
 let score = 0;
 let categoryScore = {};
-let activeCats = [];
+let userName = "";
+let archive = JSON.parse(localStorage.getItem("archive") || "[]");
 
-document.getElementById("startBtn").addEventListener("click", start);
 
-
-// =========================
-// START
-// =========================
+// ===============================
+// 🚀 START DASHBOARD
+// ===============================
 
 function start(){
+
+  userName = document.getElementById("username")?.value || "Anonimo";
 
   index = 0;
   score = 0;
@@ -116,9 +122,9 @@ function start(){
 }
 
 
-// =========================
-// QUESTION UI (ISTITUZIONALE CLEAN)
-// =========================
+// ===============================
+// ❓ QUESTION UI CLEAN
+// ===============================
 
 function showQuestion(){
 
@@ -127,9 +133,7 @@ function showQuestion(){
   document.getElementById("output").innerHTML = `
     <div class="card">
 
-      <div class="progress">
-        ${index+1} / ${questions.length}
-      </div>
+      <div class="progress">${index+1} / ${questions.length}</div>
 
       <div class="category">${q.cat}</div>
 
@@ -148,9 +152,9 @@ function showQuestion(){
 }
 
 
-// =========================
-// ANSWER ENGINE
-// =========================
+// ===============================
+// ✅ ANSWER ENGINE
+// ===============================
 
 function answer(i){
 
@@ -165,17 +169,13 @@ function answer(i){
 
   index++;
 
-  if(index < questions.length){
-    showQuestion();
-  } else {
-    showReport();
-  }
+  index < questions.length ? showQuestion() : showReport();
 }
 
 
-// =========================
-// 🏛️ REPORT ISTITUZIONALE
-// =========================
+// ===============================
+// 📊 DASHBOARD REPORT
+// ===============================
 
 function showReport(){
 
@@ -187,7 +187,7 @@ function showReport(){
     percent>=40?"Media consapevolezza civica":
     "Bassa consapevolezza civica";
 
-  activeCats = Object.keys(categoryScore).filter(c => categoryScore[c].total > 0);
+  let activeCats = Object.keys(categoryScore).filter(c=>categoryScore[c].total>0);
 
   let grid = activeCats.map(c=>{
     let p = Math.round((categoryScore[c].right/categoryScore[c].total)*100);
@@ -203,7 +203,7 @@ function showReport(){
   document.getElementById("output").innerHTML = `
     <div class="card" id="report">
 
-      <h2>RELAZIONE ISTITUZIONALE</h2>
+      <h2>🏛️ GOVERNMENT DASHBOARD REPORT</h2>
 
       <div class="big">${percent}%</div>
 
@@ -213,20 +213,24 @@ function showReport(){
 
       <canvas id="chart" width="320" height="320"></canvas>
 
-      <button onclick="downloadPDF()">Esporta Documento Ufficiale</button>
+      <button onclick="downloadPDF()">Export PDF</button>
+
+      <button onclick="saveArchive()">Salva nel registro</button>
+
+      <button onclick="openArchive()">Archivio report</button>
 
     </div>
   `;
 
-  drawChart();
+  drawChart(activeCats);
 }
 
 
-// =========================
-// 📊 GRAFICO ISTITUZIONALE
-// =========================
+// ===============================
+// 📊 PIE CHART (LEGEND READY)
+// ===============================
 
-function drawChart(){
+function drawChart(activeCats){
 
   const ctx = document.getElementById("chart").getContext("2d");
 
@@ -253,61 +257,30 @@ function drawChart(){
 }
 
 
-// =========================
-// 📄 PDF ISTITUZIONALE CLEAN
-// =========================
+// ===============================
+// 📄 PDF CLEAN EXPORT
+// ===============================
 
 function downloadPDF(){
 
   const w = window.open("", "", "width=1200,height=1400");
 
+  let clean = document.getElementById("report").cloneNode(true);
+  clean.querySelectorAll("button").forEach(b=>b.remove());
+
   w.document.write(`
-    <html>
-    <head>
-      <style>
-
-        body{font-family:Arial;background:#f4f4f4;margin:0}
-
-        .page{
-          width:900px;
-          margin:40px auto;
-          background:white;
-          padding:70px;
-        }
-
-        h1{text-align:center}
-
-        .big{
-          font-size:60px;
-          text-align:center;
-          color:#4f6b4f;
-        }
-
-        .level{text-align:center}
-
-      </style>
-    </head>
-
+    <html><head><style>
+    body{font-family:Arial;background:#eee}
+    .page{width:900px;margin:40px auto;background:white;padding:60px}
+    h1{text-align:center}
+    .big{font-size:55px;text-align:center}
+    </style></head>
     <body>
-
       <div class="page">
-
-        <h1>RELAZIONE ISTITUZIONALE UFFICIALE</h1>
-
-        <div class="big">${Math.round(score/questions.length*100)}%</div>
-
-        <div class="level">
-          ${document.querySelector("#report .level").innerText}
-        </div>
-
-        <hr>
-
-        ${document.getElementById("report").innerHTML.replace(/Esporta Documento Ufficiale/g,"")}
-
+        <h1>OFFICIAL GOVERNMENT REPORT</h1>
+        ${clean.innerHTML}
       </div>
-
-    </body>
-    </html>
+    </body></html>
   `);
 
   w.document.close();
@@ -315,9 +288,46 @@ function downloadPDF(){
 }
 
 
-// =========================
-// UTILS
-// =========================
+// ===============================
+// 🗂️ ARCHIVE SYSTEM
+// ===============================
+
+function saveArchive(){
+
+  let entry = {
+    name: userName,
+    score: Math.round(score/questions.length*100),
+    date: new Date().toISOString()
+  };
+
+  archive.push(entry);
+  localStorage.setItem("archive", JSON.stringify(archive));
+
+  alert("Salvato nel registro ufficiale");
+}
+
+function openArchive(){
+
+  let html = archive.map(a=>{
+    return `<div class="box">
+      <b>${a.name}</b> - ${a.score}%<br>
+      <small>${a.date}</small>
+    </div>`;
+  }).join("");
+
+  document.getElementById("output").innerHTML = `
+    <div class="card">
+      <h2>📁 ARCHIVIO REPORT</h2>
+      ${html}
+      <button onclick="location.reload()">Torna indietro</button>
+    </div>
+  `;
+}
+
+
+// ===============================
+// 🔧 UTILS
+// ===============================
 
 function shuffle(a){
   return [...a].sort(()=>Math.random()-0.5);
