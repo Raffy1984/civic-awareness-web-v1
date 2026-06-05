@@ -1,51 +1,50 @@
 // =========================
-// 📦 DATABASE PROFESSIONALE
+// 📦 DATABASE
 // =========================
 
 const bank = {
-
   Economia: [
     {q:"Quale indicatore misura la produzione economica complessiva di un Paese in un anno?",a:["PIL","Inflazione","Debito estero","Tasso di cambio"],c:0},
-    {q:"L’inflazione rappresenta:",a:["L’aumento generale dei prezzi","La crescita della popolazione","Il livello delle esportazioni","La riduzione del debito pubblico"],c:0},
-    {q:"Il debito pubblico è:",a:["L’insieme dei debiti dello Stato","Le entrate fiscali","Il valore della moneta","Il PIL pro capite"],c:0},
-    {q:"La BCE ha il compito di:",a:["Gestire la politica monetaria europea","Legiferare in Europa","Gestire i governi nazionali","Controllare i parlamenti"],c:0}
+    {q:"L’inflazione rappresenta:",a:["Aumento generale dei prezzi","Crescita popolazione","Export","Riduzione tasse"],c:0},
+    {q:"Il debito pubblico è:",a:["Debito dello Stato","Risparmio nazionale","Valore moneta","Export"],c:0},
+    {q:"La BCE ha il compito di:",a:["Gestire la politica monetaria","Fare leggi","Gestire comuni","Controllare tribunali"],c:0}
   ],
 
   UE: [
-    {q:"Il Parlamento Europeo ha il compito di:",a:["Legiferare insieme al Consiglio UE","Gestire le banche centrali","Amministrare i comuni","Controllare la magistratura"],c:0},
-    {q:"L’area Schengen consente:",a:["Libera circolazione delle persone","Uso obbligatorio dell’euro","Controllo doganale rafforzato","Restrizione dei viaggi"],c:0},
-    {q:"La Commissione Europea è responsabile di:",a:["Proporre e attuare le politiche UE","Elezione dei parlamentari","Gestione dei tribunali nazionali","Controllo militare"],c:0},
-    {q:"L’Unione Europea attualmente comprende circa:",a:["27 Stati membri","15 Stati","40 Stati","50 Stati"],c:0}
+    {q:"Il Parlamento Europeo ha il compito di:",a:["Legiferare UE","Gestire banche","Comandare eserciti","Gestire scuole"],c:0},
+    {q:"L’area Schengen consente:",a:["Libera circolazione","Moneta unica","Tasse comuni","Controllo frontiere totale"],c:0},
+    {q:"La Commissione Europea:",a:["Propone leggi UE","Elezione cittadini","Tribunali","Militare"],c:0},
+    {q:"L’UE è composta da circa:",a:["27 Stati","10 Stati","50 Stati","100 Stati"],c:0}
   ],
 
   Sanità: [
-    {q:"Il Servizio Sanitario Nazionale è finanziato principalmente tramite:",a:["Tassazione generale","Assicurazioni private obbligatorie","Donazioni volontarie","Fondi europei esclusivi"],c:0},
-    {q:"Il ticket sanitario rappresenta:",a:["Una compartecipazione alla spesa sanitaria","Un rimborso totale","Un bonus statale","Una tassa europea"],c:0},
-    {q:"Il pronto soccorso è destinato a:",a:["Emergenze sanitarie","Visite programmate","Attività private","Consulenze amministrative"],c:0}
+    {q:"Il SSN è finanziato da:",a:["Tasse","Privati","Donazioni","UE esclusiva"],c:0},
+    {q:"Il ticket sanitario è:",a:["Contributo spesa","Rimborso totale","Bonus","Tassa UE"],c:0},
+    {q:"Il pronto soccorso serve per:",a:["Emergenze","Visite programmate","Burocrazia","Vacanze"],c:0}
   ],
 
   Istruzione: [
-    {q:"L’istruzione pubblica in Italia è finanziata principalmente da:",a:["Stato","Privati","Banche","UE esclusivamente"],c:0},
-    {q:"L’obbligo scolastico in Italia dura generalmente fino a:",a:["16 anni","14 anni","18 anni","21 anni"],c:0},
-    {q:"La scuola primaria rappresenta:",a:["Il primo ciclo di istruzione","L’università","La formazione post-lavoro","Un corso privato"],c:0}
+    {q:"L’istruzione pubblica è finanziata da:",a:["Stato","Privati","Banche","UE esclusiva"],c:0},
+    {q:"Obbligo scolastico fino a:",a:["16 anni","14 anni","18 anni","21 anni"],c:0},
+    {q:"La scuola primaria è:",a:["Base istruzione","Università","Lavoro","Privato"],c:0}
   ],
 
   Lavoro: [
-    {q:"Il contratto a tempo indeterminato indica:",a:["Un rapporto senza scadenza","Un lavoro stagionale","Uno stage formativo","Un contratto di 3 mesi"],c:0},
-    {q:"La disoccupazione rappresenta:",a:["La condizione di chi non ha lavoro","La crescita occupazionale","Il reddito medio","La tassazione"],c:0},
-    {q:"I sindacati hanno il compito di:",a:["Tutela dei lavoratori","Gestione delle imprese","Amministrazione statale","Controllo fiscale"],c:0}
+    {q:"Il contratto indeterminato è:",a:["Senza scadenza","3 mesi","Stage","Prova"],c:0},
+    {q:"La disoccupazione è:",a:["Assenza lavoro","Aumento salari","Crescita aziende","Export"],c:0},
+    {q:"I sindacati tutelano:",a:["Lavoratori","Banche","Governo","UE"],c:0}
   ],
 
   Immigrazione: [
-    {q:"Un richiedente asilo è una persona che:",a:["Chiede protezione internazionale","Viaggia per turismo","Studia all’estero","Lavora temporaneamente"],c:0},
-    {q:"La migrazione economica avviene principalmente per:",a:["Motivi di lavoro","Motivi turistici","Motivi sportivi","Motivi fiscali"],c:0},
-    {q:"Il permesso di soggiorno è:",a:["Un documento legale di permanenza","Una tassa","Un titolo di studio","Un bonus statale"],c:0}
+    {q:"Richiedente asilo è:",a:["Protezione internazionale","Turista","Studente","Lavoratore"],c:0},
+    {q:"Migrazione economica è:",a:["Per lavoro","Per turismo","Per studio","Per sport"],c:0},
+    {q:"Permesso di soggiorno è:",a:["Documento legale","Tassa","Bonus","Voto"],c:0}
   ],
 
   Istituzioni: [
-    {q:"Il Presidente della Repubblica rappresenta:",a:["L’unità nazionale","Il governo","Il parlamento","La magistratura"],c:0},
-    {q:"Il Governo esercita il potere:",a:["Esecutivo","Legislativo","Giudiziario","Consultivo"],c:0},
-    {q:"Il Parlamento ha il compito di:",a:["Fare le leggi","Applicare le leggi","Giudicare","Gestire le banche"],c:0}
+    {q:"Il Presidente della Repubblica rappresenta:",a:["Unità nazionale","Governo","Parlamento","UE"],c:0},
+    {q:"Il Governo esercita potere:",a:["Esecutivo","Legislativo","Giudiziario","Consultivo"],c:0},
+    {q:"Il Parlamento fa:",a:["Leggi","Banche","Scuole","Esercito"],c:0}
   ]
 };
 
@@ -84,7 +83,6 @@ function start(){
   });
 
   all = shuffle(all);
-
   questions = all.slice(0, TOTAL);
 
   questions.forEach(q=>{
@@ -174,7 +172,7 @@ function showReport(){
   document.getElementById("output").innerHTML = `
     <div class="question-card" id="report">
 
-      <h2>Patente di Consapevolezza Civica</h2>
+      <h2>Certificato di Consapevolezza Civica</h2>
 
       <p>Punteggio: ${percent}%</p>
       <h3>${level}</h3>
@@ -191,26 +189,99 @@ function showReport(){
 
 
 // =========================
-// PDF
+// 🔥 PDF MIGLIORATO (NUOVO)
 // =========================
 
 function downloadPDF(){
 
-  const report = document.getElementById("report").innerHTML;
+  const report = document.getElementById("report");
 
-  const w = window.open("", "", "width=900,height=1200");
+  const w = window.open("", "", "width=1000,height=1300");
 
   w.document.write(`
     <html>
     <head>
-      <title>Report Civico</title>
+      <title>Certificato Civico</title>
+
       <style>
-        body{font-family:Arial;padding:60px;}
-        h2{text-align:center;}
-        button{display:none !important;}
+
+        body{
+          font-family: Arial;
+          background:#f4f4f4;
+          margin:0;
+          padding:0;
+        }
+
+        .page{
+          width:800px;
+          margin:40px auto;
+          background:white;
+          padding:60px;
+          border-radius:14px;
+          box-shadow:0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        h1{
+          text-align:center;
+          color:#2f3b2f;
+        }
+
+        .box{
+          text-align:center;
+          border:2px solid #9eb888;
+          padding:25px;
+          margin:25px 0;
+          border-radius:12px;
+        }
+
+        .score{
+          font-size:40px;
+          font-weight:bold;
+          color:#758966;
+        }
+
+        .level{
+          font-size:18px;
+          margin-top:10px;
+        }
+
+        .cats{
+          margin-top:20px;
+        }
+
+        .footer{
+          text-align:center;
+          font-size:12px;
+          color:#888;
+          margin-top:30px;
+        }
+
       </style>
+
     </head>
-    <body>${report}</body>
+
+    <body>
+
+      <div class="page">
+
+        <h1>Certificato di Consapevolezza Civica</h1>
+
+        <div class="box">
+          <div class="score">${Math.round(score/questions.length*100)}%</div>
+          <div class="level">${document.querySelector("#report h3").innerText}</div>
+        </div>
+
+        <div class="cats">
+          ${report.innerHTML}
+        </div>
+
+        <div class="footer">
+          Documento generato automaticamente dal sistema civico
+        </div>
+
+      </div>
+
+    </body>
     </html>
   `);
 
