@@ -2,6 +2,7 @@
 <html lang="it">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Patente di Consapevolezza Civica</title>
   <link rel="stylesheet" href="style.css">
 </head>
@@ -9,13 +10,26 @@
 
 <div class="container">
 
-  <h1>Patente di Consapevolezza Civica</h1>
+  <div class="hero-card">
 
-  <p class="subtitle">
-    Valutazione ufficiale della consapevolezza politica, economica e sociale
-  </p>
+    <h1>Patente di Consapevolezza Civica</h1>
 
-  <button id="startBtn">Inizia il test ufficiale</button>
+    <p class="subtitle">
+      Valuta la tua conoscenza dei principali temi economici,
+      sociali e istituzionali che influenzano il dibattito pubblico.
+    </p>
+
+    <input
+      type="text"
+      id="userName"
+      placeholder="Inserisci il tuo nome (facoltativo)"
+    >
+
+    <button id="startBtn">
+      Inizia la valutazione
+    </button>
+
+  </div>
 
   <div id="output"></div>
 
