@@ -21,31 +21,7 @@ body{
   box-shadow:0 18px 50px rgba(0,0,0,0.10);
 }
 
-h1{
-  color:#758966;
-  font-size:2.2rem;
-}
-
-.hook{
-  line-height:1.6;
-  margin-bottom:20px;
-}
-
-.topics{
-  color:#758966;
-  font-weight:600;
-  margin-bottom:20px;
-}
-
-input{
-  width:100%;
-  max-width:420px;
-  padding:14px;
-  border:2px solid #9eb888;
-  border-radius:14px;
-  margin-bottom:15px;
-}
-
+/* BOTTONI START */
 button{
   background:#758966;
   color:white;
@@ -57,10 +33,29 @@ button{
   max-width:420px;
 }
 
-button:hover{
-  background:#9eb888;
+/* RISPOSTE — FIX CRITICO */
+.answer-btn{
+  display:block;
+  width:100%;
+  margin:10px 0;
+  padding:14px;
+  border-radius:12px;
+  border:2px solid #9eb888;
+
+  background:white;
+  color:#1f1f1f !important;  /* 🔥 FIX RISPOSTE BIANCHE */
+
+  font-size:15px;
+  cursor:pointer;
 }
 
+/* HOVER VISIBILE */
+.answer-btn:hover{
+  background:#ffec8d;
+  color:#1f1f1f;
+}
+
+/* DOMANDA */
 .question-card{
   background:white;
   border-radius:18px;
@@ -69,23 +64,8 @@ button:hover{
   border:1px solid #9eb888;
 }
 
-.answer-btn{
-  display:block;
-  width:100%;
-  margin:10px 0;
-  padding:14px;
-  border-radius:12px;
-  border:2px solid #9eb888;
-  background:white;
-  cursor:pointer;
-}
-
-.answer-btn:hover{
-  background:#ffec8d;
-}
-
 .progress{
-  font-weight:600;
   color:#758966;
+  font-weight:700;
   margin-bottom:10px;
 }
