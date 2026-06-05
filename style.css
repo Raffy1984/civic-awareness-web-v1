@@ -25,6 +25,17 @@ h1{
   color:#758966;
 }
 
+.hook{
+  line-height:1.6;
+  margin-bottom:20px;
+}
+
+.topics{
+  color:#758966;
+  font-weight:600;
+  margin-bottom:25px;
+}
+
 input{
   width:100%;
   max-width:520px;
@@ -67,4 +78,10 @@ button{
 
 .answer-btn:hover{
   background:#ffec8d;
+}
+
+.progress{
+  font-weight:700;
+  color:#758966;
+  margin-bottom:10px;
 }
