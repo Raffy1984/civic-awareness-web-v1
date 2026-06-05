@@ -1,5 +1,5 @@
 const allQuestions = [
-  {cat:"Economia",q:"Cos'è il debito pubblico?",a:["Debito Stato","Risparmio","IVA","Inflazione"],c:0},
+  {cat:"Economia",q:"Cos'è il debito pubblico?",a:["Debito dello Stato","Risparmio","IVA","Inflazione"],c:0},
   {cat:"Economia",q:"Cos'è l'inflazione?",a:["Aumento prezzi","Calo salari","Bonus","Export"],c:0},
   {cat:"Economia",q:"Cos'è il PIL?",a:["Produzione totale","Tasse","Debito","Import"],c:0},
 
@@ -14,9 +14,11 @@ const allQuestions = [
   {cat:"Istruzione",q:"Tasso laureati indica?",a:["% laureati","Scuole","Professori","Classi"],c:0},
 
   {cat:"Immigrazione",q:"Richiedente asilo è?",a:["Protezione","Turista","Studente","Lavoratore"],c:0},
+
   {cat:"Lavoro",q:"Disoccupazione giovanile?",a:["Senza lavoro","Studenti","Pensionati","Imprese"],c:0},
 
   {cat:"Istituzioni",q:"Presidente Repubblica?",a:["Capo Stato","Premier","Sindaco","Ministro"],c:0},
+
   {cat:"Istituzioni",q:"Governo è?",a:["Esecutivo","Legislativo","Giudiziario","UE"],c:0}
 ];
 
@@ -28,11 +30,12 @@ let categoryScore = {};
 document.getElementById("startBtn").addEventListener("click", start);
 
 function start(){
+
   index = 0;
   score = 0;
   categoryScore = {};
 
-  questions = shuffle(allQuestions).slice(0, 25);
+  questions = shuffle(allQuestions); // 🔥 niente slice fisso
 
   questions.forEach(q=>{
     if(!categoryScore[q.cat]){
@@ -44,6 +47,7 @@ function start(){
 }
 
 function showQuestion(){
+
   const q = questions[index];
 
   document.getElementById("output").innerHTML = `
@@ -65,6 +69,7 @@ function showQuestion(){
 }
 
 function answer(i){
+
   const q = questions[index];
 
   categoryScore[q.cat].total++;
@@ -113,15 +118,13 @@ function showReport(){
 
       ${catHTML}
 
-      <br>
-
       <button onclick="downloadPDF()">Scarica PDF</button>
 
     </div>
   `;
 }
 
-/* 🔥 PDF FIX DEFINITIVO (NO BOTTONI NEL PDF) */
+/* 🔥 PDF PULITO SENZA DUPLICATI */
 function downloadPDF(){
 
   const report = document.getElementById("report").innerHTML;
@@ -131,7 +134,7 @@ function downloadPDF(){
   win.document.write(`
     <html>
     <head>
-      <title>Report Civico</title>
+      <title>Patente Civica</title>
 
       <style>
         body{
@@ -144,6 +147,7 @@ function downloadPDF(){
         h2{
           text-align:center;
           color:#2e3d2f;
+          margin-bottom:20px;
         }
 
         h3{
@@ -159,7 +163,6 @@ function downloadPDF(){
           margin:20px 0;
         }
 
-        /* 🔥 IMPORTANTISSIMO */
         button{
           display:none !important;
         }
@@ -168,8 +171,6 @@ function downloadPDF(){
     </head>
 
     <body>
-
-      <h2>Patente di Consapevolezza Civica</h2>
 
       ${report}
 
