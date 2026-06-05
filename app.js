@@ -1,35 +1,28 @@
 // =======================
-// 📦 DATABASE ENORME
+// 📦 DATABASE GRANDE
 // =======================
 
 const bank = {
-
   Economia: [
     {q:"Cos'è il PIL?",a:["Produzione totale","Tasse","Debito","Import"],c:0},
     {q:"Cos'è inflazione?",a:["Aumento prezzi","Calo salari","Export","Bonus"],c:0},
     {q:"Cos'è debito pubblico?",a:["Debito Stato","Risparmio","IVA","Borsa"],c:0},
     {q:"Chi emette euro?",a:["BCE","ONU","Stati","IMF"],c:0},
-    {q:"Cos'è la spesa pubblica?",a:["Spesa Stato","Guadagno","Export","Tasse private"],c:0},
-    {q:"Cos'è il deficit?",a:["Entrate < spese","Profitto","IVA","Salario"],c:0},
-    {q:"Cos'è il reddito?",a:["Guadagno","Debito","Tassa","Prestito"],c:0},
-    {q:"Cos'è la BCE?",a:["Banca centrale UE","ONU","Governo","Borsa"],c:0}
+    {q:"Cos'è spesa pubblica?",a:["Spesa Stato","Profitto","Export","Privati"],c:0}
   ],
 
   UE: [
     {q:"Quanti paesi UE?",a:["27","10","50","100"],c:0},
     {q:"Chi fa leggi UE?",a:["Parlamento UE","NATO","ONU","BCE"],c:0},
-    {q:"Cos'è Schengen?",a:["Libera circolazione","Moneta","Tassa","Confine chiuso"],c:0},
-    {q:"Cos'è euro?",a:["Moneta UE","Banca","Tassa","Partito"],c:0},
-    {q:"Cos'è Commissione UE?",a:["Esecutivo UE","Governo Italia","ONU","BCE"],c:0},
-    {q:"Cos'è Consiglio UE?",a:["Stati membri","Banca","Tribunale","Partito"],c:0},
+    {q:"Cos'è Schengen?",a:["Libera circolazione","Moneta","Tassa","Confine"],c:0},
+    {q:"Cos'è euro?",a:["Moneta UE","Banca","Partito","Tassa"],c:0},
     {q:"Dove sede UE?",a:["Bruxelles","Roma","Parigi","Madrid"],c:0}
   ],
 
   Sanità: [
     {q:"SSN è?",a:["Servizio pubblico","Privato","Militare","Banca"],c:0},
     {q:"Ticket sanitario è?",a:["Contributo","Bonus","Stipendio","UE"],c:0},
-    {q:"Medico base è?",a:["Servizio pubblico","Privato","Assicurazione","Borsa"],c:0},
-    {q:"Pronto soccorso è?",a:["Emergenze","Privato","Banca","Scuola"],c:0},
+    {q:"Pronto soccorso è?",a:["Emergenze","Privato","Borsa","Scuola"],c:0},
     {q:"Vaccini sono?",a:["Prevenzione","Tassa","Debito","Lavoro"],c:0}
   ],
 
@@ -37,7 +30,7 @@ const bank = {
     {q:"Università pubblica è finanziata da?",a:["Stato","Privati","UE","Banche"],c:0},
     {q:"Obbligo scolastico?",a:["16 anni","10 anni","20 anni","Libero"],c:0},
     {q:"Tasso laureati è?",a:["% laureati","Scuole","Banche","Lavoro"],c:0},
-    {q:"Scuola primaria è?",a:["Base","Università","Lavoro","Privato"],c:0}
+    {q:"Scuola primaria è?",a:["Base","Università","Privato","Lavoro"],c:0}
   ],
 
   Lavoro: [
@@ -50,21 +43,19 @@ const bank = {
   Immigrazione: [
     {q:"Richiedente asilo è?",a:["Protezione","Turista","Studente","Lavoro"],c:0},
     {q:"Migrazione economica?",a:["Lavoro","Guerra","Vacanza","Studio"],c:0},
-    {q:"Cittadinanza si ottiene?",a:["Requisiti legali","Automatico","Borsa","Scuola"],c:0},
-    {q:"Permesso soggiorno è?",a:["Documento legale","Tassa","Banca","Voto"],c:0}
+    {q:"Permesso soggiorno è?",a:["Documento legale","Tassa","Borsa","Voto"],c:0}
   ],
 
   Istituzioni: [
     {q:"Presidente Repubblica?",a:["Capo Stato","Premier","Sindaco","Ministro"],c:0},
     {q:"Governo è?",a:["Esecutivo","Legislativo","Banca","UE"],c:0},
-    {q:"Parlamento fa?",a:["Leggi","Banca","Scuola","Militare"],c:0},
-    {q:"Magistratura è?",a:["Giustizia","Governo","Borsa","UE"],c:0}
+    {q:"Parlamento fa?",a:["Leggi","Banca","Scuola","Militare"],c:0}
   ]
 };
 
 
 // =======================
-// 🎯 SISTEMA
+// VARIABILI
 // =======================
 
 const TOTAL = 20;
@@ -74,12 +65,12 @@ let index = 0;
 let score = 0;
 let categoryScore = {};
 
-document.getElementById("startBtn").addEventListener("click", start);
-
 
 // =======================
 // START
 // =======================
+
+document.getElementById("startBtn").addEventListener("click", start);
 
 function start(){
 
@@ -111,7 +102,7 @@ function start(){
 
 
 // =======================
-// SHOW
+// DOMANDA
 // =======================
 
 function showQuestion(){
@@ -120,6 +111,10 @@ function showQuestion(){
 
   document.getElementById("output").innerHTML = `
     <div class="question-card">
+
+      <div class="progress">
+        Domanda ${index+1} / ${questions.length}
+      </div>
 
       <h3>${q.cat}</h3>
       <p>${q.q}</p>
@@ -134,7 +129,7 @@ function showQuestion(){
 
 
 // =======================
-// ANSWER
+// RISPOSTA
 // =======================
 
 function answer(i){
