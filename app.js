@@ -1,51 +1,57 @@
 // =========================
-// 📦 DATABASE
+// 📦 DATABASE PROFESSIONALE (REALITY CHECK)
 // =========================
 
 const bank = {
-  Economia: [
-    {q:"Quale indicatore misura la produzione economica complessiva di un Paese in un anno?",a:["PIL","Inflazione","Debito estero","Tasso di cambio"],c:0},
-    {q:"L’inflazione rappresenta:",a:["Aumento generale dei prezzi","Crescita popolazione","Export","Riduzione tasse"],c:0},
-    {q:"Il debito pubblico è:",a:["Debito dello Stato","Risparmio nazionale","Valore moneta","Export"],c:0},
-    {q:"La BCE ha il compito di:",a:["Gestire la politica monetaria","Fare leggi","Gestire comuni","Controllare tribunali"],c:0}
-  ],
 
-  UE: [
-    {q:"Il Parlamento Europeo ha il compito di:",a:["Legiferare UE","Gestire banche","Comandare eserciti","Gestire scuole"],c:0},
-    {q:"L’area Schengen consente:",a:["Libera circolazione","Moneta unica","Tasse comuni","Controllo frontiere totale"],c:0},
-    {q:"La Commissione Europea:",a:["Propone leggi UE","Elezione cittadini","Tribunali","Militare"],c:0},
-    {q:"L’UE è composta da circa:",a:["27 Stati","10 Stati","50 Stati","100 Stati"],c:0}
-  ],
+Immigrazione: [
+  {q:"Secondo ISTAT, la percentuale di residenti stranieri in Italia è più vicina a:",a:["4–5%","8–9%","12–13%","20–25%"],c:1},
+  {q:"La percezione media del numero di immigrati in Italia tende a essere:",a:["Inferiore alla realtà","Corretta","Fortemente sovrastimata","Nulla"],c:2},
+  {q:"La maggior parte della popolazione straniera in Italia è concentrata:",a:["Nord Italia","Sud Italia","Distribuzione uniforme","Solo isole"],c:0}
+],
 
-  Sanità: [
-    {q:"Il SSN è finanziato da:",a:["Tasse","Privati","Donazioni","UE esclusiva"],c:0},
-    {q:"Il ticket sanitario è:",a:["Contributo spesa","Rimborso totale","Bonus","Tassa UE"],c:0},
-    {q:"Il pronto soccorso serve per:",a:["Emergenze","Visite programmate","Burocrazia","Vacanze"],c:0}
-  ],
+Criminalità: [
+  {q:"Negli ultimi 10–15 anni i reati denunciati in Italia sono:",a:["In forte aumento","Stabili","In diminuzione nel lungo periodo","Raddoppiati"],c:2},
+  {q:"La percezione della criminalità rispetto ai dati reali è:",a:["Inferiore","Allineata","Superiore","Inesistente"],c:2},
+  {q:"Gli omicidi in Italia negli ultimi decenni sono:",a:["In aumento","In calo","Raddoppiati","Immutati"],c:1}
+],
 
-  Istruzione: [
-    {q:"L’istruzione pubblica è finanziata da:",a:["Stato","Privati","Banche","UE esclusiva"],c:0},
-    {q:"Obbligo scolastico fino a:",a:["16 anni","14 anni","18 anni","21 anni"],c:0},
-    {q:"La scuola primaria è:",a:["Base istruzione","Università","Lavoro","Privato"],c:0}
-  ],
+Economia: [
+  {q:"Il debito pubblico italiano rispetto al PIL è circa:",a:["60–70%","90–100%","130–140%","180–200%"],c:2},
+  {q:"L’inflazione europea post-pandemia è stata:",a:["Stabile","Deflazione costante","Forte variabilità e picchi","Zero"],c:2},
+  {q:"Il PIL italiano negli ultimi anni è:",a:["Crescita forte","Stabile con oscillazioni","Crollo costante","Inesistente"],c:1}
+],
 
-  Lavoro: [
-    {q:"Il contratto indeterminato è:",a:["Senza scadenza","3 mesi","Stage","Prova"],c:0},
-    {q:"La disoccupazione è:",a:["Assenza lavoro","Aumento salari","Crescita aziende","Export"],c:0},
-    {q:"I sindacati tutelano:",a:["Lavoratori","Banche","Governo","UE"],c:0}
-  ],
+Società: [
+  {q:"La percezione del rischio sociale in Europa rispetto ai dati reali è:",a:["Inferiore","Allineata","Superiore","Assente"],c:2},
+  {q:"Secondo studi europei, la percezione della criminalità è:",a:["Sottostimata","Allineata","Sovrastimata","Corretta sempre"],c:2},
+  {q:"La fiducia nelle istituzioni in Italia è generalmente:",a:["Alta","Media-bassa","Massima UE","Perfetta"],c:1}
+],
 
-  Immigrazione: [
-    {q:"Richiedente asilo è:",a:["Protezione internazionale","Turista","Studente","Lavoratore"],c:0},
-    {q:"Migrazione economica è:",a:["Per lavoro","Per turismo","Per studio","Per sport"],c:0},
-    {q:"Permesso di soggiorno è:",a:["Documento legale","Tassa","Bonus","Voto"],c:0}
-  ],
+Lavoro: [
+  {q:"Il tasso di occupazione in Italia rispetto UE è:",a:["Più alto","Più basso","Uguale","Massimo UE"],c:1},
+  {q:"I salari reali negli ultimi 20 anni in Italia sono:",a:["In forte crescita","Stagnanti o debolmente cresciuti","Raddoppiati","Inesistenti"],c:1},
+  {q:"La precarietà lavorativa è percepita come:",a:["Inferiore","Allineata","Superiore alla realtà","Assente"],c:2}
+],
 
-  Istituzioni: [
-    {q:"Il Presidente della Repubblica rappresenta:",a:["Unità nazionale","Governo","Parlamento","UE"],c:0},
-    {q:"Il Governo esercita potere:",a:["Esecutivo","Legislativo","Giudiziario","Consultivo"],c:0},
-    {q:"Il Parlamento fa:",a:["Leggi","Banche","Scuole","Esercito"],c:0}
-  ]
+Istituzioni: [
+  {q:"Il Parlamento Europeo ha funzione:",a:["Legislativa condivisa","Militare","Assoluta","Nulla"],c:0},
+  {q:"L’UE è:",a:["Stato federale completo","Unione di Stati sovrani","Una nazione unica","Un esercito unico"],c:1},
+  {q:"La BCE controlla:",a:["Politica monetaria euro","Governi locali","Esercito UE","Scuole"],c:0}
+],
+
+Sanità: [
+  {q:"Il SSN è finanziato principalmente da:",a:["Tasse","Privati esclusivi","Donazioni","UE totale"],c:0},
+  {q:"Il sistema sanitario italiano è:",a:["Pubblico universale","Privato totale","Solo assicurazioni","Militare"],c:0},
+  {q:"La percezione della qualità sanitaria rispetto ai dati reali è:",a:["Inferiore","Allineata","Sovrastimata o distorta","Perfetta"],c:2}
+],
+
+Istruzione: [
+  {q:"La scuola pubblica italiana è finanziata da:",a:["Stato","Privati","Banche","UE esclusiva"],c:0},
+  {q:"Il livello istruzione Italia rispetto UE è:",a:["Più alto","Più basso","Uguale","Massimo"],c:1},
+  {q:"Il tasso di laureati in Italia è:",a:["Tra i più bassi UE","Tra i più alti","Massimo mondiale","Inesistente"],c:0}
+]
+
 };
 
 
@@ -189,7 +195,7 @@ function showReport(){
 
 
 // =========================
-// 🔥 PDF MIGLIORATO (NUOVO)
+// PDF MIGLIORATO
 // =========================
 
 function downloadPDF(){
@@ -201,7 +207,7 @@ function downloadPDF(){
   w.document.write(`
     <html>
     <head>
-      <title>Certificato Civico</title>
+      <title>Report Civico</title>
 
       <style>
 
@@ -245,10 +251,6 @@ function downloadPDF(){
           margin-top:10px;
         }
 
-        .cats{
-          margin-top:20px;
-        }
-
         .footer{
           text-align:center;
           font-size:12px;
@@ -271,7 +273,7 @@ function downloadPDF(){
           <div class="level">${document.querySelector("#report h3").innerText}</div>
         </div>
 
-        <div class="cats">
+        <div>
           ${report.innerHTML}
         </div>
 
