@@ -1,75 +1,64 @@
 // =====================================
-// 🏛️ CIVIC DASHBOARD - STABLE CORE v1
+// 📘 LEZIONE MODE - QUIZ STABILE BASE
 // =====================================
 
 
 // =====================
-// 🎨 PALETTE ISTITUZIONALE
-// =====================
-
-const COLORS = {
-  Immigrazione: "#1f3a5f",
-  Criminalità: "#b23a48",
-  Economia: "#2f6f4e",
-  Società: "#6a4c93",
-  Lavoro: "#e09f3e",
-  Istituzioni: "#3a86ff",
-  Sanità: "#2a9d8f",
-  Istruzione: "#8ac926"
-};
-
-
-// =====================
-// 📦 DATABASE
+// DATABASE SEMPLICE
 // =====================
 
 const bank = {
-  Immigrazione: [
-    {q:"Quota stranieri in Italia (ISTAT):",a:["4–5%","8–9%","15–18%","25%+"],c:1},
-    {q:"Percezione immigrazione:",a:["Inferiore","Corretta","Sovrastimata","Nulla"],c:2},
-    {q:"Distribuzione immigrati:",a:["Nord","Sud","Uniforme","Solo città"],c:0}
-  ],
-
-  Criminalità: [
-    {q:"Reati ultimi 15 anni:",a:["Aumento","Stabili","Diminuzione","Raddoppio"],c:2},
-    {q:"Percezione criminalità:",a:["Inferiore","Allineata","Superiore","Nulla"],c:2},
-    {q:"Omicidi:",a:["Crescono","Calano","Raddoppiano","Stabili"],c:1}
-  ],
-
-  Economia: [
-    {q:"Debito/PIL:",a:["90%","110%","130%","180%"],c:2},
-    {q:"PIL:",a:["Crescita","Oscillante","Crollo","Zero"],c:1},
-    {q:"Inflazione:",a:["Stabile","Deflazione","Variabile","Nulla"],c:2}
-  ],
-
-  Società: [
-    {q:"Rischio sociale:",a:["Inferiore","Allineato","Superiore","Nulla"],c:2},
-    {q:"Paure sociali:",a:["Allineate","Amplificate","Inesistenti","Perfette"],c:1},
-    {q:"Fiducia istituzioni:",a:["Alta","Media-bassa","Alta UE","Perfetta"],c:1}
-  ],
-
-  Lavoro: [
-    {q:"Occupazione UE vs Italia:",a:["Più alta","Più bassa","Uguale","Massima"],c:1},
-    {q:"Salari:",a:["Crescita","Stagnanti","Raddoppio","Nulla"],c:1},
-    {q:"Precarietà:",a:["Inferiore","Allineata","Superiore","Assente"],c:2}
-  ],
-
-  Istituzioni: [
-    {q:"UE è:",a:["Stato","Unione Stati","Nazione","Esercito"],c:1},
-    {q:"BCE:",a:["Monetaria","Militare","Scuola","Giustizia"],c:0},
-    {q:"Parlamento UE:",a:["Legislativo","Militare","Assoluto","Nullo"],c:0}
-  ],
-
-  Sanità: [
-    {q:"SSN:",a:["Tasse","Privato","Donazioni","UE"],c:0},
-    {q:"Sistema sanitario:",a:["Pubblico","Privato","USA","Militare"],c:0},
-    {q:"Percezione sanità:",a:["Inferiore","Allineata","Sovrastimata","Perfetta"],c:2}
-  ],
-
-  Istruzione: [
-    {q:"Scuola:",a:["Stato","Privati","Banche","UE"],c:0},
-    {q:"Livello istruzione:",a:["Più alto","Più basso","Uguale","Massimo"],c:1},
-    {q:"Laureati:",a:["Bassi","Alti","Massimi","Zero"],c:0}
+  Generale: [
+    {
+      q: "Cos'è la democrazia?",
+      a: [
+        "Un sistema in cui il popolo decide",
+        "Un governo militare",
+        "Un sistema monarchico",
+        "Un sistema religioso"
+      ],
+      c: 0
+    },
+    {
+      q: "Cos'è l'Unione Europea?",
+      a: [
+        "Un'unione di stati europei",
+        "Un singolo paese",
+        "Un esercito mondiale",
+        "Una banca centrale"
+      ],
+      c: 0
+    },
+    {
+      q: "Cos'è l'euro?",
+      a: [
+        "La valuta europea",
+        "Una legge",
+        "Una città",
+        "Un organismo politico"
+      ],
+      c: 0
+    },
+    {
+      q: "Cos'è una costituzione?",
+      a: [
+        "L'insieme delle leggi fondamentali di uno Stato",
+        "Un trattato commerciale",
+        "Un partito politico",
+        "Un documento privato"
+      ],
+      c: 0
+    },
+    {
+      q: "Cos'è il Parlamento?",
+      a: [
+        "Un organo legislativo",
+        "Un tribunale",
+        "Un esercito",
+        "Una scuola"
+      ],
+      c: 0
+    }
   ]
 };
 
@@ -81,86 +70,94 @@ const bank = {
 let questions = [];
 let index = 0;
 let score = 0;
-let categoryScore = {};
 
-const TOTAL = 20;
+const TOTAL = 5;
 
 
 // =====================
-// 🚀 START
+// START (STABILE)
 // =====================
 
 function start(){
 
+  const out = document.getElementById("output");
+
+  if(!out){
+    alert("Errore: manca <div id='output'> nel tuo HTML");
+    return;
+  }
+
   index = 0;
   score = 0;
-  categoryScore = {};
 
   let all = [];
 
   Object.keys(bank).forEach(cat=>{
     bank[cat].forEach(q=>{
-      all.push({...q, cat});
+      all.push(q);
     });
   });
 
   questions = shuffle(all).slice(0, TOTAL);
-
-  questions.forEach(q=>{
-    if(!categoryScore[q.cat]){
-      categoryScore[q.cat] = {right:0,total:0};
-    }
-  });
 
   showQuestion();
 }
 
 
 // =====================
-// ❓ QUESTION
+// SHOW QUESTION
 // =====================
 
 function showQuestion(){
 
-  const q = questions[index];
   const out = document.getElementById("output");
+  const q = questions[index];
 
   if(!out || !q) return;
 
   out.innerHTML = `
-    <div class="card">
-      <div>${index+1} / ${questions.length}</div>
-      <h3>${q.cat}</h3>
-      <p>${q.q}</p>
+    <div style="max-width:600px;margin:auto;font-family:Arial">
+
+      <h3>${q.q}</h3>
 
       ${q.a.map((x,i)=>`
-        <button class="btn" onclick="answer(${i})">${x}</button>
+        <button onclick="answer(${i})"
+          style="
+            display:block;
+            width:100%;
+            margin:8px 0;
+            padding:12px;
+            border:1px solid #ccc;
+            background:white;
+            cursor:pointer;
+          ">
+          ${x}
+        </button>
       `).join("")}
+
+      <p>Domanda ${index+1} / ${questions.length}</p>
+
     </div>
   `;
 }
 
 
 // =====================
-// ✅ ANSWER
+// ANSWER
 // =====================
 
 function answer(i){
 
   const q = questions[index];
-  if(!q) return;
-
-  categoryScore[q.cat].total++;
 
   if(i === q.c){
     score++;
-    categoryScore[q.cat].right++;
   }
 
   index++;
 
   if(index >= questions.length){
-    showReport();
+    finish();
   } else {
     showQuestion();
   }
@@ -168,117 +165,29 @@ function answer(i){
 
 
 // =====================
-// 📊 REPORT
+// FINISH
 // =====================
 
-function showReport(){
+function finish(){
 
   const out = document.getElementById("output");
-  if(!out) return;
-
-  let activeCats = Object.keys(categoryScore)
-    .filter(c => categoryScore[c].total > 0);
-
-  let percent = Math.round(score / questions.length * 100);
 
   out.innerHTML = `
-    <div class="card" id="report">
+    <div style="text-align:center;font-family:Arial">
+      <h2>Risultato finale</h2>
+      <h1>${score} / ${questions.length}</h1>
 
-      <h2>🏛️ REPORT ISTITUZIONALE</h2>
-
-      <h1>${percent}%</h1>
-
-      <p>Consapevolezza civica</p>
-
-      ${activeCats.map(c=>{
-        let p = Math.round(categoryScore[c].right / categoryScore[c].total * 100);
-        return `
-          <div class="box" style="border-left:6px solid ${COLORS[c]}">
-            <b>${c}</b> — ${p}%
-          </div>
-        `;
-      }).join("")}
-
-      <canvas id="chart" width="320" height="320"></canvas>
-
-      <button onclick="downloadPDF()">Scarica PDF</button>
-
+      <button onclick="start()"
+        style="padding:12px 20px;margin-top:20px;cursor:pointer;">
+        Riprova
+      </button>
     </div>
   `;
-
-  drawChart(activeCats);
 }
 
 
 // =====================
-// 📊 PIE CHART
-// =====================
-
-function drawChart(activeCats){
-
-  const ctx = document.getElementById("chart").getContext("2d");
-
-  let values = activeCats.map(c =>
-    Math.round(categoryScore[c].right / categoryScore[c].total * 100)
-  );
-
-  let total = values.reduce((a,b)=>a+b,0);
-  let start = 0;
-
-  values.forEach((v,i)=>{
-
-    let cat = activeCats[i];
-    let slice = (v/total)*Math.PI*2;
-
-    ctx.beginPath();
-    ctx.moveTo(160,160);
-    ctx.fillStyle = COLORS[cat];
-    ctx.arc(160,160,130,start,start+slice);
-    ctx.fill();
-
-    start += slice;
-  });
-}
-
-
-// =====================
-// 📄 PDF CLEAN
-// =====================
-
-function downloadPDF(){
-
-  const win = window.open("", "", "width=900,height=1200");
-
-  const report = document.getElementById("report").cloneNode(true);
-
-  report.querySelectorAll("button").forEach(b=>b.remove());
-  report.querySelectorAll("canvas").forEach(c=>c.remove());
-
-  win.document.write(`
-    <html>
-    <head>
-      <style>
-        body{font-family:Arial;background:#eee}
-        .page{width:900px;margin:40px auto;background:white;padding:60px}
-        h1{text-align:center}
-      </style>
-    </head>
-    <body>
-      <div class="page">
-        <h1>OFFICIAL REPORT</h1>
-        ${report.innerHTML}
-      </div>
-    </body>
-    </html>
-  `);
-
-  win.document.close();
-  win.print();
-}
-
-
-// =====================
-// 🔧 UTILS
+// UTILS
 // =====================
 
 function shuffle(a){
