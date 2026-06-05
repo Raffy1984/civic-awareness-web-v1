@@ -1,5 +1,5 @@
 const allQuestions = [
-  {cat:"Economia",q:"Cos'è il debito pubblico?",a:["Debito dello Stato","Risparmio","IVA","Inflazione"],c:0},
+  {cat:"Economia",q:"Cos'è il debito pubblico?",a:["Debito Stato","Risparmio","IVA","Inflazione"],c:0},
   {cat:"Economia",q:"Cos'è l'inflazione?",a:["Aumento prezzi","Calo salari","Bonus","Export"],c:0},
   {cat:"Economia",q:"Cos'è il PIL?",a:["Produzione totale","Tasse","Debito","Import"],c:0},
 
@@ -14,21 +14,10 @@ const allQuestions = [
   {cat:"Istruzione",q:"Tasso laureati indica?",a:["% laureati","Scuole","Professori","Classi"],c:0},
 
   {cat:"Immigrazione",q:"Richiedente asilo è?",a:["Protezione","Turista","Studente","Lavoratore"],c:0},
-  {cat:"Immigrazione",q:"Migrazione economica è?",a:["Lavoro","Guerra","Studio","Vacanza"],c:0},
-
   {cat:"Lavoro",q:"Disoccupazione giovanile?",a:["Senza lavoro","Studenti","Pensionati","Imprese"],c:0},
-  {cat:"Lavoro",q:"Contratto a tempo indeterminato?",a:["Senza scadenza","3 mesi","Stage","Autonomo"],c:0},
 
-  {cat:"Istituzioni",q:"Presidente della Repubblica?",a:["Capo Stato","Premier","Sindaco","Ministro"],c:0},
-  {cat:"Istituzioni",q:"Governo è?",a:["Esecutivo","Legislativo","Giudiziario","UE"],c:0},
-
-  // ripetute MA VARIATE per MVP fino a 25
-  {cat:"Economia",q:"Cos'è la spesa pubblica?",a:["Spesa Stato","Guadagno","IVA","Export"],c:0},
-  {cat:"UE",q:"Euro è gestito da?",a:["BCE","ONU","NATO","IMF"],c:0},
-  {cat:"Sanità",q:"Medico di base è?",a:["Servizio pubblico","Privato","Assicurazione","UE"],c:0},
-  {cat:"Istruzione",q:"Obbligo scolastico è?",a:["Fino a 16 anni","10 anni","Università","Libero"],c:0},
-  {cat:"Lavoro",q:"Stage è?",a:["Formazione","Lavoro fisso","Pensione","Tassa"],c:0},
-  {cat:"Immigrazione",q:"Cittadinanza si ottiene?",a:["Requisiti legali","Automatico","Scuola","Voto"],c:0}
+  {cat:"Istituzioni",q:"Presidente Repubblica?",a:["Capo Stato","Premier","Sindaco","Ministro"],c:0},
+  {cat:"Istituzioni",q:"Governo è?",a:["Esecutivo","Legislativo","Giudiziario","UE"],c:0}
 ];
 
 let questions = [];
@@ -43,7 +32,7 @@ function start(){
   score = 0;
   categoryScore = {};
 
-  questions = shuffle(allQuestions).slice(0,25);
+  questions = shuffle(allQuestions).slice(0, 25);
 
   questions.forEach(q=>{
     if(!categoryScore[q.cat]){
@@ -105,6 +94,7 @@ function showReport(){
     "Bassa consapevolezza civica";
 
   let catHTML = "";
+
   Object.keys(categoryScore).forEach(cat=>{
     const c = categoryScore[cat];
     const p = Math.round((c.right/c.total)*100);
@@ -114,13 +104,16 @@ function showReport(){
   document.getElementById("output").innerHTML = `
     <div class="question-card" id="report">
 
-      <h2>Patente Civica</h2>
-      <p>Punteggio: ${percent}%</p>
+      <h2>Patente di Consapevolezza Civica</h2>
+
+      <p><b>Punteggio:</b> ${percent}%</p>
       <h3>${level}</h3>
 
       <hr>
 
       ${catHTML}
+
+      <br>
 
       <button onclick="downloadPDF()">Scarica PDF</button>
 
@@ -128,8 +121,10 @@ function showReport(){
   `;
 }
 
+/* 🔥 PDF FIX DEFINITIVO (NO BOTTONI NEL PDF) */
 function downloadPDF(){
-  const content = document.getElementById("report").innerHTML;
+
+  const report = document.getElementById("report").innerHTML;
 
   const win = window.open("", "", "width=900,height=1200");
 
@@ -137,32 +132,47 @@ function downloadPDF(){
     <html>
     <head>
       <title>Report Civico</title>
+
       <style>
         body{
-          font-family:Arial;
+          font-family: Arial;
           padding:60px;
           background:white;
+          color:#222;
         }
+
         h2{
           text-align:center;
           color:#2e3d2f;
-          margin-bottom:30px;
         }
+
+        h3{
+          color:#4d5f4d;
+        }
+
         p{
           font-size:14px;
           line-height:1.5;
         }
-        .box{
-          border:1px solid #999;
-          padding:20px;
+
+        hr{
+          margin:20px 0;
+        }
+
+        /* 🔥 IMPORTANTISSIMO */
+        button{
+          display:none !important;
         }
       </style>
+
     </head>
+
     <body>
+
       <h2>Patente di Consapevolezza Civica</h2>
-      <div class="box">
-        ${content}
-      </div>
+
+      ${report}
+
     </body>
     </html>
   `);
