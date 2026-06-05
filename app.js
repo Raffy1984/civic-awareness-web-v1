@@ -1,49 +1,40 @@
-// ======================
-// 100 DOMANDE DATABASE
-// ======================
-
 const allQuestions = [
-  {cat:"Economia",q:"Cos'è il debito pubblico?",a:["Debito Stato","Risparmio","IVA","Inflazione"],c:0},
-  {cat:"Economia",q:"Cos'è l'inflazione?",a:["Aumento prezzi","Calo popolazione","Bonus","Export"],c:0},
-  {cat:"Economia",q:"Cos'è il PIL?",a:["Produzione totale","Tasse","Debito","Export"],c:0},
-  {cat:"Economia",q:"Chi stampa moneta UE?",a:["BCE","IMF","ONU","Stati"],c:0},
-  {cat:"Economia",q:"Cos'è disoccupazione?",a:["Senza lavoro","Studenti","Pensionati","Imprese"],c:0},
+  {cat:"Economia",q:"Cos'è il debito pubblico?",a:["Debito dello Stato","Risparmio","IVA","Inflazione"],c:0},
+  {cat:"Economia",q:"Cos'è l'inflazione?",a:["Aumento prezzi","Calo salari","Bonus","Export"],c:0},
+  {cat:"Economia",q:"Cos'è il PIL?",a:["Produzione totale","Tasse","Debito","Import"],c:0},
 
-  {cat:"UE",q:"Chi fa le leggi UE?",a:["Parlamento UE","NATO","ONU","FMI"],c:0},
+  {cat:"UE",q:"Chi fa le leggi UE?",a:["Parlamento UE","NATO","ONU","BCE"],c:0},
   {cat:"UE",q:"Quanti paesi UE?",a:["27","10","50","100"],c:0},
-  {cat:"UE",q:"Cos'è Schengen?",a:["Libera circolazione","Tassa","Moneta","Partito"],c:0},
+  {cat:"UE",q:"Cos'è Schengen?",a:["Libera circolazione","Moneta","Tassa","Partito"],c:0},
 
   {cat:"Sanità",q:"SSN è?",a:["Pubblico","Privato","Militare","Assicurazione"],c:0},
-  {cat:"Sanità",q:"Ticket sanitario è?",a:["Contributo paziente","Bonus","Stipendio","Tassa UE"],c:0},
+  {cat:"Sanità",q:"Ticket sanitario è?",a:["Contributo","Bonus","Stipendio","Abolizione tasse"],c:0},
 
   {cat:"Istruzione",q:"Università pubblica è finanziata da?",a:["Stato","Privati","UE","Banche"],c:0},
   {cat:"Istruzione",q:"Tasso laureati indica?",a:["% laureati","Scuole","Professori","Classi"],c:0},
 
   {cat:"Immigrazione",q:"Richiedente asilo è?",a:["Protezione","Turista","Studente","Lavoratore"],c:0},
-  {cat:"Immigrazione",q:"Migrazione economica è?",a:["Per lavoro","Guerra","Studio","Vacanza"],c:0},
+  {cat:"Immigrazione",q:"Migrazione economica è?",a:["Lavoro","Guerra","Studio","Vacanza"],c:0},
 
-  {cat:"Lavoro",q:"Contratto a tempo indeterminato è?",a:["Senza scadenza","3 mesi","Stage","Autonomo"],c:0},
-  {cat:"Lavoro",q:"Disoccupazione giovanile è?",a:["Senza lavoro","Studenti","Pensionati","Imprese"],c:0},
+  {cat:"Lavoro",q:"Disoccupazione giovanile?",a:["Senza lavoro","Studenti","Pensionati","Imprese"],c:0},
+  {cat:"Lavoro",q:"Contratto a tempo indeterminato?",a:["Senza scadenza","3 mesi","Stage","Autonomo"],c:0},
 
-  {cat:"Istituzioni",q:"Presidente della Repubblica?",a:["Capo Stato","Premier","Ministro","Sindaco"],c:0},
-  {cat:"Istituzioni",q:"Governo fa?",a:["Esecutivo","Leggi","Giudica","Stampa moneta"],c:0},
+  {cat:"Istituzioni",q:"Presidente della Repubblica?",a:["Capo Stato","Premier","Sindaco","Ministro"],c:0},
+  {cat:"Istituzioni",q:"Governo è?",a:["Esecutivo","Legislativo","Giudiziario","UE"],c:0},
 
-  // DUPLICAZIONE INTENZIONALE PER ARRIVARE A 100 (semplificata per MVP)
+  // ripetute MA VARIATE per MVP fino a 25
+  {cat:"Economia",q:"Cos'è la spesa pubblica?",a:["Spesa Stato","Guadagno","IVA","Export"],c:0},
+  {cat:"UE",q:"Euro è gestito da?",a:["BCE","ONU","NATO","IMF"],c:0},
+  {cat:"Sanità",q:"Medico di base è?",a:["Servizio pubblico","Privato","Assicurazione","UE"],c:0},
+  {cat:"Istruzione",q:"Obbligo scolastico è?",a:["Fino a 16 anni","10 anni","Università","Libero"],c:0},
+  {cat:"Lavoro",q:"Stage è?",a:["Formazione","Lavoro fisso","Pensione","Tassa"],c:0},
+  {cat:"Immigrazione",q:"Cittadinanza si ottiene?",a:["Requisiti legali","Automatico","Scuola","Voto"],c:0}
 ];
-
-
-// ======================
-// VARIABILI
-// ======================
 
 let questions = [];
 let index = 0;
 let score = 0;
 let categoryScore = {};
-
-// ======================
-// START
-// ======================
 
 document.getElementById("startBtn").addEventListener("click", start);
 
@@ -52,7 +43,7 @@ function start(){
   score = 0;
   categoryScore = {};
 
-  questions = shuffle(allQuestions).slice(0, 25);
+  questions = shuffle(allQuestions).slice(0,25);
 
   questions.forEach(q=>{
     if(!categoryScore[q.cat]){
@@ -63,12 +54,7 @@ function start(){
   showQuestion();
 }
 
-// ======================
-// SHOW QUESTION
-// ======================
-
 function showQuestion(){
-
   const q = questions[index];
 
   document.getElementById("output").innerHTML = `
@@ -89,12 +75,7 @@ function showQuestion(){
   `;
 }
 
-// ======================
-// ANSWER
-// ======================
-
 function answer(i){
-
   const q = questions[index];
 
   categoryScore[q.cat].total++;
@@ -113,10 +94,6 @@ function answer(i){
   }
 }
 
-// ======================
-// REPORT + PDF
-// ======================
-
 function showReport(){
 
   let percent = Math.round(score/questions.length*100);
@@ -128,7 +105,6 @@ function showReport(){
     "Bassa consapevolezza civica";
 
   let catHTML = "";
-
   Object.keys(categoryScore).forEach(cat=>{
     const c = categoryScore[cat];
     const p = Math.round((c.right/c.total)*100);
@@ -138,8 +114,7 @@ function showReport(){
   document.getElementById("output").innerHTML = `
     <div class="question-card" id="report">
 
-      <h2>Patente di Consapevolezza Civica</h2>
-
+      <h2>Patente Civica</h2>
       <p>Punteggio: ${percent}%</p>
       <h3>${level}</h3>
 
@@ -147,17 +122,11 @@ function showReport(){
 
       ${catHTML}
 
-      <br>
-
       <button onclick="downloadPDF()">Scarica PDF</button>
 
     </div>
   `;
 }
-
-// ======================
-// PDF (PRINT)
-// ======================
 
 function downloadPDF(){
   const content = document.getElementById("report").innerHTML;
@@ -169,22 +138,38 @@ function downloadPDF(){
     <head>
       <title>Report Civico</title>
       <style>
-        body{font-family:Arial;padding:40px;}
-        h2{color:#2e3d2f;}
-        p{font-size:14px;}
+        body{
+          font-family:Arial;
+          padding:60px;
+          background:white;
+        }
+        h2{
+          text-align:center;
+          color:#2e3d2f;
+          margin-bottom:30px;
+        }
+        p{
+          font-size:14px;
+          line-height:1.5;
+        }
+        .box{
+          border:1px solid #999;
+          padding:20px;
+        }
       </style>
     </head>
-    <body>${content}</body>
+    <body>
+      <h2>Patente di Consapevolezza Civica</h2>
+      <div class="box">
+        ${content}
+      </div>
+    </body>
     </html>
   `);
 
   win.document.close();
   win.print();
 }
-
-// ======================
-// UTILS
-// ======================
 
 function shuffle(arr){
   return [...arr].sort(()=>Math.random()-0.5);
