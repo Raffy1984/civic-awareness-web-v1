@@ -1,31 +1,74 @@
-const allQuestions = [
-  {cat:"Economia",q:"Cos'è il debito pubblico?",a:["Debito dello Stato","Risparmio","IVA","Inflazione"],c:0},
-  {cat:"Economia",q:"Cos'è l'inflazione?",a:["Aumento prezzi","Calo salari","Bonus","Export"],c:0},
-  {cat:"Economia",q:"Cos'è il PIL?",a:["Produzione totale","Tasse","Debito","Import"],c:0},
+// ===============================
+// 📦 DATABASE GRANDE STRUTTURATO
+// ===============================
 
-  {cat:"UE",q:"Chi fa le leggi UE?",a:["Parlamento UE","NATO","ONU","BCE"],c:0},
-  {cat:"UE",q:"Quanti paesi UE?",a:["27","10","50","100"],c:0},
-  {cat:"UE",q:"Cos'è Schengen?",a:["Libera circolazione","Moneta","Tassa","Partito"],c:0},
+const bank = {
+  Economia: [
+    {q:"Cos'è il PIL?",a:["Produzione totale","Tasse","Debito","Import"],c:0},
+    {q:"Cos'è inflazione?",a:["Aumento prezzi","Calo salari","Bonus","Export"],c:0},
+    {q:"Cos'è debito pubblico?",a:["Debito Stato","Risparmio","IVA","Export"],c:0},
+    {q:"Chi stampa euro?",a:["BCE","ONU","NATO","IMF"],c:0}
+  ],
 
-  {cat:"Sanità",q:"SSN è?",a:["Pubblico","Privato","Militare","Assicurazione"],c:0},
-  {cat:"Sanità",q:"Ticket sanitario è?",a:["Contributo","Bonus","Stipendio","Abolizione tasse"],c:0},
+  UE: [
+    {q:"Chi fa leggi UE?",a:["Parlamento UE","NATO","ONU","BCE"],c:0},
+    {q:"Quanti paesi UE?",a:["27","10","50","100"],c:0},
+    {q:"Cos'è Schengen?",a:["Libera circolazione","Tassa","Moneta","Partito"],c:0},
+    {q:"Euro è gestito da?",a:["BCE","ONU","Stati","IMF"],c:0}
+  ],
 
-  {cat:"Istruzione",q:"Università pubblica è finanziata da?",a:["Stato","Privati","UE","Banche"],c:0},
-  {cat:"Istruzione",q:"Tasso laureati indica?",a:["% laureati","Scuole","Professori","Classi"],c:0},
+  Sanità: [
+    {q:"SSN è?",a:["Pubblico","Privato","Militare","Assicurazione"],c:0},
+    {q:"Ticket sanitario è?",a:["Contributo","Bonus","Stipendio","UE"],c:0},
+    {q:"Medico base è?",a:["Servizio pubblico","Privato","Militare","Banca"],c:0}
+  ],
 
-  {cat:"Immigrazione",q:"Richiedente asilo è?",a:["Protezione","Turista","Studente","Lavoratore"],c:0},
+  Istruzione: [
+    {q:"Università pubblica è finanziata da?",a:["Stato","Privati","UE","Banche"],c:0},
+    {q:"Obbligo scolastico fino a?",a:["16 anni","10 anni","18 anni","Università"],c:0},
+    {q:"Tasso laureati indica?",a:["% laureati","Scuole","Professori","Classi"],c:0}
+  ],
 
-  {cat:"Lavoro",q:"Disoccupazione giovanile?",a:["Senza lavoro","Studenti","Pensionati","Imprese"],c:0},
+  Lavoro: [
+    {q:"Disoccupazione giovanile?",a:["Senza lavoro","Studenti","Pensionati","Imprese"],c:0},
+    {q:"Contratto indeterminato?",a:["Senza scadenza","Stage","3 mesi","Autonomo"],c:0},
+    {q:"Stage è?",a:["Formazione","Lavoro fisso","Pensione","Tassa"],c:0}
+  ],
 
-  {cat:"Istituzioni",q:"Presidente Repubblica?",a:["Capo Stato","Premier","Sindaco","Ministro"],c:0},
+  Immigrazione: [
+    {q:"Richiedente asilo è?",a:["Protezione","Turista","Studente","Lavoro"],c:0},
+    {q:"Migrazione economica?",a:["Lavoro","Guerra","Vacanza","Studio"],c:0}
+  ],
 
-  {cat:"Istituzioni",q:"Governo è?",a:["Esecutivo","Legislativo","Giudiziario","UE"],c:0}
-];
+  Istituzioni: [
+    {q:"Presidente Repubblica?",a:["Capo Stato","Premier","Sindaco","Ministro"],c:0},
+    {q:"Governo è?",a:["Esecutivo","Legislativo","Giudiziario","UE"],c:0}
+  ]
+};
+
+
+// ===============================
+// 🎯 CONFIG TEST
+// ===============================
+
+const TOTAL_QUESTIONS = 20;
+const MIN_CAT = 4;
+const MAX_CAT = 7;
+
+
+// ===============================
+// VARIABILI
+// ===============================
 
 let questions = [];
 let index = 0;
 let score = 0;
 let categoryScore = {};
+
+
+// ===============================
+// START
+// ===============================
 
 document.getElementById("startBtn").addEventListener("click", start);
 
@@ -34,17 +77,52 @@ function start(){
   index = 0;
   score = 0;
   categoryScore = {};
+  questions = [];
 
-  questions = shuffle(allQuestions); // 🔥 niente slice fisso
+  // 1️⃣ prendi categorie random
+  let categories = Object.keys(bank);
+  categories = shuffle(categories);
 
-  questions.forEach(q=>{
-    if(!categoryScore[q.cat]){
-      categoryScore[q.cat] = {right:0,total:0};
+  // numero categorie random (4–7)
+  const selectedCats = categories.slice(0, rand(MIN_CAT, MAX_CAT));
+
+  // 2️⃣ distribuzione 20 domande
+  let remaining = TOTAL_QUESTIONS;
+
+  selectedCats.forEach((cat, i)=>{
+
+    let count;
+
+    if(i === selectedCats.length - 1){
+      count = remaining;
+    } else {
+      count = Math.max(2, Math.floor(Math.random() * 5));
+      if(count > remaining - (selectedCats.length - i - 1)*2){
+        count = 2;
+      }
     }
+
+    remaining -= count;
+
+    let pool = shuffle(bank[cat]).slice(0, count);
+
+    pool.forEach(q=>{
+      questions.push({...q, cat});
+    });
+  });
+
+  // init score
+  selectedCats.forEach(c=>{
+    categoryScore[c] = {right:0,total:0};
   });
 
   showQuestion();
 }
+
+
+// ===============================
+// SHOW QUESTION
+// ===============================
 
 function showQuestion(){
 
@@ -68,6 +146,11 @@ function showQuestion(){
   `;
 }
 
+
+// ===============================
+// ANSWER
+// ===============================
+
 function answer(i){
 
   const q = questions[index];
@@ -88,9 +171,14 @@ function answer(i){
   }
 }
 
+
+// ===============================
+// REPORT
+// ===============================
+
 function showReport(){
 
-  let percent = Math.round(score/questions.length*100);
+  const percent = Math.round(score/questions.length*100);
 
   let level =
     percent>=80?"Ottima consapevolezza civica":
@@ -124,7 +212,11 @@ function showReport(){
   `;
 }
 
-/* 🔥 PDF PULITO SENZA DUPLICATI */
+
+// ===============================
+// PDF
+// ===============================
+
 function downloadPDF(){
 
   const report = document.getElementById("report").innerHTML;
@@ -134,47 +226,14 @@ function downloadPDF(){
   win.document.write(`
     <html>
     <head>
-      <title>Patente Civica</title>
-
+      <title>Report Civico</title>
       <style>
-        body{
-          font-family: Arial;
-          padding:60px;
-          background:white;
-          color:#222;
-        }
-
-        h2{
-          text-align:center;
-          color:#2e3d2f;
-          margin-bottom:20px;
-        }
-
-        h3{
-          color:#4d5f4d;
-        }
-
-        p{
-          font-size:14px;
-          line-height:1.5;
-        }
-
-        hr{
-          margin:20px 0;
-        }
-
-        button{
-          display:none !important;
-        }
+        body{font-family:Arial;padding:60px;}
+        h2{text-align:center;}
+        button{display:none !important;}
       </style>
-
     </head>
-
-    <body>
-
-      ${report}
-
-    </body>
+    <body>${report}</body>
     </html>
   `);
 
@@ -182,6 +241,15 @@ function downloadPDF(){
   win.print();
 }
 
+
+// ===============================
+// UTILS
+// ===============================
+
 function shuffle(arr){
   return [...arr].sort(()=>Math.random()-0.5);
+}
+
+function rand(min,max){
+  return Math.floor(Math.random()*(max-min+1))+min;
 }
