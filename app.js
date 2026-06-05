@@ -1,62 +1,58 @@
-// =======================
-// 📦 DATABASE GRANDE
-// =======================
+// =========================
+// 📦 DATABASE PROFESSIONALE
+// =========================
 
 const bank = {
+
   Economia: [
-    {q:"Cos'è il PIL?",a:["Produzione totale","Tasse","Debito","Import"],c:0},
-    {q:"Cos'è inflazione?",a:["Aumento prezzi","Calo salari","Export","Bonus"],c:0},
-    {q:"Cos'è debito pubblico?",a:["Debito Stato","Risparmio","IVA","Borsa"],c:0},
-    {q:"Chi emette euro?",a:["BCE","ONU","Stati","IMF"],c:0},
-    {q:"Cos'è spesa pubblica?",a:["Spesa Stato","Profitto","Export","Privati"],c:0}
+    {q:"Quale indicatore misura la produzione economica complessiva di un Paese in un anno?",a:["PIL","Inflazione","Debito estero","Tasso di cambio"],c:0},
+    {q:"L’inflazione rappresenta:",a:["L’aumento generale dei prezzi","La crescita della popolazione","Il livello delle esportazioni","La riduzione del debito pubblico"],c:0},
+    {q:"Il debito pubblico è:",a:["L’insieme dei debiti dello Stato","Le entrate fiscali","Il valore della moneta","Il PIL pro capite"],c:0},
+    {q:"La BCE ha il compito di:",a:["Gestire la politica monetaria europea","Legiferare in Europa","Gestire i governi nazionali","Controllare i parlamenti"],c:0}
   ],
 
   UE: [
-    {q:"Quanti paesi UE?",a:["27","10","50","100"],c:0},
-    {q:"Chi fa leggi UE?",a:["Parlamento UE","NATO","ONU","BCE"],c:0},
-    {q:"Cos'è Schengen?",a:["Libera circolazione","Moneta","Tassa","Confine"],c:0},
-    {q:"Cos'è euro?",a:["Moneta UE","Banca","Partito","Tassa"],c:0},
-    {q:"Dove sede UE?",a:["Bruxelles","Roma","Parigi","Madrid"],c:0}
+    {q:"Il Parlamento Europeo ha il compito di:",a:["Legiferare insieme al Consiglio UE","Gestire le banche centrali","Amministrare i comuni","Controllare la magistratura"],c:0},
+    {q:"L’area Schengen consente:",a:["Libera circolazione delle persone","Uso obbligatorio dell’euro","Controllo doganale rafforzato","Restrizione dei viaggi"],c:0},
+    {q:"La Commissione Europea è responsabile di:",a:["Proporre e attuare le politiche UE","Elezione dei parlamentari","Gestione dei tribunali nazionali","Controllo militare"],c:0},
+    {q:"L’Unione Europea attualmente comprende circa:",a:["27 Stati membri","15 Stati","40 Stati","50 Stati"],c:0}
   ],
 
   Sanità: [
-    {q:"SSN è?",a:["Servizio pubblico","Privato","Militare","Banca"],c:0},
-    {q:"Ticket sanitario è?",a:["Contributo","Bonus","Stipendio","UE"],c:0},
-    {q:"Pronto soccorso è?",a:["Emergenze","Privato","Borsa","Scuola"],c:0},
-    {q:"Vaccini sono?",a:["Prevenzione","Tassa","Debito","Lavoro"],c:0}
+    {q:"Il Servizio Sanitario Nazionale è finanziato principalmente tramite:",a:["Tassazione generale","Assicurazioni private obbligatorie","Donazioni volontarie","Fondi europei esclusivi"],c:0},
+    {q:"Il ticket sanitario rappresenta:",a:["Una compartecipazione alla spesa sanitaria","Un rimborso totale","Un bonus statale","Una tassa europea"],c:0},
+    {q:"Il pronto soccorso è destinato a:",a:["Emergenze sanitarie","Visite programmate","Attività private","Consulenze amministrative"],c:0}
   ],
 
   Istruzione: [
-    {q:"Università pubblica è finanziata da?",a:["Stato","Privati","UE","Banche"],c:0},
-    {q:"Obbligo scolastico?",a:["16 anni","10 anni","20 anni","Libero"],c:0},
-    {q:"Tasso laureati è?",a:["% laureati","Scuole","Banche","Lavoro"],c:0},
-    {q:"Scuola primaria è?",a:["Base","Università","Privato","Lavoro"],c:0}
+    {q:"L’istruzione pubblica in Italia è finanziata principalmente da:",a:["Stato","Privati","Banche","UE esclusivamente"],c:0},
+    {q:"L’obbligo scolastico in Italia dura generalmente fino a:",a:["16 anni","14 anni","18 anni","21 anni"],c:0},
+    {q:"La scuola primaria rappresenta:",a:["Il primo ciclo di istruzione","L’università","La formazione post-lavoro","Un corso privato"],c:0}
   ],
 
   Lavoro: [
-    {q:"Disoccupazione è?",a:["Senza lavoro","Studenti","Imprese","Stato"],c:0},
-    {q:"Contratto indeterminato?",a:["Senza scadenza","3 mesi","Stage","Tassa"],c:0},
-    {q:"Stage è?",a:["Formazione","Lavoro fisso","Pensione","Debito"],c:0},
-    {q:"Sindacato è?",a:["Tutela lavoratori","Banca","Stato","UE"],c:0}
+    {q:"Il contratto a tempo indeterminato indica:",a:["Un rapporto senza scadenza","Un lavoro stagionale","Uno stage formativo","Un contratto di 3 mesi"],c:0},
+    {q:"La disoccupazione rappresenta:",a:["La condizione di chi non ha lavoro","La crescita occupazionale","Il reddito medio","La tassazione"],c:0},
+    {q:"I sindacati hanno il compito di:",a:["Tutela dei lavoratori","Gestione delle imprese","Amministrazione statale","Controllo fiscale"],c:0}
   ],
 
   Immigrazione: [
-    {q:"Richiedente asilo è?",a:["Protezione","Turista","Studente","Lavoro"],c:0},
-    {q:"Migrazione economica?",a:["Lavoro","Guerra","Vacanza","Studio"],c:0},
-    {q:"Permesso soggiorno è?",a:["Documento legale","Tassa","Borsa","Voto"],c:0}
+    {q:"Un richiedente asilo è una persona che:",a:["Chiede protezione internazionale","Viaggia per turismo","Studia all’estero","Lavora temporaneamente"],c:0},
+    {q:"La migrazione economica avviene principalmente per:",a:["Motivi di lavoro","Motivi turistici","Motivi sportivi","Motivi fiscali"],c:0},
+    {q:"Il permesso di soggiorno è:",a:["Un documento legale di permanenza","Una tassa","Un titolo di studio","Un bonus statale"],c:0}
   ],
 
   Istituzioni: [
-    {q:"Presidente Repubblica?",a:["Capo Stato","Premier","Sindaco","Ministro"],c:0},
-    {q:"Governo è?",a:["Esecutivo","Legislativo","Banca","UE"],c:0},
-    {q:"Parlamento fa?",a:["Leggi","Banca","Scuola","Militare"],c:0}
+    {q:"Il Presidente della Repubblica rappresenta:",a:["L’unità nazionale","Il governo","Il parlamento","La magistratura"],c:0},
+    {q:"Il Governo esercita il potere:",a:["Esecutivo","Legislativo","Giudiziario","Consultivo"],c:0},
+    {q:"Il Parlamento ha il compito di:",a:["Fare le leggi","Applicare le leggi","Giudicare","Gestire le banche"],c:0}
   ]
 };
 
 
-// =======================
+// =========================
 // VARIABILI
-// =======================
+// =========================
 
 const TOTAL = 20;
 
@@ -65,12 +61,12 @@ let index = 0;
 let score = 0;
 let categoryScore = {};
 
-
-// =======================
-// START
-// =======================
-
 document.getElementById("startBtn").addEventListener("click", start);
+
+
+// =========================
+// START
+// =========================
 
 function start(){
 
@@ -101,9 +97,9 @@ function start(){
 }
 
 
-// =======================
+// =========================
 // DOMANDA
-// =======================
+// =========================
 
 function showQuestion(){
 
@@ -128,9 +124,9 @@ function showQuestion(){
 }
 
 
-// =======================
+// =========================
 // RISPOSTA
-// =======================
+// =========================
 
 function answer(i){
 
@@ -153,9 +149,9 @@ function answer(i){
 }
 
 
-// =======================
+// =========================
 // REPORT
-// =======================
+// =========================
 
 function showReport(){
 
@@ -194,9 +190,9 @@ function showReport(){
 }
 
 
-// =======================
+// =========================
 // PDF
-// =======================
+// =========================
 
 function downloadPDF(){
 
@@ -223,9 +219,9 @@ function downloadPDF(){
 }
 
 
-// =======================
+// =========================
 // UTILS
-// =======================
+// =========================
 
 function shuffle(a){
   return [...a].sort(()=>Math.random()-0.5);
