@@ -1,55 +1,71 @@
 // =========================
-// 📦 DATABASE (PROFESSIONAL INDEX)
+// 🏛️ CIVIC PERCEPTION SYSTEM - ISTITUZIONALE
+// =========================
+
+const COLORS = {
+  Immigrazione: "#2f3b2f",
+  Criminalità: "#3e5c3e",
+  Economia: "#4f6b4f",
+  Società: "#5c7a5c",
+  Lavoro: "#6b8a6b",
+  Istituzioni: "#7a9a7a",
+  Sanità: "#8aa68a",
+  Istruzione: "#9ab79a"
+};
+
+
+// =========================
+// 📦 DATABASE ISTITUZIONALE
 // =========================
 
 const bank = {
 
 Immigrazione: [
-  {q:"Secondo ISTAT, la quota di residenti stranieri in Italia è circa:",a:["4–5%","8–9%","15–18%","25%+"],c:1,source:"ISTAT"},
-  {q:"La percezione media degli italiani sugli immigrati tende a essere:",a:["Sottostimata","Corretta","Sovrastimata","Nulla"],c:2,source:"CENSIS"},
-  {q:"La distribuzione della popolazione straniera è prevalentemente:",a:["Nord Italia","Sud Italia","Uniforme","Solo isole"],c:0,source:"ISTAT"}
+  {q:"Secondo ISTAT la quota di residenti stranieri è circa:",a:["4–5%","8–9%","15–18%","25%+"],c:1,source:"ISTAT"},
+  {q:"La percezione media del fenomeno immigrazione è:",a:["Inferiore alla realtà","Corretta","Sovrastimata","Non misurabile"],c:2,source:"CENSIS"},
+  {q:"La distribuzione degli stranieri è principalmente:",a:["Nord Italia","Sud Italia","Uniforme","Solo grandi città"],c:0,source:"ISTAT"}
 ],
 
 Criminalità: [
-  {q:"Negli ultimi 15 anni i reati denunciati in Italia sono:",a:["In aumento","Stabili","In diminuzione","Raddoppiati"],c:2,source:"MINISTERO INTERNO"},
-  {q:"La percezione della criminalità rispetto ai dati reali è:",a:["Inferiore","Allineata","Superiore","Inesistente"],c:2,source:"CENSIS"},
-  {q:"Gli omicidi in Italia nel lungo periodo sono:",a:["In aumento","In calo","Raddoppiati","Immutati"],c:1,source:"ISTAT"}
+  {q:"Negli ultimi 15 anni i reati denunciati sono:",a:["In aumento","Stabili","In diminuzione","Raddoppiati"],c:2,source:"MINISTERO INTERNO"},
+  {q:"La percezione della criminalità è:",a:["Inferiore","Allineata","Superiore","Non rilevabile"],c:2,source:"CENSIS"},
+  {q:"Gli omicidi in Italia sono:",a:["In crescita","In calo","Raddoppiati","Stabili"],c:1,source:"ISTAT"}
 ],
 
 Economia: [
-  {q:"Il debito pubblico italiano rispetto al PIL è circa:",a:["60%","90%","130%","180%"],c:2,source:"EUROSTAT"},
-  {q:"L’inflazione europea recente è stata:",a:["Stabile","Deflazione","Forte variabilità","Zero"],c:2,source:"BCE"},
-  {q:"Il PIL italiano negli ultimi anni è:",a:["Crescita forte","Oscillante","Crollo","Zero crescita"],c:1,source:"ISTAT"}
+  {q:"Il debito pubblico italiano è circa:",a:["90%","110%","130%","180%"],c:2,source:"EUROSTAT"},
+  {q:"Il PIL italiano negli ultimi anni è:",a:["Forte crescita","Oscillante","Crollo","Zero"],c:1,source:"ISTAT"},
+  {q:"L’inflazione recente è stata:",a:["Stabile","Deflazione","Variabile con picchi","Nulla"],c:2,source:"BCE"}
 ],
 
 Società: [
-  {q:"La percezione del rischio sociale rispetto ai dati reali è:",a:["Inferiore","Allineata","Superiore","Non misurabile"],c:2,source:"CENSIS"},
-  {q:"Le paure sociali sono spesso:",a:["Allineate ai dati","Amplificate","Inesistenti","Sempre corrette"],c:1,source:"EUROBAROMETRO"},
-  {q:"La fiducia nelle istituzioni è generalmente:",a:["Alta","Media-bassa","Massima UE","Perfetta"],c:1,source:"CENSIS"}
+  {q:"La percezione del rischio sociale è:",a:["Inferiore","Allineata","Superiore","Non misurabile"],c:2,source:"CENSIS"},
+  {q:"Le paure sociali sono:",a:["Allineate","Amplificate","Inesistenti","Perfette"],c:1,source:"EUROBAROMETRO"},
+  {q:"La fiducia istituzionale è:",a:["Alta","Media-bassa","Massima UE","Perfetta"],c:1,source:"CENSIS"}
 ],
 
 Lavoro: [
-  {q:"Il tasso di occupazione Italia vs UE è:",a:["Più alto","Più basso","Uguale","Massimo"],c:1,source:"EUROSTAT"},
-  {q:"I salari reali negli ultimi 20 anni sono:",a:["Cresciuti","Stagnanti","Raddoppiati","Inesistenti"],c:1,source:"OCSE"},
-  {q:"La precarietà lavorativa è percepita come:",a:["Inferiore","Allineata","Superiore","Assente"],c:2,source:"OCSE"}
+  {q:"Il tasso occupazionale Italia vs UE è:",a:["Più alto","Più basso","Uguale","Massimo"],c:1,source:"EUROSTAT"},
+  {q:"I salari reali sono:",a:["Cresciuti","Stagnanti","Raddoppiati","Inesistenti"],c:1,source:"OCSE"},
+  {q:"La precarietà è:",a:["Inferiore","Allineata","Superiore","Assente"],c:2,source:"OCSE"}
 ],
 
 Istituzioni: [
   {q:"L’UE è:",a:["Stato federale","Unione di Stati","Nazione unica","Esercito unico"],c:1,source:"UE"},
   {q:"La BCE controlla:",a:["Politica monetaria","Esercito","Scuole","Giustizia"],c:0,source:"BCE"},
-  {q:"Il Parlamento Europeo ha funzione:",a:["Legislativa condivisa","Militare","Assoluta","Nulla"],c:0,source:"UE"}
+  {q:"Il Parlamento Europeo è:",a:["Legislativo condiviso","Militare","Assoluto","Inutile"],c:0,source:"UE"}
 ],
 
 Sanità: [
-  {q:"Il SSN è finanziato principalmente da:",a:["Tasse","Privati","Donazioni","UE"],c:0,source:"MINISTERO SALUTE"},
-  {q:"Il sistema sanitario italiano è:",a:["Pubblico universale","Privato totale","USA insurance","Militare"],c:0,source:"MINISTERO SALUTE"},
-  {q:"La percezione della sanità rispetto ai dati reali è:",a:["Inferiore","Allineata","Sovrastimata","Perfetta"],c:2,source:"CENSIS"}
+  {q:"Il SSN è finanziato da:",a:["Tasse","Privati","Donazioni","UE"],c:0,source:"MINISTERO SALUTE"},
+  {q:"Il sistema sanitario è:",a:["Pubblico universale","Privato totale","USA style","Militare"],c:0,source:"MINISTERO SALUTE"},
+  {q:"La percezione della sanità è:",a:["Inferiore","Allineata","Sovrastimata","Perfetta"],c:2,source:"CENSIS"}
 ],
 
 Istruzione: [
-  {q:"La scuola italiana è finanziata da:",a:["Stato","Privati","Banche","UE"],c:0,source:"MINISTERO ISTRUZIONE"},
+  {q:"La scuola è finanziata da:",a:["Stato","Privati","Banche","UE"],c:0,source:"MINISTERO ISTRUZIONE"},
   {q:"Il livello istruzione Italia vs UE è:",a:["Più alto","Più basso","Uguale","Massimo"],c:1,source:"OCSE"},
-  {q:"Il tasso di laureati è:",a:["Basso UE","Alto UE","Massimo","Zero"],c:0,source:"EUROSTAT"}
+  {q:"Il tasso laureati è:",a:["Basso UE","Alto UE","Massimo","Zero"],c:0,source:"EUROSTAT"}
 ]
 
 };
@@ -71,7 +87,7 @@ document.getElementById("startBtn").addEventListener("click", start);
 
 
 // =========================
-// START ENGINE
+// START
 // =========================
 
 function start(){
@@ -101,7 +117,7 @@ function start(){
 
 
 // =========================
-// QUESTION VIEW
+// QUESTION UI (ISTITUZIONALE CLEAN)
 // =========================
 
 function showQuestion(){
@@ -111,18 +127,24 @@ function showQuestion(){
   document.getElementById("output").innerHTML = `
     <div class="card">
 
-      <div class="progress">${index+1} / ${questions.length}</div>
+      <div class="progress">
+        ${index+1} / ${questions.length}
+      </div>
 
       <div class="category">${q.cat}</div>
 
       <div class="question">${q.q}</div>
 
       ${q.a.map((x,i)=>`
-        <button class="btn" onclick="answer(${i})">${x}</button>
+        <button class="btn">${x}</button>
       `).join("")}
 
     </div>
   `;
+
+  document.querySelectorAll(".btn").forEach((b,i)=>{
+    b.onclick = ()=>answer(i);
+  });
 }
 
 
@@ -152,7 +174,7 @@ function answer(i){
 
 
 // =========================
-// 📊 DASHBOARD PRO (FILTERED)
+// 🏛️ REPORT ISTITUZIONALE
 // =========================
 
 function showReport(){
@@ -165,16 +187,15 @@ function showReport(){
     percent>=40?"Media consapevolezza civica":
     "Bassa consapevolezza civica";
 
-  // 🔥 SOLO CATEGORIE ATTIVE
   activeCats = Object.keys(categoryScore).filter(c => categoryScore[c].total > 0);
 
-  const grid = activeCats.map(c=>{
+  let grid = activeCats.map(c=>{
     let p = Math.round((categoryScore[c].right/categoryScore[c].total)*100);
     return `
-      <div class="card-mini">
-        <div class="cat">${c}</div>
-        <div class="val">${p}%</div>
-        <div class="src">${categoryScore[c].source}</div>
+      <div class="box" style="border-left:6px solid ${COLORS[c]}">
+        <b>${c}</b><br>
+        ${p}%<br>
+        <small>${categoryScore[c].source}</small>
       </div>
     `;
   }).join("");
@@ -182,7 +203,7 @@ function showReport(){
   document.getElementById("output").innerHTML = `
     <div class="card" id="report">
 
-      <h2>📊 Civic Perception Index</h2>
+      <h2>RELAZIONE ISTITUZIONALE</h2>
 
       <div class="big">${percent}%</div>
 
@@ -192,7 +213,7 @@ function showReport(){
 
       <canvas id="chart" width="320" height="320"></canvas>
 
-      <button onclick="downloadPDF()">Scarica Report Ufficiale</button>
+      <button onclick="downloadPDF()">Esporta Documento Ufficiale</button>
 
     </div>
   `;
@@ -202,7 +223,7 @@ function showReport(){
 
 
 // =========================
-// 📊 CHART (REAL DASHBOARD STYLE)
+// 📊 GRAFICO ISTITUZIONALE
 // =========================
 
 function drawChart(){
@@ -218,11 +239,12 @@ function drawChart(){
 
   values.forEach((v,i)=>{
 
+    let cat = activeCats[i];
     let slice = (v/total)*Math.PI*2;
 
     ctx.beginPath();
     ctx.moveTo(160,160);
-    ctx.fillStyle = `hsl(${i*55},50%,60%)`;
+    ctx.fillStyle = COLORS[cat];
     ctx.arc(160,160,130,start,start+slice);
     ctx.fill();
 
@@ -232,7 +254,7 @@ function drawChart(){
 
 
 // =========================
-// 📄 PDF MINISTERIALE STYLE
+// 📄 PDF ISTITUZIONALE CLEAN
 // =========================
 
 function downloadPDF(){
@@ -244,34 +266,24 @@ function downloadPDF(){
     <head>
       <style>
 
-        body{font-family:Arial;background:#eee;margin:0}
+        body{font-family:Arial;background:#f4f4f4;margin:0}
 
         .page{
           width:900px;
           margin:40px auto;
           background:white;
           padding:70px;
-          border-radius:12px;
         }
 
         h1{text-align:center}
 
-        .score{
+        .big{
           font-size:60px;
           text-align:center;
-          color:#758966;
+          color:#4f6b4f;
         }
 
-        .grid{
-          display:grid;
-          grid-template-columns:1fr 1fr;
-          gap:10px;
-        }
-
-        .box{
-          padding:10px;
-          border:1px solid #ddd;
-        }
+        .level{text-align:center}
 
       </style>
     </head>
@@ -280,13 +292,17 @@ function downloadPDF(){
 
       <div class="page">
 
-        <h1>Civic Perception Index - Official Report</h1>
+        <h1>RELAZIONE ISTITUZIONALE UFFICIALE</h1>
 
-        <div class="score">${Math.round(score/questions.length*100)}%</div>
+        <div class="big">${Math.round(score/questions.length*100)}%</div>
+
+        <div class="level">
+          ${document.querySelector("#report .level").innerText}
+        </div>
 
         <hr>
 
-        ${document.getElementById("report").innerHTML}
+        ${document.getElementById("report").innerHTML.replace(/Esporta Documento Ufficiale/g,"")}
 
       </div>
 
