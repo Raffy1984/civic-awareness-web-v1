@@ -1,189 +1,140 @@
-<!DOCTYPE html>
-<html lang="it">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Citizen Insight V0.1</title>
+let nome = "";
+let livello = "";
+let regione = "";
+let score = 0;
 
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+function avvia(){
+  nome = document.getElementById("nomeUtente").value || "Utente";
 
-<style>
-body{
-  margin:0;
-  font-family:Arial;
-  background:#f3f5ef;
-  color:#111;
+  document.getElementById("intro").style.display = "none";
+  document.getElementById("dashboard").style.display = "block";
 }
 
-.container{
-  max-width:900px;
-  margin:auto;
-  padding:20px;
+/* LIVELLO */
+function selezionaLivello(l){
+  livello = l;
+
+  if(l === "nazionale"){
+    startQuiz();
+  }
+
+  if(l === "comunale"){
+    startQuiz();
+  }
 }
 
-.card{
-  background:#fff;
-  border-radius:14px;
-  padding:20px;
-  margin-top:20px;
-  box-shadow:0 8px 20px rgba(0,0,0,0.06);
+/* REGIONI */
+function mostraRegioni(){
+  document.getElementById("selector").style.display = "block";
+
+  const sel = document.getElementById("regioneSelect");
+  sel.innerHTML = "";
+
+  REGIONI.forEach(r=>{
+    const opt = document.createElement("option");
+    opt.value = r;
+    opt.textContent = r;
+    sel.appendChild(opt);
+  });
 }
 
-input{
-  width:100%;
-  padding:12px;
-  margin:10px 0;
-  border-radius:10px;
-  border:1px solid #ccc;
+function confermaRegione(){
+  regione = document.getElementById("regioneSelect").value;
+
+  if(!regione){
+    alert("Seleziona una regione");
+    return;
+  }
+
+  startQuiz();
 }
 
-button{
-  width:100%;
-  padding:12px;
-  margin:6px 0;
-  border:none;
-  border-radius:10px;
-  background:#2f4f3f;
-  color:white;
-  cursor:pointer;
-}
-
-.answer{
-  background:white;
-  border:1px solid #ccc;
-  color:#111;
-}
-</style>
-</head>
-
-<body>
-
-<div class="container">
-<div id="app"></div>
-</div>
-
-<script>
-
-const DB = {
+/* QUIZ BASE */
+const DOMANDE = {
   nazionale:[
     {
-      q:"Inflazione significa:",
-      a:[
-        {t:"Aumento prezzi",v:1},
-        {t:"Diminuzione prezzi",v:0},
-        {t:"Zero economia",v:0},
-        {t:"Crescita automatica salari",v:0}
-      ]
-    },
-    {
-      q:"Debito pubblico è:",
-      a:[
-        {t:"Debiti dello Stato",v:1},
-        {t:"Risparmi privati",v:0},
-        {t:"Tasse eliminate",v:0},
-        {t:"Export",v:0}
+      q:"Inflazione in crescita: cosa è più equilibrato?",
+      options:[
+        {t:"Sostegni + salari",v:2},
+        {t:"Controllo prezzi",v:1},
+        {t:"Nessun intervento",v:0},
+        {t:"Tagli spesa pubblica",v:1}
       ]
     }
   ],
-
   regionale:[
     {
-      q:"Sanità regionale inefficienze causano:",
-      a:[
-        {t:"Liste d'attesa",v:1},
-        {t:"Zero effetti",v:0},
-        {t:"Miglioramento automatico",v:0},
-        {t:"Riduzione domanda",v:0}
+      q:"Sanità sotto pressione nella regione: cosa fai?",
+      options:[
+        {t:"Assunzioni + investimenti",v:2},
+        {t:"Privatizzazione",v:0},
+        {t:"Riduzione servizi",v:1}
       ]
     }
   ],
-
   comunale:[
     {
-      q:"Traffico urbano si riduce con:",
-      a:[
-        {t:"Trasporto pubblico",v:1},
-        {t:"Più auto",v:0},
-        {t:"Nessuna infrastruttura",v:0},
-        {t:"Caos urbano",v:0}
+      q:"Traffico urbano alto: soluzione?",
+      options:[
+        {t:"Trasporto pubblico",v:2},
+        {t:"Più parcheggi",v:0},
+        {t:"Riduzione controlli",v:1}
       ]
     }
   ]
 };
 
-let state = {
-  level:null,
-  name:"",
-  i:0,
-  score:0,
-  q:[]
-};
+let index = 0;
+let current = [];
 
-const app = document.getElementById("app");
+function startQuiz(){
+  document.getElementById("dashboard").style.display = "none";
 
-function home(){
-  app.innerHTML = `
-    <div class="card">
-      <h1>Citizen Insight</h1>
+  current = DOMANDE[livello];
+  index = 0;
+  score = 0;
 
-      <input id="name" placeholder="Nome">
-
-      <button onclick="start('nazionale')">Nazionale</button>
-      <button onclick="start('regionale')">Regionale</button>
-      <button onclick="start('comunale')">Comunale</button>
-    </div>
-  `;
-}
-
-home();
-
-function start(level){
-  state.level = level;
-  state.name = document.getElementById("name").value || "Utente";
-  state.q = DB[level];
-  state.i = 0;
-  state.score = 0;
   render();
 }
 
 function render(){
+  document.getElementById("quiz").style.display = "block";
 
-  const q = state.q[state.i];
-  if(!q) return finish();
+  let d = current[index];
 
-  const shuffled = [...q.a].sort(()=>Math.random()-0.5);
+  if(!d){
+    return finish();
+  }
 
-  app.innerHTML = `
-    <div class="card">
-      <h2>${q.q}</h2>
+  let shuffled = d.options.sort(()=>Math.random()-0.5);
 
-      ${shuffled.map((x)=>`
-        <button class="answer" onclick="answer(${x.v})">${x.t}</button>
-      `).join("")}
-
-      <p>${state.i+1}/${state.q.length}</p>
-    </div>
+  document.getElementById("quiz").innerHTML = `
+    <h2>${d.q}</h2>
+    ${shuffled.map(o=>`
+      <button onclick="answer(${o.v})">${o.t}</button>
+    `).join("")}
+    <p>${index+1}/${current.length}</p>
   `;
 }
 
 function answer(v){
-  if(v) state.score++;
-  state.i++;
+  score += v;
+  index++;
   render();
 }
 
 function finish(){
+  document.getElementById("quiz").style.display = "none";
+  document.getElementById("report").style.display = "block";
 
-  app.innerHTML = `
-    <div class="card">
-      <h2>Risultato</h2>
-      <h1>${state.score}/${state.q.length}</h1>
-      <p>${state.name} - ${state.level}</p>
+  let perc = Math.round((score/(current.length*2))*100);
 
-      <canvas id="c"></canvas>
+  document.getElementById("report").innerHTML = `
+    <h1>Report ${nome}</h1>
+    <p>Livello: ${livello}</p>
+    <p>Regione: ${regione}</p>
+    <h2>Consapevolezza: ${perc}%</h2>
 
-      <button onclick="location.reload()">Riprova</button>
-    </div>
+    <button onclick="location.reload()">Ricomincia</button>
   `;
-
-  new Chart(document
+}
