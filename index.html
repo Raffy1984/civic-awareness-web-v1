@@ -6,7 +6,6 @@
   <title>Patente di Consapevolezza Civica</title>
 
   <link rel="stylesheet" href="style.css">
-
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
@@ -14,18 +13,31 @@
 
 <div class="container">
 
+  <!-- HOME -->
   <div id="home" class="card">
+
     <h1>Patente di Consapevolezza Civica</h1>
+
+    <p class="intro">
+      Questo strumento non valuta opinioni, ma livello di consapevolezza sui temi pubblici reali.
+    </p>
+
+    <p class="sub">
+      Seleziona un livello per iniziare.
+    </p>
 
     <input id="username" placeholder="Inserisci il tuo nome">
 
-    <button onclick="start('nazionale')">Test Nazionale</button>
-    <button onclick="start('regionale')">Test Regionale</button>
-    <button onclick="start('comunale')">Test Comunale</button>
+    <button onclick="start('nazionale')">Nazionale</button>
+    <button onclick="start('regionale')">Regionale</button>
+    <button onclick="start('comunale')">Comunale</button>
+
   </div>
 
+  <!-- QUIZ -->
   <div id="quiz" class="card" style="display:none;"></div>
 
+  <!-- RESULT -->
   <div id="result" class="card" style="display:none;"></div>
 
 </div>
