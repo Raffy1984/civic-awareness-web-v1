@@ -1,15 +1,11 @@
 // =====================================
-// PATENTE DI CONSAPEVOLEZZA CIVICA v1
+// PATENTE DI CONSAPEVOLEZZA CIVICA v2
+// FIX RANDOM + STRUTTURA SERIA
 // =====================================
 
 
-// =====================
-// USER STATE
-// =====================
-
 let user = {
   name: "",
-  level: "nazionale",
   score: 0,
   index: 0,
   questions: []
@@ -17,104 +13,43 @@ let user = {
 
 
 // =====================
-// DATABASE GRANDE (SIMULATO STRUTTURATO)
+// DATABASE MIGLIORATO
 // =====================
 
 const bank = {
 
   nazionale: [
     {
-      q: "Il costo dell’energia aumenta del 30%. Il governo riduce le tasse sui carburanti. Qual è un possibile effetto?",
-      a: [
-        "Aumento del debito pubblico o riduzione delle entrate",
-        "Eliminazione automatica dell’inflazione",
-        "Aumento immediato dei salari",
-        "Nessun effetto sull’economia"
+      q: "Il governo riduce le accise sui carburanti in un periodo di crisi energetica. Qual è un possibile effetto?",
+      options: [
+        {t:"Riduzione entrate fiscali e possibile aumento deficit", correct:true},
+        {t:"Eliminazione immediata dell’inflazione", correct:false},
+        {t:"Aumento automatico dei salari", correct:false},
+        {t:"Nessun effetto economico", correct:false}
       ],
-      c: 0
-    },
-
-    {
-      q: "Aumentano i prezzi dei beni di prima necessità. Quale misura può avere effetti immediati ma temporanei?",
-      a: [
-        "Sussidi diretti alle famiglie",
-        "Aumento produzione agricola immediata",
-        "Cancellazione inflazione globale",
-        "Eliminazione IVA mondiale"
-      ],
-      c: 0
+      explanation: "Le accise sono una fonte diretta di entrate per lo Stato."
     },
 
     {
       q: "Un Paese aumenta la spesa pubblica senza aumentare le entrate. Cosa accade più probabilmente?",
-      a: [
-        "Aumento del deficit o del debito",
-        "Riduzione automatica dei prezzi",
-        "Crescita immediata del PIL reale senza rischi",
-        "Eliminazione del debito"
+      options: [
+        {t:"Aumento del debito pubblico", correct:true},
+        {t:"Riduzione immediata dei prezzi", correct:false},
+        {t:"Crescita senza conseguenze", correct:false},
+        {t:"Cancellazione del debito", correct:false}
       ],
-      c: 0
+      explanation: "Quando la spesa supera le entrate si genera deficit."
     },
 
     {
-      q: "In una crisi energetica, quale strategia è più sostenibile nel lungo periodo?",
-      a: [
-        "Diversificazione delle fonti energetiche",
-        "Sospensione totale dei consumi",
-        "Riduzione immediata dei salari",
-        "Blocco totale del commercio"
+      q: "Durante una crisi energetica, quale scelta è più sostenibile nel lungo periodo?",
+      options: [
+        {t:"Diversificazione delle fonti energetiche", correct:true},
+        {t:"Blocco totale dei consumi", correct:false},
+        {t:"Eliminazione dei trasporti", correct:false},
+        {t:"Sospensione economia", correct:false}
       ],
-      c: 0
-    }
-  ],
-
-
-  regionale: [
-    {
-      q: "In una regione aumentano le liste d’attesa sanitarie. Qual è una causa possibile?",
-      a: [
-        "Carenza di personale medico",
-        "Eccesso di ospedali privati gratuiti",
-        "Assenza totale di pazienti",
-        "Riduzione della popolazione a zero"
-      ],
-      c: 0
-    },
-
-    {
-      q: "Una regione investe meno nella sanità pubblica. Possibile effetto?",
-      a: [
-        "Aumento della pressione sul sistema privato",
-        "Eliminazione delle malattie",
-        "Riduzione automatica dei costi sanitari per tutti",
-        "Aumento immediato della qualità senza investimenti"
-      ],
-      c: 0
-    }
-  ],
-
-
-  comunale: [
-    {
-      q: "In una città aumenta il traffico urbano. Quale intervento è strutturalmente più efficace?",
-      a: [
-        "Potenziamento del trasporto pubblico",
-        "Divieto totale di circolazione per sempre",
-        "Eliminazione delle strade",
-        "Riduzione della popolazione mondiale locale"
-      ],
-      c: 0
-    },
-
-    {
-      q: "Aumenta la raccolta rifiuti non gestita. Cosa è una soluzione sistemica?",
-      a: [
-        "Miglioramento infrastruttura e raccolta differenziata",
-        "Ignorare il problema",
-        "Chiudere la città",
-        "Eliminare i cittadini"
-      ],
-      c: 0
+      explanation: "La diversificazione riduce la dipendenza da una sola fonte."
     }
   ]
 };
@@ -131,7 +66,6 @@ function startTest(){
   user.score = 0;
   user.index = 0;
 
-  // merge livello scelto (per ora nazionale default)
   let all = bank.nazionale;
 
   user.questions = shuffle(all).slice(0, 4);
@@ -139,17 +73,21 @@ function startTest(){
   document.getElementById("home").style.display = "none";
   document.getElementById("quiz").style.display = "block";
 
-  renderQuestion();
+  render();
 }
 
 
 // =====================
-// RENDER QUESTION
+// RENDER
 // =====================
 
-function renderQuestion(){
+function render(){
 
   let q = user.questions[user.index];
+
+  let options = shuffle([...q.options]); // 🔥 FIX RANDOM
+
+  user.currentOptions = options;
 
   let quiz = document.getElementById("quiz");
 
@@ -162,9 +100,9 @@ function renderQuestion(){
 
       <h3>${q.q}</h3>
 
-      ${q.a.map((r,i)=>`
+      ${options.map((o,i)=>`
         <button class="answer-btn" onclick="answer(${i})">
-          ${r}
+          ${o.t}
         </button>
       `).join("")}
 
@@ -179,9 +117,9 @@ function renderQuestion(){
 
 function answer(i){
 
-  let q = user.questions[user.index];
+  let selected = user.currentOptions[i];
 
-  if(i === q.c){
+  if(selected.correct){
     user.score++;
   }
 
@@ -190,7 +128,7 @@ function answer(i){
   if(user.index >= user.questions.length){
     finish();
   } else {
-    renderQuestion();
+    render();
   }
 }
 
@@ -209,16 +147,16 @@ function finish(){
   document.getElementById("result").innerHTML = `
     <div class="hero-card">
 
-      <h2>Risultato di ${user.name}</h2>
+      <h2>Risultato ${user.name}</h2>
 
       <h1>${percent}% Consapevolezza Civica</h1>
 
       <p>
-        Questo risultato non misura le tue idee politiche,
-        ma la tua capacità di valutare le conseguenze delle decisioni pubbliche.
+        Il risultato non misura opinioni politiche,
+        ma comprensione delle conseguenze delle decisioni pubbliche.
       </p>
 
-      <button onclick="location.reload()">Rifai il test</button>
+      <button onclick="location.reload()">Riprova</button>
 
     </div>
   `;
