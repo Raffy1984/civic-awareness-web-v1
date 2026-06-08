@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Citizen Insight Dashboard</title>
+<title>Citizen Insight</title>
 
 <style>
 body{
@@ -59,40 +59,95 @@ button{
   background:#e7efe6;
   color:#111;
 }
+
+.answer{
+  background:#fff;
+  border:1px solid #ccc;
+}
+
 </style>
 </head>
 
 <body>
 
-<div class="header">
-Citizen Insight Platform
-</div>
+<div class="header">Citizen Insight Platform</div>
 
 <div class="container">
-
-<div class="card" id="app">
-  Loading...
-</div>
-
+<div class="card" id="app">Loading...</div>
 </div>
 
 <script>
 
+/* =========================
+   DATABASE
+========================= */
+
+const DB = {
+  nazionale:[
+    {
+      q:"Inflazione cosa rappresenta?",
+      a:[
+        {t:"Aumento prezzi",v:1},
+        {t:"Diminuzione prezzi",v:0},
+        {t:"Nessun effetto",v:0}
+      ]
+    },
+    {
+      q:"Debito pubblico è:",
+      a:[
+        {t:"Debiti dello Stato",v:1},
+        {t:"Risparmi privati",v:0},
+        {t:"Tasse eliminate",v:0}
+      ]
+    }
+  ],
+
+  regionale:[
+    {
+      q:"Sanità inefficiente porta a:",
+      a:[
+        {t:"Liste d'attesa",v:1},
+        {t:"Miglioramento automatico",v:0},
+        {t:"Zero effetti",v:0}
+      ]
+    }
+  ],
+
+  comunale:[
+    {
+      q:"Traffico urbano si riduce con:",
+      a:[
+        {t:"Trasporto pubblico",v:1},
+        {t:"Più auto",v:0},
+        {t:"Nessuna regola",v:0}
+      ]
+    }
+  ]
+};
+
+/* =========================
+   STATE
+========================= */
+
 let state = {
   name:"",
-  level:""
+  level:"",
+  i:0,
+  score:0,
+  q:[]
 };
 
 const app = document.getElementById("app");
 
-function renderHome(){
+/* =========================
+   HOME
+========================= */
 
+function home(){
   app.innerHTML = `
-    <h2>Dashboard iniziale</h2>
+    <h2>Dashboard</h2>
 
     <input id="name" placeholder="Inserisci nome">
-
-    <p>Scegli livello di analisi:</p>
 
     <button class="primary" onclick="start('nazionale')">Nazionale</button>
     <button class="secondary" onclick="start('regionale')">Regionale</button>
@@ -100,30 +155,8 @@ function renderHome(){
   `;
 }
 
-function start(level){
+home();
 
-  state.name = document.getElementById("name").value || "Utente";
-  state.level = level;
-
-  app.innerHTML = `
-    <h2>Conferma selezione</h2>
-
-    <p><b>Nome:</b> ${state.name}</p>
-    <p><b>Livello:</b> ${state.level}</p>
-
-    <button class="primary" onclick="alert('QUI PARTIRA IL QUIZ STEP 2')">
-      Avvia test
-    </button>
-
-    <button class="secondary" onclick="renderHome()">
-      Torna indietro
-    </button>
-  `;
-}
-
-renderHome();
-
-</script>
-
-</body>
-</html>
+/* =========================
+   START QUIZ
+========================= */
