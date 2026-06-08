@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Citizen Insight - Pro</title>
+<title>Citizen Insight PRO</title>
 
 <style>
 body{
@@ -61,113 +61,113 @@ button{
 
 <body>
 
-<div class="header">Citizen Insight Platform</div>
+<div class="header">Citizen Insight PRO</div>
 
 <div class="container">
-<div class="card" id="app">Loading...</div>
+<div class="card" id="app">Caricamento...</div>
 </div>
 
 <script>
 
 /* =========================
-   DATABASE SERIO (STRUTTURATO)
+   DATABASE MIGLIORATO
 ========================= */
 
 const DB = {
 
-  nazionale: [
+  nazionale:[
     {
       cat:"Economia",
-      q:"Cosa indica l'inflazione?",
+      q:"Inflazione significa:",
       a:[
-        {t:"Aumento generale dei prezzi",v:1},
-        {t:"Riduzione salari automatici",v:0},
-        {t:"Aumento PIL reale sempre positivo",v:0},
-        {t:"Debito privato nullo",v:0}
-      ]
-    },
-    {
-      cat:"Economia",
-      q:"Cosa succede se aumentano le accise sui carburanti?",
-      a:[
-        {t:"Aumenta il prezzo finale alla pompa",v:1},
-        {t:"Diminuisce automaticamente il debito pubblico a zero",v:0},
-        {t:"Non cambia nulla",v:0},
-        {t:"Aumenta solo il traffico",v:0}
+        {t:"Aumento generale prezzi",v:1},
+        {t:"Aumento salari sempre maggiore",v:0},
+        {t:"Riduzione costi energia automatica",v:0},
+        {t:"Stabilità totale economia",v:0}
       ]
     },
     {
       cat:"Stato",
-      q:"Il debito pubblico rappresenta:",
+      q:"Il debito pubblico è:",
       a:[
-        {t:"Totale dei debiti dello Stato",v:1},
-        {t:"Risparmi privati dei cittadini",v:0},
+        {t:"Somma debiti dello Stato",v:1},
+        {t:"Risparmi privati cittadini",v:0},
         {t:"Solo tasse locali",v:0},
-        {t:"Entrate turistiche",v:0}
+        {t:"Entrate turismo",v:0}
       ]
     },
     {
       cat:"Sicurezza",
-      q:"Cosa influenza la sicurezza urbana?",
+      q:"La sicurezza urbana dipende da:",
       a:[
-        {t:"Forze dell’ordine e politiche locali",v:1},
-        {t:"Solo meteo",v:0},
-        {t:"Solo turismo",v:0},
-        {t:"Nessun fattore reale",v:0}
+        {t:"Forze dell’ordine e politiche pubbliche",v:1},
+        {t:"Solo numero negozi",v:0},
+        {t:"Clima meteo",v:0},
+        {t:"Caso casuale",v:0}
       ]
     },
     {
       cat:"Energia",
-      q:"Qual è un effetto della dipendenza energetica estera?",
+      q:"Se aumenta il prezzo energia cosa succede?",
       a:[
-        {t:"Vulnerabilità ai prezzi internazionali",v:1},
-        {t:"Prezzi sempre fissi",v:0},
-        {t:"Azzeramento inflazione",v:0},
-        {t:"Nessun effetto economico",v:0}
+        {t:"Aumentano costi produzione",v:1},
+        {t:"Diminuisce inflazione automaticamente",v:0},
+        {t:"Nulla cambia mai",v:0},
+        {t:"Aumenta PIL sempre",v:0}
+      ]
+    },
+    {
+      cat:"Politiche",
+      q:"Tagliare tasse senza copertura provoca:",
+      a:[
+        {t:"Squilibrio di bilancio",v:1},
+        {t:"Più soldi infiniti",v:0},
+        {t:"Fine inflazione automatica",v:0},
+        {t:"Nessun effetto",v:0}
       ]
     }
   ],
 
-  regionale: [
+  regionale:[
     {
       cat:"Sanità",
-      q:"Cosa causa le liste d'attesa lunghe?",
+      q:"Liste d’attesa lunghe sono causate da:",
       a:[
-        {t:"Squilibrio tra domanda e offerta sanitaria",v:1},
-        {t:"Troppi ospedali moderni",v:0},
+        {t:"Squilibrio risorse/demanda",v:1},
+        {t:"Troppi ospedali",v:0},
         {t:"Zero pazienti",v:0},
-        {t:"Automazione totale",v:0}
+        {t:"Sistema perfetto",v:0}
       ]
     },
     {
       cat:"Trasporti",
-      q:"Un sistema ferroviario regionale inefficiente porta a:",
+      q:"Trasporto inefficiente causa:",
       a:[
-        {t:"Maggiore uso auto private",v:1},
-        {t:"Riduzione traffico immediata",v:0},
-        {t:"Eliminazione carburante",v:0},
-        {t:"Nessun impatto",v:0}
+        {t:"Più traffico privato",v:1},
+        {t:"Zero auto",v:0},
+        {t:"Meno persone",v:0},
+        {t:"Nessun effetto",v:0}
       ]
     }
   ],
 
-  comunale: [
+  comunale:[
     {
       cat:"Mobilità",
-      q:"Cosa migliora il traffico cittadino?",
+      q:"Migliorare traffico urbano significa:",
       a:[
-        {t:"Trasporto pubblico efficiente",v:1},
-        {t:"Più auto private",v:0},
-        {t:"Strade chiuse senza alternative",v:0},
-        {t:"Nessuna pianificazione",v:0}
+        {t:"Potenziare mezzi pubblici",v:1},
+        {t:"Aumentare auto",v:0},
+        {t:"Chiudere tutto senza alternative",v:0},
+        {t:"Nessuna gestione",v:0}
       ]
     },
     {
       cat:"Servizi",
-      q:"La gestione dei rifiuti inefficiente causa:",
+      q:"Rifiuti mal gestiti causano:",
       a:[
         {t:"Degrado urbano",v:1},
-        {t:"Città più pulita automaticamente",v:0},
+        {t:"Città più pulita",v:0},
         {t:"Riduzione popolazione",v:0},
         {t:"Nessun effetto",v:0}
       ]
@@ -176,7 +176,7 @@ const DB = {
 };
 
 /* =========================
-   STATE
+   STATE AVANZATO
 ========================= */
 
 let state = {
@@ -184,7 +184,8 @@ let state = {
   level:"",
   i:0,
   score:0,
-  q:[]
+  q:[],
+  breakdown:{}   // per categorie
 };
 
 const app = document.getElementById("app");
@@ -213,10 +214,10 @@ function start(level){
 
   state.name = document.getElementById("name").value || "Utente";
   state.level = level;
-
-  state.q = shuffle(DB[level]); // random vero
+  state.q = shuffle(DB[level]);
   state.i = 0;
   state.score = 0;
+  state.breakdown = {};
 
   render();
 }
@@ -236,11 +237,11 @@ function render(){
 
     <h3>${q.q}</h3>
 
-    ${q.a.map(x=>`
-      <button class="answer" onclick="answer(${x.v})">${x.t}</button>
+    ${shuffle(q.a).map(x=>`
+      <button class="answer" onclick="answer(${x.v},'${q.cat}')">${x.t}</button>
     `).join("")}
 
-    <p>${state.i+1} / ${state.q.length}</p>
+    <p>${state.i+1}/${state.q.length}</p>
 
     <button class="secondary" onclick="home()">Torna alla dashboard</button>
   `;
@@ -250,24 +251,45 @@ function render(){
    ANSWER
 ========================= */
 
-function answer(v){
-  if(v) state.score++;
+function answer(v,cat){
+
+  if(!state.breakdown[cat]){
+    state.breakdown[cat] = {ok:0,total:0};
+  }
+
+  state.breakdown[cat].total++;
+
+  if(v){
+    state.score++;
+    state.breakdown[cat].ok++;
+  }
+
   state.i++;
   render();
 }
 
 /* =========================
-   FINISH
+   FINISH REPORT
 ========================= */
 
 function finish(){
 
+  let report = "";
+
+  Object.keys(state.breakdown).forEach(k=>{
+    let b = state.breakdown[k];
+    let perc = Math.round((b.ok / b.total)*100);
+    report += `<p><b>${k}</b>: ${perc}% consapevolezza</p>`;
+  });
+
   app.innerHTML = `
     <h2>Report finale</h2>
 
-    <h1>${state.score} / ${state.q.length}</h1>
+    <h1>${state.score}/${state.q.length}</h1>
 
-    <p><b>${state.name}</b> - livello ${state.level}</p>
+    <p><b>${state.name}</b> - ${state.level}</p>
+
+    ${report}
 
     <button class="primary" onclick="home()">Ricomincia</button>
   `;
