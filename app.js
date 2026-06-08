@@ -1,5 +1,8 @@
+// =====================
+// SAFE MODE ENGINE
+// =====================
+
 let user = {
-  level: "",
   score: 0,
   index: 0,
   questions: [],
@@ -8,36 +11,27 @@ let user = {
 
 
 // =====================
-// DATABASE (MINIMO MA SICURO)
+// DATABASE MINIMO SICURO
 // =====================
 
 const bank = {
   nazionale: [
     {
-      q: "Il governo riduce le accise sui carburanti. Cosa succede?",
+      q: "Riduzione accise carburanti. Effetto principale?",
       options: [
-        {t:"Diminuzione entrate fiscali", correct:true},
+        {t:"Riduzione entrate fiscali", correct:true},
         {t:"Eliminazione inflazione", correct:false},
         {t:"Aumento salari automatico", correct:false},
         {t:"Nessun effetto", correct:false}
       ]
     },
     {
-      q: "Aumenta la spesa pubblica senza nuove entrate. Effetto?",
+      q: "Aumento spesa pubblica senza entrate?",
       options: [
         {t:"Aumento debito pubblico", correct:true},
-        {t:"Riduzione prezzi immediata", correct:false},
-        {t:"Crescita senza limiti", correct:false},
-        {t:"Eliminazione tasse", correct:false}
-      ]
-    },
-    {
-      q: "Crisi energetica: soluzione strutturale migliore?",
-      options: [
-        {t:"Diversificazione fonti energetiche", correct:true},
-        {t:"Blocco economia", correct:false},
-        {t:"Stop consumi", correct:false},
-        {t:"Azzeramento industria", correct:false}
+        {t:"Riduzione prezzi", correct:false},
+        {t:"Crescita senza costi", correct:false},
+        {t:"Azzeramento tasse", correct:false}
       ]
     }
   ]
@@ -45,55 +39,45 @@ const bank = {
 
 
 // =====================
-// START (SAFE MODE)
+// INIT (🔥 DEBUG SAFE)
 // =====================
 
-function setLevel(level){
+function initQuiz(level){
 
   try {
 
-    user.level = level;
-    user.score = 0;
-    user.index = 0;
+    console.log("START QUIZ:", level);
 
-    if(!bank[level] || bank[level].length === 0){
-      alert("Errore: database vuoto");
+    if(!bank[level]){
+      alert("Livello non trovato: " + level);
       return;
     }
 
-    user.questions = shuffle(bank[level]);
+    user.score = 0;
+    user.index = 0;
+    user.questions = bank[level];
 
     document.getElementById("home").style.display = "none";
-    document.getElementById("quiz").style.display = "block";
-    document.getElementById("result").style.display = "none";
 
     render();
 
-  } catch(e){
+  } catch (e) {
     console.error(e);
-    alert("Errore avvio quiz");
+    document.body.innerHTML = "ERRORE AVVIO QUIZ";
   }
 }
 
 
 // =====================
-// RENDER (SAFE)
+// RENDER
 // =====================
 
 function render(){
 
   let q = user.questions[user.index];
 
-  // 🔥 BLOCCO ANTI-CRASH
   if(!q){
     finish();
-    return;
-  }
-
-  if(!q.options || q.options.length === 0){
-    console.error("Domanda senza opzioni:", q);
-    user.index++;
-    render();
     return;
   }
 
@@ -103,16 +87,10 @@ function render(){
   document.getElementById("quiz").innerHTML = `
     <div class="question-card">
 
-      <div class="progress">
-        ${user.index + 1} / ${user.questions.length}
-      </div>
-
       <h3>${q.q}</h3>
 
       ${options.map((o,i)=>`
-        <button class="answer-btn" onclick="answer(${i})">
-          ${o.t}
-        </button>
+        <button onclick="answer(${i})">${o.t}</button>
       `).join("")}
 
     </div>
@@ -126,40 +104,26 @@ function render(){
 
 function answer(i){
 
-  if(!user.currentOptions[i]) return;
-
   if(user.currentOptions[i].correct){
     user.score++;
   }
 
   user.index++;
-
   render();
 }
 
 
 // =====================
-// FINISH (SAFE)
+// FINISH
 // =====================
 
 function finish(){
 
-  document.getElementById("quiz").style.display = "none";
-  document.getElementById("result").style.display = "block";
-
-  let total = user.questions.length || 1;
-  let percent = Math.round((user.score / total) * 100);
-
+  document.getElementById("quiz").innerHTML = "";
   document.getElementById("result").innerHTML = `
-    <div class="hero-card">
-
-      <h2>Risultato</h2>
-
-      <h1>${percent}% Consapevolezza Civica</h1>
-
-      <button onclick="location.reload()">Riprova</button>
-
-    </div>
+    <h2>Risultato</h2>
+    <h1>${user.score} / ${user.questions.length}</h1>
+    <button onclick="location.reload()">Riprova</button>
   `;
 }
 
