@@ -1,9 +1,4 @@
-// =====================
-// STATE
-// =====================
-
 let user = {
-  name: "",
   level: "",
   score: 0,
   index: 0,
@@ -13,52 +8,54 @@ let user = {
 
 
 // =====================
-// DATABASE GRANDE (SEMPLIFICATO MA MULTILIVELLO)
+// DATABASE
 // =====================
 
 const bank = {
-
   nazionale: [
     {
-      q: "In una crisi energetica, lo Stato riduce le tasse sui carburanti. Cosa può accadere?",
+      q: "Il governo riduce le accise sui carburanti. Cosa succede più probabilmente?",
       options: [
-        {t:"Riduzione entrate fiscali e possibile aumento deficit", correct:true},
+        {t:"Diminuzione entrate fiscali", correct:true},
         {t:"Eliminazione inflazione", correct:false},
-        {t:"Aumento salari immediato", correct:false},
+        {t:"Aumento automatico salari", correct:false},
         {t:"Nessun effetto", correct:false}
       ]
     },
     {
-      q: "Aumenta la spesa pubblica senza nuove entrate. Cosa succede?",
+      q: "Aumenta la spesa pubblica senza nuove entrate. Effetto probabile?",
       options: [
         {t:"Aumento debito pubblico", correct:true},
-        {t:"Riduzione prezzi automatica", correct:false},
-        {t:"Crescita senza costi", correct:false},
-        {t:"Eliminazione tasse", correct:false}
+        {t:"Riduzione prezzi", correct:false},
+        {t:"Crescita senza limiti", correct:false},
+        {t:"Azzeramento tasse", correct:false}
       ]
-    }
-  ],
-
-  regionale: [
+    },
     {
-      q: "In una regione aumentano le liste d’attesa sanitarie. Possibile causa?",
+      q: "Crisi energetica. Qual è soluzione strutturale?",
       options: [
-        {t:"Carenza personale sanitario", correct:true},
-        {t:"Troppi medici inutilizzati", correct:false},
+        {t:"Diversificazione fonti energetiche", correct:true},
+        {t:"Blocco economia", correct:false},
+        {t:"Stop consumi globali", correct:false},
+        {t:"Eliminazione industria", correct:false}
+      ]
+    },
+    {
+      q: "Aumento sicurezza urbana. Qual è intervento efficace?",
+      options: [
+        {t:"Prevenzione + controllo territorio", correct:true},
+        {t:"Eliminare città", correct:false},
+        {t:"Nessun intervento", correct:false},
+        {t:"Stop popolazione", correct:false}
+      ]
+    },
+    {
+      q: "Sanità pubblica sotto pressione. Possibile causa?",
+      options: [
+        {t:"Carenza personale medico", correct:true},
+        {t:"Troppi ospedali inutili", correct:false},
         {t:"Zero pazienti", correct:false},
-        {t:"Sanità gratuita illimitata", correct:false}
-      ]
-    }
-  ],
-
-  comunale: [
-    {
-      q: "In una città aumenta il traffico. Soluzione strutturale?",
-      options: [
-        {t:"Trasporto pubblico potenziato", correct:true},
-        {t:"Divieto totale auto per sempre", correct:false},
-        {t:"Chiusura città", correct:false},
-        {t:"Eliminazione strade", correct:false}
+        {t:"Eccesso di fondi illimitati", correct:false}
       ]
     }
   ]
@@ -66,20 +63,19 @@ const bank = {
 
 
 // =====================
-// SET LEVEL (🔥 FIX PRINCIPALE)
+// START
 // =====================
 
 function setLevel(level){
 
-  user.name = document.getElementById("username").value || "Utente";
   user.level = level;
-
   user.score = 0;
   user.index = 0;
 
   let pool = bank[level];
 
-  user.questions = shuffle(pool).slice(0, 10); // 🔥 ORA NON 4
+  // 🔥 NESSUN slice basso → test reale
+  user.questions = shuffle(pool);
 
   document.getElementById("home").style.display = "none";
   document.getElementById("quiz").style.display = "block";
@@ -96,14 +92,16 @@ function render(){
 
   let q = user.questions[user.index];
 
+  // 🔥 shuffle vero delle opzioni
   let options = shuffle([...q.options]);
+
   user.currentOptions = options;
 
   document.getElementById("quiz").innerHTML = `
     <div class="question-card">
 
       <div class="progress">
-        ${user.level.toUpperCase()} - ${user.index + 1}/${user.questions.length}
+        ${user.index + 1} / ${user.questions.length}
       </div>
 
       <h3>${q.q}</h3>
@@ -154,12 +152,9 @@ function finish(){
     <div class="hero-card">
 
       <h2>Risultato</h2>
+      <h1>${percent}% Consapevolezza Civica</h1>
 
-      <h1>${percent}% Consapevolezza</h1>
-
-      <p>Livello: ${user.level}</p>
-
-      <button onclick="location.reload()">Ricomincia</button>
+      <button onclick="location.reload()">Riprova</button>
 
     </div>
   `;
