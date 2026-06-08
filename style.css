@@ -3,7 +3,7 @@ body{
   margin:0;
   padding:0;
   background: radial-gradient(circle at top, #ffec8d, #ffffff);
-  color:#2f2f2f;
+  color:#1f1f1f;
 }
 
 .container{
@@ -18,10 +18,11 @@ body{
   border-radius:20px;
   padding:40px;
   text-align:center;
+  color:#1f1f1f;
 }
 
-h1{
-  color:#5f6f55;
+h1,h2,h3,p{
+  color:#1f1f1f;
 }
 
 input{
@@ -31,6 +32,8 @@ input{
   margin:10px 0;
   border:2px solid #9eb888;
   border-radius:10px;
+  color:#000;
+  background:#fff;
 }
 
 button{
@@ -41,7 +44,7 @@ button{
   border:none;
   border-radius:10px;
   background:#5f6f55;
-  color:white;
+  color:#ffffff;
   cursor:pointer;
 }
 
@@ -51,6 +54,7 @@ button{
   border-radius:15px;
   padding:25px;
   margin-top:20px;
+  color:#1f1f1f;
 }
 
 .answer-btn{
@@ -59,16 +63,20 @@ button{
   margin:10px 0;
   padding:12px;
   border-radius:10px;
-  border:1px solid #9eb888;
-  background:white;
+  border:2px solid #9eb888;
+  background:#ffffff;
+  color:#1f1f1f !important;   /* 🔥 FIX CRUCIALE */
   cursor:pointer;
+  font-size:16px;
 }
 
 .answer-btn:hover{
   background:#ffec8d;
+  color:#1f1f1f;
 }
 
 .progress{
   font-weight:bold;
   margin-bottom:10px;
+  color:#1f1f1f;
 }
