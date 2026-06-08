@@ -1,151 +1,101 @@
 let nome = "";
 let livello = "";
 let regione = "";
-let score = 0;
 
 let index = 0;
+let score = { sociale: 0, economico: 0, consenso: 0 };
+
 let current = [];
 
 /* =========================
-   DATABASE STRUTTURATO
+   SCENARI
 ========================= */
 
-const DOMANDE = {
-  nazionale:[
+const SCENARI = {
+  nazionale: [
     {
-      cat:"Economia",
-      q:"L'Italia ha crescita lenta e debito elevato. Qual è l'approccio più sostenibile?",
-      options:[
-        {t:"Investimenti produttivi + riforme",v:2},
-        {t:"Tagli drastici immediati",v:0},
-        {t:"Aumento tasse generalizzato",v:0},
-        {t:"Nessuna azione",v:1}
+      titolo: "Crisi economica e salari stagnanti",
+      scenario:
+        "L’Italia affronta crescita lenta, salari fermi e aumento del costo della vita. Imprese e cittadini hanno interessi opposti.",
+      scelte: [
+        { testo: "Aumentare salari minimi e sussidi", impatto: { sociale: 2, economico: -1, consenso: 2 } },
+        { testo: "Ridurre tasse alle imprese", impatto: { sociale: -1, economico: 2, consenso: 1 } },
+        { testo: "Riforma strutturale del lavoro", impatto: { sociale: 1, economico: 2, consenso: 0 } },
+        { testo: "Nessun intervento", impatto: { sociale: -2, economico: 0, consenso: -1 } }
       ]
     },
     {
-      cat:"Lavoro",
-      q:"Alta precarietà giovanile. Qual è la soluzione più efficace?",
-      options:[
-        {t:"Formazione + contratti stabili",v:2},
-        {t:"Più flessibilità senza regole",v:1},
-        {t:"Riduzione salari",v:0},
-        {t:"Aumento contratti precari",v:0}
-      ]
-    },
-    {
-      cat:"Ambiente",
-      q:"Crisi climatica e consumo energetico elevato. Cosa è più efficace?",
-      options:[
-        {t:"Investimenti green + incentivi",v:2},
-        {t:"Nessun intervento",v:0},
-        {t:"Aumento produzione fossile",v:0},
-        {t:"Solo tasse ambientali",v:1}
+      titolo: "Sistema sanitario nazionale",
+      scenario:
+        "Liste d’attesa crescenti e pressione sul sistema pubblico.",
+      scelte: [
+        { testo: "Assunzioni e investimenti pubblici", impatto: { sociale: 2, economico: -1, consenso: 1 } },
+        { testo: "Accordi con privati", impatto: { sociale: 0, economico: 1, consenso: 1 } },
+        { testo: "Riduzione prestazioni", impatto: { sociale: -1, economico: 1, consenso: -2 } },
+        { testo: "Nessun cambiamento", impatto: { sociale: -2, economico: 0, consenso: -1 } }
       ]
     }
   ],
 
-  regionale:{
-    "Abruzzo":[
+  regionale: {
+    "Lazio": [
       {
-        cat:"Sanità",
-        q:"Liste d'attesa e strutture limitate. Priorità?",
-        options:[
-          {t:"Potenziare sanità territoriale",v:2},
-          {t:"Ridurre servizi",v:0},
-          {t:"Privatizzare tutto",v:1}
+        titolo: "Sanità sotto pressione",
+        scenario:
+          "Liste d’attesa lunghe e strutture sovraccariche.",
+        scelte: [
+          { testo: "Assunzioni e digitalizzazione", impatto: { sociale: 2, economico: -1, consenso: 1 } },
+          { testo: "Accordi privati", impatto: { sociale: 0, economico: 1, consenso: 1 } },
+          { testo: "Riduzione servizi", impatto: { sociale: -1, economico: 1, consenso: -2 } },
+          { testo: "Nessun intervento", impatto: { sociale: -2, economico: 0, consenso: -1 } }
         ]
       }
     ],
-    "Basilicata":[
+
+    "Lombardia": [
       {
-        cat:"Infrastrutture",
-        q:"Collegamenti interni deboli. Cosa è più efficace?",
-        options:[
-          {t:"Investimenti infrastrutturali",v:2},
-          {t:"Tagli trasporti",v:0},
-          {t:"Privatizzazione immediata",v:1}
+        titolo: "Traffico e inquinamento",
+        scenario:
+          "Area metropolitana congestionata e inquinamento elevato.",
+        scelte: [
+          { testo: "ZTL estese", impatto: { sociale: -1, economico: -1, consenso: -1 } },
+          { testo: "Trasporto pubblico potenziato", impatto: { sociale: 2, economico: 1, consenso: 2 } },
+          { testo: "Riduzione vincoli traffico", impatto: { sociale: -2, economico: 1, consenso: 1 } },
+          { testo: "Nessun intervento", impatto: { sociale: -2, economico: 0, consenso: -1 } }
         ]
       }
     ],
-    "Calabria":[
+
+    "default": [
       {
-        cat:"Economia",
-        q:"Bassa occupazione e fuga giovani. Intervento migliore?",
-        options:[
-          {t:"Incentivi lavoro + investimenti",v:2},
-          {t:"Nessun intervento",v:0},
-          {t:"Riduzione salari",v:0}
-        ]
-      }
-    ],
-    "Campania":[
-      {
-        cat:"Infrastrutture",
-        q:"Servizi pubblici sotto pressione. Cosa funziona meglio?",
-        options:[
-          {t:"Investimenti mirati",v:2},
-          {t:"Tagli servizi",v:0},
-          {t:"Privatizzazione totale",v:1}
-        ]
-      }
-    ],
-    "Emilia-Romagna":[
-      {
-        cat:"Sanità",
-        q:"Sistema sanitario efficiente ma sotto pressione. Cosa migliorare?",
-        options:[
-          {t:"Più personale e digitalizzazione",v:2},
-          {t:"Riduzione budget",v:0},
-          {t:"Privatizzazione",v:1}
-        ]
-      }
-    ],
-    "Lazio":[
-      {
-        cat:"Sanità",
-        q:"Liste d'attesa elevate. Cosa è prioritario?",
-        options:[
-          {t:"Digitalizzazione + assunzioni",v:2},
-          {t:"Riduzione servizi",v:0},
-          {t:"Privatizzazione totale",v:1}
-        ]
-      }
-    ],
-    "Lombardia":[
-      {
-        cat:"Mobilità",
-        q:"Traffico urbano e pressione sanitaria. Cosa è efficace?",
-        options:[
-          {t:"Trasporto pubblico + sanità territoriale",v:2},
-          {t:"Tagli investimenti",v:0},
-          {t:"Aumento costi servizi",v:1}
-        ]
-      }
-    ],
-    "default":[
-      {
-        cat:"Politiche pubbliche",
-        q:"Quale approccio è più efficace per il territorio?",
-        options:[
-          {t:"Investimenti strutturali",v:2},
-          {t:"Nessun intervento",v:0},
-          {t:"Riduzione servizi",v:0}
+        titolo: "Gestione territoriale",
+        scenario:
+          "Problemi generali di gestione pubblica e risorse limitate.",
+        scelte: [
+          { testo: "Investimenti strutturali", impatto: { sociale: 2, economico: 1, consenso: 1 } },
+          { testo: "Tagli spesa", impatto: { sociale: -1, economico: 1, consenso: -1 } },
+          { testo: "Privatizzazione", impatto: { sociale: 0, economico: 2, consenso: 0 } },
+          { testo: "Nessun intervento", impatto: { sociale: -2, economico: 0, consenso: -2 } }
         ]
       }
     ]
   },
 
-  comunale:[
-    {
-      cat:"Mobilità",
-      q:"Traffico urbano elevato. Soluzione più efficace?",
-      options:[
-        {t:"Trasporto pubblico potenziato",v:2},
-        {t:"Più parcheggi",v:0},
-        {t:"Riduzione controlli",v:1}
-      ]
-    }
-  ]
+  comunale: {
+    "Bologna": [
+      {
+        titolo: "Centro storico e ZTL",
+        scenario:
+          "Conflitto tra residenti, commercianti e turismo.",
+        scelte: [
+          { testo: "Ampliare ZTL", impatto: { sociale: 1, economico: -1, consenso: -1 } },
+          { testo: "Bloccare restrizioni", impatto: { sociale: -1, economico: 2, consenso: 1 } },
+          { testo: "Compromesso orari", impatto: { sociale: 2, economico: 1, consenso: 2 } },
+          { testo: "Nessun intervento", impatto: { sociale: -2, economico: 0, consenso: -1 } }
+        ]
+      }
+    ]
+  }
 };
 
 /* =========================
@@ -204,13 +154,13 @@ function startQuiz(){
   document.getElementById("dashboard").style.display = "none";
   document.getElementById("quiz").style.display = "block";
 
-  score = 0;
   index = 0;
+  score = { sociale: 0, economico: 0, consenso: 0 };
 
   if(livello === "regionale"){
-    current = DOMANDE.regionale[regione] || DOMANDE.regionale["default"];
+    current = SCENARI.regionale[regione] || SCENARI.regionale["default"];
   } else {
-    current = DOMANDE[livello] || [];
+    current = SCENARI[livello] || [];
   }
 
   render();
@@ -222,22 +172,31 @@ function render(){
 
   if(!d) return finish();
 
-  let shuffled = [...d.options].sort(()=>Math.random()-0.5);
+  let shuffled = [...d.scelte].sort(()=>Math.random()-0.5);
 
   document.getElementById("quiz").innerHTML = `
-    <h3>${d.cat}</h3>
-    <h2>${d.q}</h2>
+    <div class="card">
+      <h3>${d.titolo}</h3>
+      <p>${d.scenario}</p>
+    </div>
 
-    ${shuffled.map(o=>`
-      <button onclick="answer(${o.v})">${o.t}</button>
-    `).join("")}
+    <div class="card">
+      ${shuffled.map(o=>`
+        <button onclick="answer(${o.impatto.sociale},${o.impatto.economico},${o.impatto.consenso})">
+          ${o.testo}
+        </button>
+      `).join("")}
+    </div>
 
-    <p>${index+1}/${current.length}</p>
+    <p>${index+1} / ${current.length}</p>
   `;
 }
 
-function answer(v){
-  score += Number(v);
+function answer(s,e,c){
+  score.sociale += s;
+  score.economico += e;
+  score.consenso += c;
+
   index++;
   render();
 }
@@ -251,19 +210,23 @@ function finish(){
   document.getElementById("quiz").style.display = "none";
   document.getElementById("report").style.display = "block";
 
-  let max = current.length * 2;
-  let perc = Math.round((score / max) * 100);
+  let totale = score.sociale + score.economico + score.consenso;
 
-  let livelloTesto =
-    perc >= 70 ? "🟢 Alta consapevolezza" :
-    perc >= 40 ? "🟡 Media consapevolezza" :
-    "🔴 Consapevolezza critica";
+  let profilo =
+    totale > 5 ? "🟢 Pragmatico" :
+    totale > 0 ? "🟡 Equilibrato" :
+    "🔴 Critico";
 
   document.getElementById("report").innerHTML = `
     <h1>${nome}</h1>
-    <p>${livello} - ${regione}</p>
-    <h2>${livelloTesto}</h2>
-    <h3>${perc}%</h3>
+    <p>Livello: ${livello}</p>
+    <p>Regione: ${regione}</p>
+
+    <h2>Profilo: ${profilo}</h2>
+
+    <p>Sociale: ${score.sociale}</p>
+    <p>Economico: ${score.economico}</p>
+    <p>Consenso: ${score.consenso}</p>
 
     <button onclick="location.reload()">Restart</button>
   `;
