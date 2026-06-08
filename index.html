@@ -3,13 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Patente di Consapevolezza Civica</title>
+<title>Patente Consapevolezza Civica</title>
 
 <style>
 body{
   margin:0;
   font-family:Arial;
-  background:linear-gradient(180deg,#0f1720,#111827);
+  background:#0b1220;
   color:white;
 }
 
@@ -20,10 +20,17 @@ body{
   align-items:center;
   justify-content:center;
   text-align:center;
-  padding:20px;
+  background:
+    radial-gradient(circle at center, rgba(255,255,255,0.08), transparent 60%),
+    url("https://upload.wikimedia.org/wikipedia/commons/0/03/Italy_satellite_map.jpg");
+  background-size:cover;
+  background-position:center;
 }
 
-.intro-box{
+.overlay{
+  background:rgba(0,0,0,0.65);
+  padding:30px;
+  border-radius:18px;
   max-width:700px;
 }
 
@@ -33,29 +40,28 @@ h1{
 }
 
 p{
-  opacity:0.8;
-  line-height:1.5;
+  opacity:0.85;
 }
 
 /* DASHBOARD */
 .dashboard{
   display:none;
-  padding:20px;
+  padding:25px;
   max-width:900px;
   margin:auto;
-}
-
-.card{
-  background:#1f2937;
-  padding:20px;
-  border-radius:16px;
-  margin-top:16px;
 }
 
 .grid{
   display:grid;
   grid-template-columns:1fr;
   gap:12px;
+}
+
+.card{
+  background:#111a2e;
+  padding:20px;
+  border-radius:14px;
+  margin-top:16px;
 }
 
 button{
@@ -68,12 +74,12 @@ button{
 }
 
 .primary{background:#22c55e;color:#000;}
-.secondary{background:#374151;color:#fff;}
+.secondary{background:#1f2937;color:#fff;}
 
 /* QUIZ */
 .quiz{
   display:none;
-  padding:20px;
+  padding:25px;
   max-width:900px;
   margin:auto;
 }
@@ -84,21 +90,21 @@ button{
 }
 
 .answer{
-  background:#111827;
+  background:#0f172a;
+  border:1px solid #334155;
   color:white;
-  border:1px solid #374151;
-  text-align:left;
   margin:8px 0;
+  text-align:left;
 }
 
 .answer:hover{
-  background:#1f2937;
+  background:#1e293b;
 }
 
 /* REPORT */
 .report{
   display:none;
-  padding:20px;
+  padding:25px;
   max-width:900px;
   margin:auto;
 }
@@ -109,28 +115,26 @@ button{
 
 <!-- INTRO -->
 <div class="intro" id="intro">
-  <div class="intro-box">
+  <div class="overlay">
     <h1>Patente di Consapevolezza Civica</h1>
     <p>
-      Uno strumento per misurare la comprensione dei temi pubblici,
-      economici e territoriali che influenzano la vita quotidiana.
+      Non è un test di conoscenza.<br>
+      È una simulazione delle conseguenze reali delle decisioni pubbliche.
     </p>
 
-    <button class="primary" onclick="goDashboard()">Inizia</button>
+    <button class="primary" onclick="go()">Inizia</button>
   </div>
 </div>
 
 <!-- DASHBOARD -->
-<div class="dashboard" id="dashboard">
-
-  <h2>Scegli il livello</h2>
+<div class="dashboard" id="dash">
+  <h2>Scegli area</h2>
 
   <div class="card">
     <button class="primary" onclick="start('nazionale')">🇮🇹 Nazionale</button>
-    <button class="secondary" onclick="start('regionale')">🏛 Regionale</button>
-    <button class="secondary" onclick="start('comunale')">🏙 Comunale</button>
+    <button class="secondary" onclick="start('regionale')">🏛 Regione</button>
+    <button class="secondary" onclick="start('comunale')">🏙 Comune</button>
   </div>
-
 </div>
 
 <!-- QUIZ -->
@@ -141,37 +145,30 @@ button{
 
 <script>
 
-/* ======================
-   DATABASE REALISTICO
-====================== */
+/* =========================
+   DATASET REALISTICO
+========================= */
 
 const DB = {
   nazionale:[
     {
       cat:"Economia reale",
-      q:"Il prezzo della benzina aumenta del 15% in pochi mesi. Quale fattore è più probabile tra questi?",
+      q:"Il costo della vita aumenta rapidamente, ma i salari restano fermi. Quale misura può dare sollievo immediato ma crea rischio inflattivo?",
       a:[
-        {t:"Aumento costo energia e tasse indirette",v:1},
-        {t:"Solo decisione casuale dei distributori",v:0},
-        {t:"Nessun legame con economia globale",v:0}
-      ]
-    },
-    {
-      cat:"Stato",
-      q:"Se aumenta il debito pubblico in modo stabile nel tempo, cosa succede generalmente?",
-      a:[
-        {t:"Maggiore pressione fiscale o taglio spesa pubblica futura",v:1},
-        {t:"Aumento automatico del reddito dei cittadini",v:0},
-        {t:"Nessun effetto reale",v:0}
+        {t:"Aumento salari pubblici generalizzato",v:1},
+        {t:"Riduzione spesa sanitaria",v:0},
+        {t:"Blocco totale investimenti pubblici",v:0},
+        {t:"Aumento tasse indirette",v:0}
       ]
     },
     {
       cat:"Energia",
-      q:"Una crisi energetica globale influisce sull’Italia principalmente perché:",
+      q:"Un aumento del prezzo dell’energia colpisce famiglie e imprese. Quale intervento ha effetto più lento ma strutturale?",
       a:[
-        {t:"L’Italia importa parte significativa dell’energia",v:1},
-        {t:"L’Italia è totalmente autonoma energeticamente",v:0},
-        {t:"Non esiste relazione tra energia e economia",v:0}
+        {t:"Investimenti in rinnovabili",v:1},
+        {t:"Sussidi temporanei ai carburanti",v:0},
+        {t:"Riduzione salari pubblici",v:0},
+        {t:"Aumento IVA energia",v:0}
       ]
     }
   ],
@@ -179,20 +176,12 @@ const DB = {
   regionale:[
     {
       cat:"Sanità",
-      q:"Se aumentano le liste d’attesa negli ospedali regionali, quale causa è più realistica?",
+      q:"Le liste d’attesa aumentano. Quale intervento migliora il sistema nel medio periodo?",
       a:[
-        {t:"Squilibrio tra domanda e risorse disponibili",v:1},
-        {t:"Troppi ospedali funzionanti",v:0},
-        {t:"Assenza totale di pazienti",v:0}
-      ]
-    },
-    {
-      cat:"Trasporti",
-      q:"Riduzione dei fondi al trasporto pubblico regionale porta spesso a:",
-      a:[
-        {t:"Maggiore uso del mezzo privato",v:1},
-        {t:"Riduzione immediata del traffico",v:0},
-        {t:"Nessun cambiamento",v:0}
+        {t:"Assunzione personale sanitario e riorganizzazione strutturale",v:1},
+        {t:"Riduzione numero ospedali",v:0},
+        {t:"Taglio budget sanitario",v:0},
+        {t:"Privatizzazione totale immediata",v:0}
       ]
     }
   ],
@@ -200,65 +189,64 @@ const DB = {
   comunale:[
     {
       cat:"Mobilità",
-      q:"In una città, meno trasporto pubblico efficiente comporta generalmente:",
+      q:"Una città è congestionata dal traffico privato. Quale misura è più efficace nel medio termine?",
       a:[
-        {t:"Più traffico privato e congestione",v:1},
-        {t:"Meno veicoli in circolazione automaticamente",v:0},
-        {t:"Nessun effetto sul traffico",v:0}
+        {t:"Potenziare trasporto pubblico e ZTL",v:1},
+        {t:"Eliminare tutte le regole stradali",v:0},
+        {t:"Aumentare parcheggi centrali",v:0},
+        {t:"Ridurre illuminazione stradale",v:0}
       ]
     }
   ]
 };
 
-/* ======================
+/* =========================
    STATE
-====================== */
+========================= */
 
-let state = {
+let state={
   level:"",
   i:0,
   score:0,
   q:[]
 };
 
-/* ======================
+/* =========================
    NAV
-====================== */
+========================= */
 
-function goDashboard(){
+function go(){
   document.getElementById("intro").style.display="none";
-  document.getElementById("dashboard").style.display="block";
+  document.getElementById("dash").style.display="block";
 }
 
-/* ======================
-   START QUIZ
-====================== */
+/* =========================
+   START
+========================= */
 
-function start(level){
-  state.level = level;
-  state.q = DB[level];
-  state.i = 0;
-  state.score = 0;
+function start(l){
+  state.level=l;
+  state.q=DB[l];
+  state.i=0;
+  state.score=0;
 
-  document.getElementById("dashboard").style.display="none";
+  document.getElementById("dash").style.display="none";
   document.getElementById("quiz").style.display="block";
 
   render();
 }
 
-/* ======================
-   QUIZ
-====================== */
+/* =========================
+   RENDER
+========================= */
 
 function render(){
 
-  const q = state.q[state.i];
+  const q=state.q[state.i];
 
-  if(!q){
-    return finish();
-  }
+  if(!q) return finish();
 
-  document.getElementById("quiz").innerHTML = `
+  document.getElementById("quiz").innerHTML=`
     <div class="card">
       <div class="tag">${state.level} · ${q.cat}</div>
       <h3>${q.q}</h3>
@@ -271,14 +259,14 @@ function render(){
     </div>
 
     <div class="card">
-      Domanda ${state.i+1} / ${state.q.length}
+      ${state.i+1}/${state.q.length}
     </div>
   `;
 }
 
-/* ======================
+/* =========================
    ANSWER
-====================== */
+========================= */
 
 function answer(v){
   if(v) state.score++;
@@ -286,25 +274,25 @@ function answer(v){
   render();
 }
 
-/* ======================
+/* =========================
    REPORT
-====================== */
+========================= */
 
 function finish(){
 
   document.getElementById("quiz").style.display="none";
   document.getElementById("report").style.display="block";
 
-  const perc = Math.round((state.score/state.q.length)*100);
+  let perc=Math.round((state.score/state.q.length)*100);
 
-  document.getElementById("report").innerHTML = `
+  document.getElementById("report").innerHTML=`
     <div class="card">
-      <h2>Risultato finale</h2>
+      <h2>Risultato</h2>
       <h1>${perc}%</h1>
-      <p>Consapevolezza su temi pubblici</p>
+      <p>Consapevolezza su impatto delle decisioni pubbliche</p>
     </div>
 
-    <button class="primary" onclick="location.reload()">Ricomincia</button>
+    <button class="primary" onclick="location.reload()">Restart</button>
   `;
 }
 
