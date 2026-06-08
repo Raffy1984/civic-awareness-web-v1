@@ -3,33 +3,64 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Citizen Insight App Mode</title>
+<title>Patente di Consapevolezza Civica</title>
 
 <style>
 body{
   margin:0;
   font-family:Arial;
-  background:#0f1720;
+  background:linear-gradient(180deg,#0f1720,#111827);
   color:white;
 }
 
-.screen{
-  max-width:900px;
-  margin:auto;
+/* INTRO */
+.intro{
+  height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
   padding:20px;
 }
 
+.intro-box{
+  max-width:700px;
+}
+
+h1{
+  font-size:34px;
+  margin-bottom:10px;
+}
+
+p{
+  opacity:0.8;
+  line-height:1.5;
+}
+
+/* DASHBOARD */
+.dashboard{
+  display:none;
+  padding:20px;
+  max-width:900px;
+  margin:auto;
+}
+
 .card{
-  background:#1c2633;
+  background:#1f2937;
   padding:20px;
   border-radius:16px;
   margin-top:16px;
 }
 
+.grid{
+  display:grid;
+  grid-template-columns:1fr;
+  gap:12px;
+}
+
 button{
   width:100%;
   padding:14px;
-  margin:8px 0;
   border:none;
   border-radius:12px;
   cursor:pointer;
@@ -37,120 +68,166 @@ button{
 }
 
 .primary{background:#22c55e;color:#000;}
-.secondary{background:#263445;color:#fff;}
+.secondary{background:#374151;color:#fff;}
+
+/* QUIZ */
+.quiz{
+  display:none;
+  padding:20px;
+  max-width:900px;
+  margin:auto;
+}
+
+.tag{
+  font-size:12px;
+  opacity:0.7;
+}
 
 .answer{
   background:#111827;
   color:white;
-  border:1px solid #334155;
+  border:1px solid #374151;
   text-align:left;
+  margin:8px 0;
 }
 
 .answer:hover{
   background:#1f2937;
 }
 
-.badge{
-  display:inline-block;
-  padding:4px 10px;
-  border-radius:20px;
-  background:#334155;
-  font-size:12px;
-}
-
-.title{
-  font-size:22px;
-  font-weight:700;
-}
-
-.big{
-  font-size:26px;
-  font-weight:800;
+/* REPORT */
+.report{
+  display:none;
+  padding:20px;
+  max-width:900px;
+  margin:auto;
 }
 </style>
 </head>
 
 <body>
 
-<div class="screen" id="app">Loading...</div>
+<!-- INTRO -->
+<div class="intro" id="intro">
+  <div class="intro-box">
+    <h1>Patente di Consapevolezza Civica</h1>
+    <p>
+      Uno strumento per misurare la comprensione dei temi pubblici,
+      economici e territoriali che influenzano la vita quotidiana.
+    </p>
+
+    <button class="primary" onclick="goDashboard()">Inizia</button>
+  </div>
+</div>
+
+<!-- DASHBOARD -->
+<div class="dashboard" id="dashboard">
+
+  <h2>Scegli il livello</h2>
+
+  <div class="card">
+    <button class="primary" onclick="start('nazionale')">🇮🇹 Nazionale</button>
+    <button class="secondary" onclick="start('regionale')">🏛 Regionale</button>
+    <button class="secondary" onclick="start('comunale')">🏙 Comunale</button>
+  </div>
+
+</div>
+
+<!-- QUIZ -->
+<div class="quiz" id="quiz"></div>
+
+<!-- REPORT -->
+<div class="report" id="report"></div>
 
 <script>
 
 /* ======================
-   DATABASE
+   DATABASE REALISTICO
 ====================== */
 
 const DB = {
   nazionale:[
-    {cat:"Economia",q:"Cos'è l'inflazione?",a:[
-      {t:"Aumento prezzi",v:1},
-      {t:"Riduzione prezzi",v:0},
-      {t:"Zero cambiamenti",v:0}
-    ]},
-    {cat:"Stato",q:"Debito pubblico è:",a:[
-      {t:"Debiti dello Stato",v:1},
-      {t:"Risparmi privati",v:0},
-      {t:"Tasse locali",v:0}
-    ]},
-    {cat:"Sicurezza",q:"Sicurezza dipende da:",a:[
-      {t:"Politiche pubbliche",v:1},
-      {t:"Caso",v:0},
-      {t:"Clima",v:0}
-    ]}
+    {
+      cat:"Economia reale",
+      q:"Il prezzo della benzina aumenta del 15% in pochi mesi. Quale fattore è più probabile tra questi?",
+      a:[
+        {t:"Aumento costo energia e tasse indirette",v:1},
+        {t:"Solo decisione casuale dei distributori",v:0},
+        {t:"Nessun legame con economia globale",v:0}
+      ]
+    },
+    {
+      cat:"Stato",
+      q:"Se aumenta il debito pubblico in modo stabile nel tempo, cosa succede generalmente?",
+      a:[
+        {t:"Maggiore pressione fiscale o taglio spesa pubblica futura",v:1},
+        {t:"Aumento automatico del reddito dei cittadini",v:0},
+        {t:"Nessun effetto reale",v:0}
+      ]
+    },
+    {
+      cat:"Energia",
+      q:"Una crisi energetica globale influisce sull’Italia principalmente perché:",
+      a:[
+        {t:"L’Italia importa parte significativa dell’energia",v:1},
+        {t:"L’Italia è totalmente autonoma energeticamente",v:0},
+        {t:"Non esiste relazione tra energia e economia",v:0}
+      ]
+    }
   ],
+
   regionale:[
-    {cat:"Sanità",q:"Liste attesa lunghe:",a:[
-      {t:"Squilibrio sistema",v:1},
-      {t:"Sistema perfetto",v:0}
-    ]}
+    {
+      cat:"Sanità",
+      q:"Se aumentano le liste d’attesa negli ospedali regionali, quale causa è più realistica?",
+      a:[
+        {t:"Squilibrio tra domanda e risorse disponibili",v:1},
+        {t:"Troppi ospedali funzionanti",v:0},
+        {t:"Assenza totale di pazienti",v:0}
+      ]
+    },
+    {
+      cat:"Trasporti",
+      q:"Riduzione dei fondi al trasporto pubblico regionale porta spesso a:",
+      a:[
+        {t:"Maggiore uso del mezzo privato",v:1},
+        {t:"Riduzione immediata del traffico",v:0},
+        {t:"Nessun cambiamento",v:0}
+      ]
+    }
   ],
+
   comunale:[
-    {cat:"Mobilità",q:"Traffico si riduce con:",a:[
-      {t:"Trasporto pubblico",v:1},
-      {t:"Più auto",v:0}
-    ]}
+    {
+      cat:"Mobilità",
+      q:"In una città, meno trasporto pubblico efficiente comporta generalmente:",
+      a:[
+        {t:"Più traffico privato e congestione",v:1},
+        {t:"Meno veicoli in circolazione automaticamente",v:0},
+        {t:"Nessun effetto sul traffico",v:0}
+      ]
+    }
   ]
 };
 
 /* ======================
-   STATE MACHINE (APP)
+   STATE
 ====================== */
 
 let state = {
-  screen:"home",
   level:"",
   i:0,
   score:0,
-  q:[],
-  breakdown:{}
+  q:[]
 };
 
-const app = document.getElementById("app");
-
 /* ======================
-   NAVIGATION
+   NAV
 ====================== */
 
-function render(){
-  if(state.screen==="home") return home();
-  if(state.screen==="quiz") return quiz();
-  if(state.screen==="result") return result();
-}
-
-/* ======================
-   HOME
-====================== */
-
-function home(){
-  app.innerHTML = `
-    <div class="title">Citizen Insight</div>
-
-    <div class="card">
-      <button class="primary" onclick="start('nazionale')">Nazionale</button>
-      <button class="secondary" onclick="start('regionale')">Regionale</button>
-      <button class="secondary" onclick="start('comunale')">Comunale</button>
-    </div>
-  `;
+function goDashboard(){
+  document.getElementById("intro").style.display="none";
+  document.getElementById("dashboard").style.display="block";
 }
 
 /* ======================
@@ -162,34 +239,34 @@ function start(level){
   state.q = DB[level];
   state.i = 0;
   state.score = 0;
-  state.breakdown = {};
-  state.screen = "quiz";
+
+  document.getElementById("dashboard").style.display="none";
+  document.getElementById("quiz").style.display="block";
+
   render();
 }
 
 /* ======================
-   QUIZ SCREEN
+   QUIZ
 ====================== */
 
-function quiz(){
+function render(){
 
   const q = state.q[state.i];
 
   if(!q){
-    state.screen="result";
-    return render();
+    return finish();
   }
 
-  app.innerHTML = `
-    <div class="badge">${state.level} · ${q.cat}</div>
-
+  document.getElementById("quiz").innerHTML = `
     <div class="card">
-      <div class="title">${q.q}</div>
+      <div class="tag">${state.level} · ${q.cat}</div>
+      <h3>${q.q}</h3>
     </div>
 
     <div class="card">
       ${q.a.map(x=>`
-        <button class="answer" onclick="answer(${x.v},'${q.cat}')">${x.t}</button>
+        <button class="answer" onclick="answer(${x.v})">${x.t}</button>
       `).join("")}
     </div>
 
@@ -203,54 +280,33 @@ function quiz(){
    ANSWER
 ====================== */
 
-function answer(v,cat){
-
-  if(!state.breakdown[cat]){
-    state.breakdown[cat]={ok:0,total:0};
-  }
-
-  state.breakdown[cat].total++;
-
-  if(v){
-    state.score++;
-    state.breakdown[cat].ok++;
-  }
-
+function answer(v){
+  if(v) state.score++;
   state.i++;
   render();
 }
 
 /* ======================
-   RESULT SCREEN
+   REPORT
 ====================== */
 
-function result(){
+function finish(){
 
-  const total = state.q.length;
-  const perc = Math.round((state.score/total)*100);
+  document.getElementById("quiz").style.display="none";
+  document.getElementById("report").style.display="block";
 
-  app.innerHTML = `
-    <div class="title">Report finale</div>
+  const perc = Math.round((state.score/state.q.length)*100);
 
+  document.getElementById("report").innerHTML = `
     <div class="card">
-      <div class="big">${perc}%</div>
-      <p>Consapevolezza generale</p>
-    </div>
-
-    <div class="card">
-      <p>Risposte corrette: ${state.score} / ${total}</p>
-      <p>Livello: ${perc<40?"Basso":perc<70?"Medio":"Alto"}</p>
+      <h2>Risultato finale</h2>
+      <h1>${perc}%</h1>
+      <p>Consapevolezza su temi pubblici</p>
     </div>
 
     <button class="primary" onclick="location.reload()">Ricomincia</button>
   `;
 }
-
-/* ======================
-   INIT
-====================== */
-
-home();
 
 </script>
 
