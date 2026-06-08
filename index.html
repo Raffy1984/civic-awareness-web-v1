@@ -1,44 +1,35 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Patente di Consapevolezza Civica</title>
-
-  <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Patente Civica</title>
+<link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
 <div class="container">
 
-  <!-- DASHBOARD INIZIALE -->
+  <!-- HOME -->
   <div id="home" class="hero-card">
 
     <h1>Patente di Consapevolezza Civica</h1>
 
     <p class="hook">
-      Ogni giorno si parla di politica, economia, sicurezza e società.
-      Ma comprendere le conseguenze delle decisioni pubbliche è un'altra cosa.
-    </p>
-
-    <p class="topics">
-      Questo test non misura le tue opinioni.<br>
-      Misura quanto conosci le conseguenze delle scelte reali.
+      Scegli il livello del test
     </p>
 
     <input id="username" placeholder="Nome (opzionale)">
 
-    <button onclick="startTest()">Inizia il test</button>
+    <button onclick="setLevel('nazionale')">Nazionale</button>
+    <button onclick="setLevel('regionale')">Regionale</button>
+    <button onclick="setLevel('comunale')">Comunale</button>
 
   </div>
 
-
-  <!-- QUIZ -->
   <div id="quiz" style="display:none;"></div>
 
-
-  <!-- RISULTATO -->
   <div id="result" style="display:none;"></div>
 
 </div>
