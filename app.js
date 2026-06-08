@@ -1,61 +1,67 @@
 const DB = {
-
   nazionale: [
     {
-      q:"Riduzione accise carburanti: cosa comporta?",
+      q:"Se aumenta l'inflazione, cosa succede al potere d'acquisto?",
       cat:"economia",
       a:[
-        {t:"Riduce entrate fiscali",v:1},
-        {t:"Aumenta salari automaticamente",v:0},
-        {t:"Elimina inflazione",v:0},
-        {t:"Nessun effetto",v:0}
+        {t:"Diminuisce",v:1},
+        {t:"Aumenta automaticamente",v:0},
+        {t:"Non cambia mai",v:0},
+        {t:"Diventa illimitato",v:0}
       ]
     },
     {
-      q:"Debito pubblico in crescita significa:",
+      q:"Il debito pubblico è:",
       cat:"economia",
       a:[
-        {t:"Spesa superiore alle entrate",v:1},
-        {t:"Zero conseguenze",v:0},
-        {t:"Crescita gratuita",v:0},
-        {t:"Nessun impatto",v:0}
+        {t:"Somma dei debiti dello Stato",v:1},
+        {t:"Risparmio dello Stato",v:0},
+        {t:"Profitto automatico",v:0},
+        {t:"Tasse eliminate",v:0}
+      ]
+    },
+    {
+      q:"La sicurezza urbana dipende da:",
+      cat:"societa",
+      a:[
+        {t:"Fattori sociali e controllo del territorio",v:1},
+        {t:"Solo fortuna",v:0},
+        {t:"Nessuna causa",v:0},
+        {t:"Solo media",v:0}
       ]
     }
   ],
 
   regionale: [
     {
-      q:"Liste d’attesa sanità regionale:",
+      q:"Le liste d'attesa sanitarie dipendono spesso da:",
       cat:"servizi",
       a:[
-        {t:"Carenza risorse e personale",v:1},
-        {t:"Sistema perfetto",v:0},
-        {t:"Troppi ospedali",v:0},
-        {t:"Nessun problema",v:0}
+        {t:"Risorse e personale disponibili",v:1},
+        {t:"Caso fortuito",v:0},
+        {t:"Nessuna struttura",v:0},
+        {t:"Solo tecnologia",v:0}
       ]
     }
   ],
 
   comunale: [
     {
-      q:"Traffico urbano:",
+      q:"Il traffico urbano si riduce con:",
       cat:"servizi",
       a:[
-        {t:"Potenziare trasporto pubblico",v:1},
-        {t:"Chiudere città",v:0},
-        {t:"Eliminare auto",v:0},
-        {t:"Bloccare tutto",v:0}
+        {t:"Trasporto pubblico efficiente",v:1},
+        {t:"Più auto private",v:0},
+        {t:"Nessuna infrastruttura",v:0},
+        {t:"Blocchi casuali",v:0}
       ]
     }
   ]
 };
 
+const app = document.getElementById("app");
 
-// =====================
-// STATE
-// =====================
-
-const state = {
+let state = {
   level:null,
   name:"",
   i:0,
@@ -64,13 +70,7 @@ const state = {
   stats:{economia:0,societa:0,servizi:0}
 };
 
-const app = document.getElementById("app");
-
-
-// =====================
 // HOME
-// =====================
-
 function home(){
   app.innerHTML = `
     <div class="card">
@@ -87,30 +87,20 @@ function home(){
 
 home();
 
-
-// =====================
 // START
-// =====================
-
 function start(level){
 
   state.level = level;
   state.name = document.getElementById("name").value || "Utente";
-
+  state.q = [...DB[level]];
   state.i = 0;
   state.score = 0;
   state.stats = {economia:0,societa:0,servizi:0};
 
-  state.q = shuffle([...DB[level]]);
-
   render();
 }
 
-
-// =====================
 // RENDER
-// =====================
-
 function render(){
 
   const q = state.q[state.i];
@@ -126,8 +116,8 @@ function render(){
 
       <h2>${q.q}</h2>
 
-      ${q.a.map((x,idx)=>`
-        <button class="answer" onclick="answer(${idx})">${x.t}</button>
+      ${q.a.map((x,i)=>`
+        <button class="answer" onclick="answer(${i})">${x.t}</button>
       `).join("")}
 
       <p>${state.i+1}/${state.q.length}</p>
@@ -136,11 +126,7 @@ function render(){
   `;
 }
 
-
-// =====================
 // ANSWER
-// =====================
-
 function answer(i){
 
   const q = state.q[state.i];
@@ -155,11 +141,7 @@ function answer(i){
   render();
 }
 
-
-// =====================
 // FINISH
-// =====================
-
 function finish(){
 
   const percent = Math.round((state.score/state.q.length)*100);
@@ -167,21 +149,20 @@ function finish(){
   app.innerHTML = `
     <div class="card">
 
-      <h2>Report finale</h2>
+      <h2>Risultato</h2>
       <h1>${percent}%</h1>
 
       <p>${state.name}</p>
       <p>${state.level}</p>
 
-      <canvas id="chart"></canvas>
+      <canvas id="c"></canvas>
 
-      <button onclick="pdf()">Scarica PDF</button>
       <button onclick="location.reload()">Riprova</button>
 
     </div>
   `;
 
-  new Chart(document.getElementById("chart"),{
+  new Chart(document.getElementById("c"),{
     type:"pie",
     data:{
       labels:["Economia","Società","Servizi"],
@@ -194,67 +175,4 @@ function finish(){
       }]
     }
   });
-}
-
-
-// =====================
-// PDF
-// =====================
-
-function pdf(){
-
-  const w = window.open();
-
-  w.document.write(`
-    <html>
-    <head>
-      <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-      <style>
-        body{font-family:Arial;padding:30px;background:#eee}
-        .box{background:white;border:3px solid #4f5f45;padding:20px}
-      </style>
-    </head>
-
-    <body>
-
-      <div class="box">
-        <h1>Consapevolezza Civica</h1>
-        <p>${state.name}</p>
-        <p>${state.level}</p>
-
-        <canvas id="c"></canvas>
-      </div>
-
-      <script>
-        new Chart(document.getElementById("c"),{
-          type:"pie",
-          data:{
-            labels:["Economia","Società","Servizi"],
-            datasets:[{
-              data:[
-                ${state.stats.economia},
-                ${state.stats.societa},
-                ${state.stats.servizi}
-              ]
-            }]
-          }
-        });
-
-        setTimeout(()=>window.print(),500);
-      </script>
-
-    </body>
-    </html>
-  `);
-
-  w.document.close();
-}
-
-
-// =====================
-// UTILS
-// =====================
-
-function shuffle(a){
-  return a.sort(()=>Math.random()-0.5);
 }
