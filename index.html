@@ -3,165 +3,121 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Citizen Insight - Step 3</title>
+<title>Citizen Insight App Mode</title>
 
 <style>
 body{
   margin:0;
   font-family:Arial;
-  background:#eef2ed;
-}
-
-.header{
-  background:#1f3a2e;
+  background:#0f1720;
   color:white;
-  padding:14px;
-  font-weight:700;
 }
 
-.container{
+.screen{
   max-width:900px;
   margin:auto;
   padding:20px;
 }
 
 .card{
-  background:white;
-  padding:22px;
+  background:#1c2633;
+  padding:20px;
   border-radius:16px;
-  margin-top:20px;
-  box-shadow:0 10px 30px rgba(0,0,0,0.06);
+  margin-top:16px;
 }
 
 button{
   width:100%;
-  padding:12px;
-  margin:6px 0;
+  padding:14px;
+  margin:8px 0;
   border:none;
-  border-radius:10px;
+  border-radius:12px;
   cursor:pointer;
   font-weight:600;
 }
 
-.primary{background:#1f3a2e;color:white;}
-.secondary{background:#e7efe6;color:#111;}
-.answer{background:#fff;border:1px solid #ccc;text-align:left;}
-.answer:hover{background:#f2f6ef;}
+.primary{background:#22c55e;color:#000;}
+.secondary{background:#263445;color:#fff;}
 
-.tag{
+.answer{
+  background:#111827;
+  color:white;
+  border:1px solid #334155;
+  text-align:left;
+}
+
+.answer:hover{
+  background:#1f2937;
+}
+
+.badge{
   display:inline-block;
-  padding:5px 12px;
+  padding:4px 10px;
   border-radius:20px;
-  background:#e7efe6;
+  background:#334155;
   font-size:12px;
-  margin-bottom:10px;
 }
 
-/* PROGRESS BAR */
-.bar{
-  width:100%;
-  background:#e6e6e6;
-  border-radius:10px;
-  overflow:hidden;
-  margin:6px 0 14px;
-}
-
-.fill{
-  height:10px;
-  background:#1f3a2e;
-}
-
-/* REPORT BOX */
-.metric{
-  margin:10px 0;
-}
-.small{
-  font-size:13px;
-  color:#666;
-}
-.big{
-  font-size:20px;
+.title{
+  font-size:22px;
   font-weight:700;
+}
+
+.big{
+  font-size:26px;
+  font-weight:800;
 }
 </style>
 </head>
 
 <body>
 
-<div class="header">Citizen Insight Platform</div>
-
-<div class="container">
-<div class="card" id="app">Loading...</div>
-</div>
+<div class="screen" id="app">Loading...</div>
 
 <script>
 
-/* =========================
-   DATABASE (STABILE)
-========================= */
+/* ======================
+   DATABASE
+====================== */
 
 const DB = {
   nazionale:[
-    {cat:"Economia",q:"Inflazione significa:",a:[
-      {t:"Aumento generale prezzi",v:1},
-      {t:"Prezzi fissi",v:0},
+    {cat:"Economia",q:"Cos'è l'inflazione?",a:[
+      {t:"Aumento prezzi",v:1},
+      {t:"Riduzione prezzi",v:0},
       {t:"Zero cambiamenti",v:0}
     ]},
-    {cat:"Stato",q:"Il debito pubblico è:",a:[
-      {t:"Debito dello Stato",v:1},
+    {cat:"Stato",q:"Debito pubblico è:",a:[
+      {t:"Debiti dello Stato",v:1},
       {t:"Risparmi privati",v:0},
-      {t:"Tasse eliminate",v:0}
+      {t:"Tasse locali",v:0}
     ]},
-    {cat:"Sicurezza",q:"La sicurezza urbana dipende da:",a:[
-      {t:"Politiche e forze dell’ordine",v:1},
+    {cat:"Sicurezza",q:"Sicurezza dipende da:",a:[
+      {t:"Politiche pubbliche",v:1},
       {t:"Caso",v:0},
       {t:"Clima",v:0}
-    ]},
-    {cat:"Energia",q:"Aumento energia causa:",a:[
-      {t:"Aumento prezzi generali",v:1},
-      {t:"Nulla",v:0},
-      {t:"Deflazione automatica",v:0}
-    ]},
-    {cat:"Economia",q:"Tagliare tasse senza copertura:",a:[
-      {t:"Crea deficit",v:1},
-      {t:"Genera ricchezza infinita",v:0},
-      {t:"Non cambia nulla",v:0}
     ]}
   ],
-
   regionale:[
-    {cat:"Sanità",q:"Liste d’attesa lunghe:",a:[
-      {t:"Squilibrio risorse",v:1},
-      {t:"Sistema perfetto",v:0},
-      {t:"Zero pazienti",v:0}
-    ]},
-    {cat:"Trasporti",q:"Trasporto inefficiente causa:",a:[
-      {t:"Più traffico auto",v:1},
-      {t:"Meno persone",v:0},
-      {t:"Nessun effetto",v:0}
+    {cat:"Sanità",q:"Liste attesa lunghe:",a:[
+      {t:"Squilibrio sistema",v:1},
+      {t:"Sistema perfetto",v:0}
     ]}
   ],
-
   comunale:[
-    {cat:"Mobilità",q:"Migliorare traffico:",a:[
+    {cat:"Mobilità",q:"Traffico si riduce con:",a:[
       {t:"Trasporto pubblico",v:1},
-      {t:"Più auto",v:0},
-      {t:"Caos totale",v:0}
-    ]},
-    {cat:"Servizi",q:"Rifiuti mal gestiti:",a:[
-      {t:"Degrado urbano",v:1},
-      {t:"Città pulita",v:0},
-      {t:"Nessun effetto",v:0}
+      {t:"Più auto",v:0}
     ]}
   ]
 };
 
-/* =========================
-   STATE
-========================= */
+/* ======================
+   STATE MACHINE (APP)
+====================== */
 
 let state = {
-  name:"",
+  screen:"home",
   level:"",
   i:0,
   score:0,
@@ -171,52 +127,132 @@ let state = {
 
 const app = document.getElementById("app");
 
-/* =========================
+/* ======================
+   NAVIGATION
+====================== */
+
+function render(){
+  if(state.screen==="home") return home();
+  if(state.screen==="quiz") return quiz();
+  if(state.screen==="result") return result();
+}
+
+/* ======================
    HOME
-========================= */
+====================== */
 
 function home(){
   app.innerHTML = `
-    <h2>Dashboard</h2>
+    <div class="title">Citizen Insight</div>
 
-    <input id="name" placeholder="Inserisci nome">
-
-    <button class="primary" onclick="start('nazionale')">Nazionale</button>
-    <button class="secondary" onclick="start('regionale')">Regionale</button>
-    <button class="secondary" onclick="start('comunale')">Comunale</button>
+    <div class="card">
+      <button class="primary" onclick="start('nazionale')">Nazionale</button>
+      <button class="secondary" onclick="start('regionale')">Regionale</button>
+      <button class="secondary" onclick="start('comunale')">Comunale</button>
+    </div>
   `;
 }
 
-/* =========================
-   START
-========================= */
+/* ======================
+   START QUIZ
+====================== */
 
 function start(level){
-
-  state.name = document.getElementById("name").value || "Utente";
   state.level = level;
-  state.q = shuffle(DB[level]);
+  state.q = DB[level];
   state.i = 0;
   state.score = 0;
   state.breakdown = {};
-
+  state.screen = "quiz";
   render();
 }
 
-/* =========================
-   RENDER QUIZ
-========================= */
+/* ======================
+   QUIZ SCREEN
+====================== */
 
-function render(){
+function quiz(){
 
   const q = state.q[state.i];
 
-  if(!q) return finish();
+  if(!q){
+    state.screen="result";
+    return render();
+  }
 
   app.innerHTML = `
-    <div class="tag">${state.level} · ${q.cat}</div>
+    <div class="badge">${state.level} · ${q.cat}</div>
 
-    <h3>${q.q}</h3>
+    <div class="card">
+      <div class="title">${q.q}</div>
+    </div>
 
-    ${shuffle(q.a).map(x=>`
-      <button class="answer" onclick="answer(${x.v},'
+    <div class="card">
+      ${q.a.map(x=>`
+        <button class="answer" onclick="answer(${x.v},'${q.cat}')">${x.t}</button>
+      `).join("")}
+    </div>
+
+    <div class="card">
+      Domanda ${state.i+1} / ${state.q.length}
+    </div>
+  `;
+}
+
+/* ======================
+   ANSWER
+====================== */
+
+function answer(v,cat){
+
+  if(!state.breakdown[cat]){
+    state.breakdown[cat]={ok:0,total:0};
+  }
+
+  state.breakdown[cat].total++;
+
+  if(v){
+    state.score++;
+    state.breakdown[cat].ok++;
+  }
+
+  state.i++;
+  render();
+}
+
+/* ======================
+   RESULT SCREEN
+====================== */
+
+function result(){
+
+  const total = state.q.length;
+  const perc = Math.round((state.score/total)*100);
+
+  app.innerHTML = `
+    <div class="title">Report finale</div>
+
+    <div class="card">
+      <div class="big">${perc}%</div>
+      <p>Consapevolezza generale</p>
+    </div>
+
+    <div class="card">
+      <p>Risposte corrette: ${state.score} / ${total}</p>
+      <p>Livello: ${perc<40?"Basso":perc<70?"Medio":"Alto"}</p>
+    </div>
+
+    <button class="primary" onclick="location.reload()">Ricomincia</button>
+  `;
+}
+
+/* ======================
+   INIT
+====================== */
+
+home();
+
+</script>
+
+</body>
+</html>
