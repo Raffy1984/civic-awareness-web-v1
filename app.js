@@ -9,61 +9,86 @@ let state = {
 
 
 // =====================
-// DATABASE COMPLETO
+// DATABASE SICURO
 // =====================
 
 const bank = {
-
   nazionale: [
     {
-      q: "Riduzione delle accise sui carburanti: effetto principale?",
+      q: "Riduzione accise carburanti: effetto principale?",
       options: [
-        {t:"Riduzione entrate fiscali per lo Stato", c:true},
-        {t:"Aumento immediato salari", c:false},
-        {t:"Eliminazione inflazione", c:false},
-        {t:"Nessun effetto economico", c:false}
+        {t:"Riduce entrate fiscali dello Stato", c:true},
+        {t:"Aumenta salari automaticamente", c:false},
+        {t:"Elimina inflazione", c:false},
+        {t:"Nessun effetto", c:false}
       ]
     },
     {
-      q: "Aumento del debito pubblico cosa indica?",
+      q: "Aumento debito pubblico significa?",
       options: [
-        {t:"Più spesa rispetto alle entrate", c:true},
-        {t:"Più tasse automatiche basse", c:false},
+        {t:"Più spesa che entrate", c:true},
+        {t:"Meno tasse automatiche", c:false},
         {t:"Crescita senza costi", c:false},
-        {t:"Riduzione dello Stato", c:false}
+        {t:"Nessun impatto", c:false}
+      ]
+    },
+    {
+      q: "Crisi energetica: soluzione strutturale?",
+      options: [
+        {t:"Diversificazione fonti energia", c:true},
+        {t:"Stop economia", c:false},
+        {t:"Bloccare consumi", c:false},
+        {t:"Chiusura industria", c:false}
       ]
     }
   ],
 
   regionale: [
     {
-      q: "Liste d’attesa sanitarie in aumento: causa più probabile?",
+      q: "Liste d’attesa sanitarie alte: causa probabile?",
       options: [
-        {t:"Carenza personale sanitario", c:true},
+        {t:"Carenza personale medico", c:true},
         {t:"Troppi ospedali", c:false},
         {t:"Zero pazienti", c:false},
         {t:"Sistema perfetto", c:false}
+      ]
+    },
+    {
+      q: "Trasporti regionali inefficienti:",
+      options: [
+        {t:"Investire nel trasporto pubblico", c:true},
+        {t:"Eliminare treni", c:false},
+        {t:"Bloccare mobilità", c:false},
+        {t:"Chiusura sistema", c:false}
       ]
     }
   ],
 
   comunale: [
     {
-      q: "Traffico urbano in aumento: soluzione efficace?",
+      q: "Traffico urbano elevato:",
       options: [
-        {t:"Potenziamento trasporto pubblico", c:true},
-        {t:"Chiusura totale città", c:false},
-        {t:"Eliminazione auto", c:false},
-        {t:"Stop mobilità", c:false}
+        {t:"Potenziare trasporto pubblico", c:true},
+        {t:"Chiudere città", c:false},
+        {t:"Eliminare auto", c:false},
+        {t:"Bloccare strade", c:false}
+      ]
+    },
+    {
+      q: "Sicurezza urbana percepita bassa:",
+      options: [
+        {t:"Più controlli e illuminazione", c:true},
+        {t:"Meno forze ordine", c:false},
+        {t:"Zero controlli", c:false},
+        {t:"Nessuna azione", c:false}
       ]
     }
   ]
-
 };
 
 
 // =====================
-// START
+// START (ANTI-BLOCCO)
 // =====================
 
 function start(level){
@@ -71,15 +96,27 @@ function start(level){
   const input = document.getElementById("username");
 
   state.level = level;
-  state.name = input.value.trim() || "Utente";
+  state.name = (input && input.value) ? input.value.trim() : "Utente";
 
   state.index = 0;
   state.score = 0;
 
+  // 🔥 GUARD CLAUSE (QUESTA È LA FIX VERA)
+  if(!bank[level]){
+    alert("Errore: livello non trovato -> " + level);
+    return;
+  }
+
   state.questions = shuffle(bank[level]);
+
+  if(state.questions.length === 0){
+    alert("Errore: nessuna domanda nel livello");
+    return;
+  }
 
   document.getElementById("home").style.display = "none";
   document.getElementById("quiz").style.display = "block";
+  document.getElementById("result").style.display = "none";
 
   render();
 }
@@ -128,7 +165,7 @@ function answer(i){
 
 
 // =====================
-// FINISH + PDF
+// FINISH
 // =====================
 
 function finish(){
@@ -139,7 +176,7 @@ function finish(){
   const percent = Math.round((state.score/state.questions.length)*100);
 
   document.getElementById("result").innerHTML = `
-    <h2>Risultato finale</h2>
+    <h2>Risultato</h2>
     <h1>${percent}% Consapevolezza</h1>
 
     <p>Nome: <b>${state.name}</b></p>
@@ -163,7 +200,7 @@ PATENTE DI CONSAPEVOLEZZA CIVICA
 Nome: ${state.name}
 Livello: ${state.level}
 
-Punteggio: ${state.score} / ${state.questions.length}
+Punteggio: ${state.score}/${state.questions.length}
 Percentuale: ${Math.round((state.score/state.questions.length)*100)}%
   `;
 
@@ -172,7 +209,7 @@ Percentuale: ${Math.round((state.score/state.questions.length)*100)}%
 
   const a = document.createElement("a");
   a.href = url;
-  a.download = "report_consapevolezza.txt";
+  a.download = `report_${state.name}.txt`;
   a.click();
 }
 
