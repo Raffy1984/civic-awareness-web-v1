@@ -3,184 +3,49 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Citizen Insight - Dashboard</title>
-
+<title>Base stabile</title>
 <style>
 body{
   margin:0;
   font-family:Arial;
-  background:linear-gradient(135deg,#eef3ea,#ffffff);
-  color:#111;
+  background:#f2f2f2;
 }
-
 .header{
   background:#1f3a2e;
   color:white;
-  padding:14px 20px;
-  font-weight:600;
+  padding:14px;
 }
-
 .container{
-  max-width:900px;
+  max-width:800px;
   margin:auto;
   padding:20px;
 }
-
 .card{
-  background:#fff;
-  border-radius:14px;
-  padding:22px;
+  background:white;
+  padding:20px;
+  border-radius:12px;
   margin-top:20px;
-  box-shadow:0 10px 25px rgba(0,0,0,0.06);
-  border:1px solid #e6e6e6;
 }
-
-input{
-  width:100%;
-  padding:12px;
-  border-radius:10px;
-  border:1px solid #ccc;
-  margin:10px 0;
-}
-
 button{
   width:100%;
   padding:12px;
-  margin:6px 0;
-  border:none;
-  border-radius:10px;
-  cursor:pointer;
-  font-weight:600;
+  margin-top:10px;
 }
-
-.primary{
-  background:#1f3a2e;
-  color:white;
-}
-
-.secondary{
-  background:#e7efe6;
-  color:#111;
-}
-
-.answer{
-  background:#fff;
-  border:1px solid #ccc;
-}
-
-.answer:hover{
-  background:#f3f6ef;
-}
-
-.tag{
-  display:inline-block;
-  padding:4px 10px;
-  font-size:12px;
-  border-radius:20px;
-  background:#e7efe6;
-}
-
 </style>
 </head>
 
 <body>
 
-<div class="header">
-Citizen Insight Platform
-</div>
+<div class="header">Citizen Insight</div>
 
 <div class="container">
-<div id="app"></div>
+  <div class="card" id="app">Se vedi questo, tutto funziona.</div>
 </div>
 
 <script>
+document.getElementById("app").innerHTML =
+"<h2>Sistema stabile attivo</h2><p>Base corretta caricata.</p>";
+</script>
 
-/* =========================
-   DATABASE MINIMA (SOLO TEST STABILE)
-========================= */
-
-const DB = {
-  nazionale:[
-    {
-      q:"Inflazione cosa significa?",
-      a:[
-        {t:"Aumento prezzi",v:1},
-        {t:"Diminuzione prezzi",v:0}
-      ]
-    },
-    {
-      q:"Debito pubblico è:",
-      a:[
-        {t:"Debiti dello Stato",v:1},
-        {t:"Risparmio privato",v:0}
-      ]
-    }
-  ],
-
-  regionale:[
-    {
-      q:"Sanità inefficiente causa:",
-      a:[
-        {t:"Liste d'attesa",v:1},
-        {t:"Miglioramento automatico",v:0}
-      ]
-    }
-  ],
-
-  comunale:[
-    {
-      q:"Traffico urbano si riduce con:",
-      a:[
-        {t:"Trasporto pubblico",v:1},
-        {t:"Più auto",v:0}
-      ]
-    }
-  ]
-};
-
-
-/* =========================
-   STATE
-========================= */
-
-let state = {
-  level:null,
-  i:0,
-  score:0,
-  q:[]
-};
-
-const app=document.getElementById("app");
-
-
-/* =========================
-   DASHBOARD HOME
-========================= */
-
-function home(){
-
-  app.innerHTML=`
-    <div class="card">
-
-      <h2>Dashboard cittadina</h2>
-      <p>Seleziona area di analisi</p>
-
-      <button class="primary" onclick="start('nazionale')">Nazionale</button>
-      <button class="secondary" onclick="start('regionale')">Regionale</button>
-      <button class="secondary" onclick="start('comunale')">Comunale</button>
-
-    </div>
-  `;
-}
-
-home();
-
-
-/* =========================
-   START QUIZ
-========================= */
-
-function start(level){
-
-  state.level=level;
-  state.q=DB[level];
+</body>
+</html>
