@@ -1,65 +1,54 @@
 body{
   margin:0;
-  font-family: Arial;
-  background:#f6f4e8;
-  color:#111;
+  font-family:Arial;
+  background:#050914;
+  color:white;
 }
 
-.container{
-  max-width:850px;
-  margin:auto;
-  padding:20px;
+.intro{
+  height:100vh;
+  background:url("https://upload.wikimedia.org/wikipedia/commons/0/03/Italy_satellite_map.jpg") center/cover;
+  position:relative;
 }
 
-.card{
-  background:#fff;
-  border:2px solid #a7b39a;
-  border-radius:14px;
-  padding:20px;
-  margin-top:20px;
+.overlay{
+  position:absolute;
+  inset:0;
+  background:rgba(0,0,0,0.75);
+  display:flex;
+  align-items:center;
+  justify-content:center;
 }
 
-h1,h2,p{
-  color:#111;
+.box{
+  text-align:center;
+  max-width:600px;
 }
 
 input{
-  width:100%;
-  padding:12px;
-  border:2px solid #a7b39a;
-  border-radius:10px;
-  margin:10px 0;
+  padding:10px;
+  width:80%;
+  margin:10px;
 }
 
 button{
+  padding:10px;
+  margin:5px;
   width:100%;
-  padding:12px;
-  margin:8px 0;
   border:none;
-  border-radius:10px;
-  background:#4d5c43;
+  cursor:pointer;
+}
+
+.dashboard, .quiz, .report{
+  padding:20px;
+}
+
+button{
+  background:#1f2937;
   color:white;
-  cursor:pointer;
-}
-
-.answer{
-  width:100%;
-  padding:12px;
-  margin:8px 0;
-  border:2px solid #a7b39a;
   border-radius:10px;
-  background:#fff;
-  cursor:pointer;
 }
 
-.answer:hover{
-  background:#f0eddc;
-}
-
-.tag{
-  font-size:12px;
-  display:inline-block;
-  padding:4px 10px;
-  background:#e7ecd9;
-  border-radius:20px;
+button:hover{
+  background:#374151;
 }
