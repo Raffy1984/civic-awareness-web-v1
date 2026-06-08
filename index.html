@@ -5,310 +5,51 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Patente di Consapevolezza Civica</title>
 
-<style>
-body{
-  margin:0;
-  font-family:Arial, sans-serif;
-  background:#050914;
-  color:white;
-}
-
-/* INTRO */
-.intro{
-  height:100vh;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  background:url("https://upload.wikimedia.org/wikipedia/commons/0/03/Italy_satellite_map.jpg") center/cover no-repeat;
-  position:relative;
-}
-
-.overlay{
-  position:absolute;
-  inset:0;
-  background:rgba(0,0,0,0.75);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  padding:20px;
-  text-align:center;
-}
-
-.box{
-  max-width:750px;
-}
-
-h1{
-  font-size:38px;
-  margin-bottom:10px;
-}
-
-p{
-  opacity:0.85;
-  line-height:1.6;
-}
-
-/* DASHBOARD */
-.dashboard{
-  display:none;
-  padding:25px;
-  max-width:900px;
-  margin:auto;
-}
-
-.card{
-  background:#0f172a;
-  border:1px solid #1f2937;
-  padding:18px;
-  border-radius:14px;
-  margin-top:14px;
-}
-
-button{
-  width:100%;
-  padding:14px;
-  border:none;
-  border-radius:12px;
-  margin-top:10px;
-  cursor:pointer;
-  font-weight:600;
-}
-
-.primary{background:#22c55e;color:#000;}
-.secondary{background:#1f2937;color:#fff;}
-
-/* QUIZ */
-.quiz{
-  display:none;
-  padding:25px;
-  max-width:900px;
-  margin:auto;
-}
-
-.tag{
-  font-size:12px;
-  opacity:0.6;
-}
-
-.option{
-  background:#111827;
-  border:1px solid #334155;
-  color:white;
-  text-align:left;
-}
-
-.option:hover{
-  background:#1e293b;
-}
-
-/* REPORT */
-.report{
-  display:none;
-  padding:25px;
-  max-width:900px;
-  margin:auto;
-}
-
-.big{
-  font-size:36px;
-  font-weight:bold;
-}
-</style>
-
+<link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
 <!-- INTRO -->
-<div class="intro" id="intro">
+<div id="intro" class="intro">
   <div class="overlay">
     <div class="box">
       <h1>Patente di Consapevolezza Civica</h1>
-      <p>
-        Simulazione di decisioni pubbliche reali.<br>
-        Non misura conoscenza. Misura impatto delle scelte.
-      </p>
-
-      <button class="primary" onclick="startApp()">Inizia</button>
+      <p>Simulazione decisionale su temi pubblici reali. Le tue scelte determinano il profilo finale.</p>
+      <input id="nomeUtente" placeholder="Inserisci il tuo nome">
+      <button onclick="avvia()">Inizia</button>
     </div>
   </div>
 </div>
 
 <!-- DASHBOARD -->
-<div class="dashboard" id="dashboard">
+<div id="dashboard" class="dashboard" style="display:none;">
+
   <h2>Seleziona livello</h2>
 
-  <div class="card">
-    <button class="primary" onclick="start('nazionale')">🇮🇹 Nazionale</button>
-    <button class="secondary" onclick="start('regionale')">🏛 Regionale</button>
-    <button class="secondary" onclick="start('comunale')">🏙 Comunale</button>
+  <button onclick="selezionaLivello('nazionale')">🇮🇹 Nazionale</button>
+  <button onclick="mostraRegioni()">🏛 Regionale</button>
+  <button onclick="selezionaLivello('comunale')">🏙 Comunale (demo)</button>
+
+  <!-- REGIONI -->
+  <div id="selector" style="display:none; margin-top:20px;">
+    <h3>Seleziona Regione</h3>
+
+    <select id="regioneSelect"></select>
+
+    <button onclick="confermaRegione()">Conferma Regione</button>
   </div>
+
 </div>
 
 <!-- QUIZ -->
-<div class="quiz" id="quiz"></div>
+<div id="quiz" class="quiz"></div>
 
 <!-- REPORT -->
-<div class="report" id="report"></div>
+<div id="report" class="report"></div>
 
-<script>
-
-/* =========================
-   DATABASE
-========================= */
-
-const DB = {
-  nazionale:[
-    {
-      cat:"Economia",
-      scenario:"L’inflazione aumenta da oltre un anno e il potere d’acquisto diminuisce.",
-      q:"Quale scelta ha impatto più equilibrato?",
-      options:[
-        {t:"Aumento salari e sostegni mirati",v:2},
-        {t:"Controllo prezzi immediato",v:1},
-        {t:"Taglio spesa pubblica",v:0},
-        {t:"Nessun intervento",v:1}
-      ]
-    },
-    {
-      cat:"Energia",
-      scenario:"Dipendenza energetica estera e prezzi instabili.",
-      q:"Quale strategia è più strutturale?",
-      options:[
-        {t:"Investimenti in rinnovabili",v:2},
-        {t:"Sussidi temporanei",v:1},
-        {t:"Aumento tasse energia",v:0},
-        {t:"Blocchi prezzi",v:0}
-      ]
-    }
-  ],
-
-  regionale:[
-    {
-      cat:"Sanità",
-      scenario:"Liste d’attesa in crescita e personale insufficiente.",
-      q:"Quale intervento è più efficace?",
-      options:[
-        {t:"Assunzioni + riorganizzazione",v:2},
-        {t:"Privatizzazione rapida",v:0},
-        {t:"Riduzione prestazioni",v:1},
-        {t:"Taglio budget",v:0}
-      ]
-    }
-  ],
-
-  comunale:[
-    {
-      cat:"Mobilità",
-      scenario:"Traffico urbano in aumento costante.",
-      q:"Quale soluzione è più efficace?",
-      options:[
-        {t:"Trasporto pubblico potenziato",v:2},
-        {t:"Più parcheggi",v:0},
-        {t:"Eliminazione ZTL",v:0},
-        {t:"Meno controlli",v:1}
-      ]
-    }
-  ]
-};
-
-/* =========================
-   STATE
-========================= */
-
-let state={
-  level:"",
-  i:0,
-  score:0,
-  data:[]
-};
-
-/* =========================
-   FLOW
-========================= */
-
-function startApp(){
-  document.getElementById("intro").style.display="none";
-  document.getElementById("dashboard").style.display="block";
-}
-
-function start(level){
-  state.level=level;
-  state.data=DB[level];
-  state.i=0;
-  state.score=0;
-
-  document.getElementById("dashboard").style.display="none";
-  document.getElementById("quiz").style.display="block";
-
-  render();
-}
-
-/* =========================
-   RENDER
-========================= */
-
-function render(){
-
-  const item = state.data[state.i];
-
-  if(!item) return finish();
-
-  document.getElementById("quiz").innerHTML=`
-    <div class="card">
-      <div class="tag">${state.level} · ${item.cat}</div>
-      <h3>${item.scenario}</h3>
-      <p><b>${item.q}</b></p>
-    </div>
-
-    <div class="card">
-      ${item.options.map(o=>`
-        <button class="option" onclick="answer(${Number(o.v)})">
-          ${o.t}
-        </button>
-      `).join("")}
-    </div>
-
-    <div class="card">
-      Progresso: ${state.i+1} / ${state.data.length}
-    </div>
-  `;
-}
-
-/* =========================
-   ANSWER
-========================= */
-
-function answer(v){
-  state.score += Number(v);
-  state.i++;
-  render();
-}
-
-/* =========================
-   REPORT
-========================= */
-
-function finish(){
-
-  document.getElementById("quiz").style.display="none";
-  document.getElementById("report").style.display="block";
-
-  const max = state.data.length * 2;
-  const perc = Math.round((state.score / max) * 100);
-
-  document.getElementById("report").innerHTML=`
-    <div class="card">
-      <h2>Indice Consapevolezza Civica</h2>
-      <div class="big">${perc}%</div>
-      <p>Valutazione basata su impatto delle decisioni</p>
-    </div>
-
-    <button class="primary" onclick="location.reload()">Ricomincia</button>
-  `;
-}
-
-</script>
+<script src="territori.js"></script>
+<script src="app.js"></script>
 
 </body>
 </html>
