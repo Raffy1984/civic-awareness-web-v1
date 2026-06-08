@@ -3,102 +3,89 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Citizen Insight - Dashboard</title>
-
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<title>DEBUG QUIZ</title>
 
 <style>
+body{font-family:Arial;margin:0;background:#f2f2f2}
+.box{padding:20px;max-width:800px;margin:auto}
+.card{background:white;padding:20px;margin-top:20px;border-radius:10px}
+button{width:100%;padding:12px;margin:6px 0}
+.error{color:red;white-space:pre-wrap}
+</style>
+</head>
 
-body{
-  margin:0;
-  font-family:Arial;
-  background: linear-gradient(135deg,#eef3ea,#ffffff);
-  color:#1a1a1a;
+<body>
+
+<div class="box">
+  <div id="app">Caricamento...</div>
+</div>
+
+<script>
+
+try{
+
+const app = document.getElementById("app");
+
+const DB = [
+  {
+    q:"Inflazione cosa significa?",
+    a:[
+      {t:"Aumento prezzi",v:1},
+      {t:"Diminuzione prezzi",v:0}
+    ]
+  },
+  {
+    q:"Debito pubblico è:",
+    a:[
+      {t:"Debito dello Stato",v:1},
+      {t:"Risparmio privato",v:0}
+    ]
+  }
+];
+
+let i=0;
+let score=0;
+
+function render(){
+
+  const q = DB[i];
+
+  if(!q){
+    app.innerHTML = `
+      <div class="card">
+        <h2>Fine test</h2>
+        <p>Punteggio: ${score}/${DB.length}</p>
+        <button onclick="location.reload()">Riprova</button>
+      </div>`;
+    return;
+  }
+
+  app.innerHTML = `
+    <div class="card">
+      <h2>${q.q}</h2>
+      ${q.a.map((x,idx)=>`
+        <button onclick="answer(${x.v})">${x.t}</button>
+      `).join("")}
+    </div>
+  `;
 }
 
-/* LAYOUT DASHBOARD */
-.topbar{
-  background:#1f3a2e;
-  color:white;
-  padding:14px 20px;
-  font-weight:600;
+function answer(v){
+  if(v) score++;
+  i++;
+  render();
 }
 
-.container{
-  max-width:1000px;
-  margin:auto;
-  padding:20px;
+render();
+
+}catch(e){
+
+document.body.innerHTML =
+"<div class='box error'><h2>ERRORE JS</h2><pre>"+e.message+"</pre></div>";
+
 }
 
-/* CARD STILE APP */
-.card{
-  background:#fff;
-  border-radius:16px;
-  padding:24px;
-  margin-top:20px;
-  box-shadow:0 12px 30px rgba(0,0,0,0.08);
-  border:1px solid #e6e6e6;
-}
+</script>
 
-/* INPUT */
-input{
-  width:100%;
-  padding:14px;
-  border-radius:10px;
-  border:1px solid #ccc;
-  margin:10px 0;
-}
-
-/* BOTTONI */
-button{
-  width:100%;
-  padding:14px;
-  margin:8px 0;
-  border:none;
-  border-radius:12px;
-  cursor:pointer;
-  font-weight:600;
-}
-
-/* PRIMARY */
-.primary{
-  background:#1f3a2e;
-  color:white;
-}
-
-/* SECONDARY */
-.secondary{
-  background:#e8efe6;
-  color:#1a1a1a;
-}
-
-/* RISPOSTE */
-.answer{
-  background:#fff;
-  border:1px solid #d7d7d7;
-  color:#111;
-  text-align:left;
-}
-
-.answer:hover{
-  background:#f3f6f1;
-}
-
-/* TAG CATEGORIA */
-.tag{
-  display:inline-block;
-  padding:5px 10px;
-  font-size:12px;
-  border-radius:20px;
-  background:#e7efe6;
-  margin-bottom:10px;
-}
-
-/* DASHBOARD GRID */
-.grid{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:20px;
-}
-
-@media(max-width:800px){
+</body>
+</html>
