@@ -1,74 +1,85 @@
-// =====================================
-// PATENTE DI CONSAPEVOLEZZA CIVICA v2
-// FIX RANDOM + STRUTTURA SERIA
-// =====================================
-
+// =====================
+// STATE
+// =====================
 
 let user = {
   name: "",
+  level: "",
   score: 0,
   index: 0,
-  questions: []
+  questions: [],
+  currentOptions: []
 };
 
 
 // =====================
-// DATABASE MIGLIORATO
+// DATABASE GRANDE (SEMPLIFICATO MA MULTILIVELLO)
 // =====================
 
 const bank = {
 
   nazionale: [
     {
-      q: "Il governo riduce le accise sui carburanti in un periodo di crisi energetica. Qual è un possibile effetto?",
+      q: "In una crisi energetica, lo Stato riduce le tasse sui carburanti. Cosa può accadere?",
       options: [
         {t:"Riduzione entrate fiscali e possibile aumento deficit", correct:true},
-        {t:"Eliminazione immediata dell’inflazione", correct:false},
-        {t:"Aumento automatico dei salari", correct:false},
-        {t:"Nessun effetto economico", correct:false}
-      ],
-      explanation: "Le accise sono una fonte diretta di entrate per lo Stato."
+        {t:"Eliminazione inflazione", correct:false},
+        {t:"Aumento salari immediato", correct:false},
+        {t:"Nessun effetto", correct:false}
+      ]
     },
-
     {
-      q: "Un Paese aumenta la spesa pubblica senza aumentare le entrate. Cosa accade più probabilmente?",
+      q: "Aumenta la spesa pubblica senza nuove entrate. Cosa succede?",
       options: [
-        {t:"Aumento del debito pubblico", correct:true},
-        {t:"Riduzione immediata dei prezzi", correct:false},
-        {t:"Crescita senza conseguenze", correct:false},
-        {t:"Cancellazione del debito", correct:false}
-      ],
-      explanation: "Quando la spesa supera le entrate si genera deficit."
-    },
+        {t:"Aumento debito pubblico", correct:true},
+        {t:"Riduzione prezzi automatica", correct:false},
+        {t:"Crescita senza costi", correct:false},
+        {t:"Eliminazione tasse", correct:false}
+      ]
+    }
+  ],
 
+  regionale: [
     {
-      q: "Durante una crisi energetica, quale scelta è più sostenibile nel lungo periodo?",
+      q: "In una regione aumentano le liste d’attesa sanitarie. Possibile causa?",
       options: [
-        {t:"Diversificazione delle fonti energetiche", correct:true},
-        {t:"Blocco totale dei consumi", correct:false},
-        {t:"Eliminazione dei trasporti", correct:false},
-        {t:"Sospensione economia", correct:false}
-      ],
-      explanation: "La diversificazione riduce la dipendenza da una sola fonte."
+        {t:"Carenza personale sanitario", correct:true},
+        {t:"Troppi medici inutilizzati", correct:false},
+        {t:"Zero pazienti", correct:false},
+        {t:"Sanità gratuita illimitata", correct:false}
+      ]
+    }
+  ],
+
+  comunale: [
+    {
+      q: "In una città aumenta il traffico. Soluzione strutturale?",
+      options: [
+        {t:"Trasporto pubblico potenziato", correct:true},
+        {t:"Divieto totale auto per sempre", correct:false},
+        {t:"Chiusura città", correct:false},
+        {t:"Eliminazione strade", correct:false}
+      ]
     }
   ]
 };
 
 
 // =====================
-// START
+// SET LEVEL (🔥 FIX PRINCIPALE)
 // =====================
 
-function startTest(){
+function setLevel(level){
 
   user.name = document.getElementById("username").value || "Utente";
+  user.level = level;
 
   user.score = 0;
   user.index = 0;
 
-  let all = bank.nazionale;
+  let pool = bank[level];
 
-  user.questions = shuffle(all).slice(0, 4);
+  user.questions = shuffle(pool).slice(0, 10); // 🔥 ORA NON 4
 
   document.getElementById("home").style.display = "none";
   document.getElementById("quiz").style.display = "block";
@@ -85,17 +96,14 @@ function render(){
 
   let q = user.questions[user.index];
 
-  let options = shuffle([...q.options]); // 🔥 FIX RANDOM
-
+  let options = shuffle([...q.options]);
   user.currentOptions = options;
 
-  let quiz = document.getElementById("quiz");
-
-  quiz.innerHTML = `
+  document.getElementById("quiz").innerHTML = `
     <div class="question-card">
 
       <div class="progress">
-        Domanda ${user.index + 1} / ${user.questions.length}
+        ${user.level.toUpperCase()} - ${user.index + 1}/${user.questions.length}
       </div>
 
       <h3>${q.q}</h3>
@@ -117,9 +125,7 @@ function render(){
 
 function answer(i){
 
-  let selected = user.currentOptions[i];
-
-  if(selected.correct){
+  if(user.currentOptions[i].correct){
     user.score++;
   }
 
@@ -147,16 +153,13 @@ function finish(){
   document.getElementById("result").innerHTML = `
     <div class="hero-card">
 
-      <h2>Risultato ${user.name}</h2>
+      <h2>Risultato</h2>
 
-      <h1>${percent}% Consapevolezza Civica</h1>
+      <h1>${percent}% Consapevolezza</h1>
 
-      <p>
-        Il risultato non misura opinioni politiche,
-        ma comprensione delle conseguenze delle decisioni pubbliche.
-      </p>
+      <p>Livello: ${user.level}</p>
 
-      <button onclick="location.reload()">Riprova</button>
+      <button onclick="location.reload()">Ricomincia</button>
 
     </div>
   `;
