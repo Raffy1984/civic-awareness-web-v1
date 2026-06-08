@@ -3,48 +3,126 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Base stabile</title>
+<title>Citizen Insight Dashboard</title>
+
 <style>
 body{
   margin:0;
   font-family:Arial;
-  background:#f2f2f2;
+  background:#f3f5ef;
 }
+
 .header{
   background:#1f3a2e;
   color:white;
   padding:14px;
+  font-weight:600;
 }
+
 .container{
   max-width:800px;
   margin:auto;
   padding:20px;
 }
+
 .card{
   background:white;
-  padding:20px;
-  border-radius:12px;
+  padding:22px;
+  border-radius:14px;
   margin-top:20px;
+  box-shadow:0 8px 20px rgba(0,0,0,0.06);
 }
+
+input{
+  width:100%;
+  padding:12px;
+  border-radius:10px;
+  border:1px solid #ccc;
+  margin:10px 0;
+}
+
 button{
   width:100%;
   padding:12px;
-  margin-top:10px;
+  margin:6px 0;
+  border:none;
+  border-radius:10px;
+  cursor:pointer;
+}
+
+.primary{
+  background:#1f3a2e;
+  color:white;
+}
+
+.secondary{
+  background:#e7efe6;
+  color:#111;
 }
 </style>
 </head>
 
 <body>
 
-<div class="header">Citizen Insight</div>
+<div class="header">
+Citizen Insight Platform
+</div>
 
 <div class="container">
-  <div class="card" id="app">Se vedi questo, tutto funziona.</div>
+
+<div class="card" id="app">
+  Loading...
+</div>
+
 </div>
 
 <script>
-document.getElementById("app").innerHTML =
-"<h2>Sistema stabile attivo</h2><p>Base corretta caricata.</p>";
+
+let state = {
+  name:"",
+  level:""
+};
+
+const app = document.getElementById("app");
+
+function renderHome(){
+
+  app.innerHTML = `
+    <h2>Dashboard iniziale</h2>
+
+    <input id="name" placeholder="Inserisci nome">
+
+    <p>Scegli livello di analisi:</p>
+
+    <button class="primary" onclick="start('nazionale')">Nazionale</button>
+    <button class="secondary" onclick="start('regionale')">Regionale</button>
+    <button class="secondary" onclick="start('comunale')">Comunale</button>
+  `;
+}
+
+function start(level){
+
+  state.name = document.getElementById("name").value || "Utente";
+  state.level = level;
+
+  app.innerHTML = `
+    <h2>Conferma selezione</h2>
+
+    <p><b>Nome:</b> ${state.name}</p>
+    <p><b>Livello:</b> ${state.level}</p>
+
+    <button class="primary" onclick="alert('QUI PARTIRA IL QUIZ STEP 2')">
+      Avvia test
+    </button>
+
+    <button class="secondary" onclick="renderHome()">
+      Torna indietro
+    </button>
+  `;
+}
+
+renderHome();
+
 </script>
 
 </body>
