@@ -1,122 +1,118 @@
 let state = {
-  level: "",
-  name: "",
-  index: 0,
-  score: 0,
-  questions: [],
-  currentOptions: []
+  level:"",
+  name:"",
+  index:0,
+  score:0,
+  questions:[],
+  currentOptions:[],
+  categories:{economia:0,societa:0,servizi:0}
 };
 
-
 // =====================
-// DATABASE SICURO
+// DATABASE VERO (ESTENSIBILE)
 // =====================
 
 const bank = {
+
   nazionale: [
     {
-      q: "Riduzione accise carburanti: effetto principale?",
-      options: [
-        {t:"Riduce entrate fiscali dello Stato", c:true},
-        {t:"Aumenta salari automaticamente", c:false},
-        {t:"Elimina inflazione", c:false},
-        {t:"Nessun effetto", c:false}
+      q:"Riduzione accise carburanti: effetto principale?",
+      cat:"economia",
+      options:[
+        {t:"Riduce entrate fiscali",c:true},
+        {t:"Aumenta salari subito",c:false},
+        {t:"Elimina inflazione",c:false},
+        {t:"Nessun effetto",c:false}
       ]
     },
     {
-      q: "Aumento debito pubblico significa?",
-      options: [
-        {t:"Più spesa che entrate", c:true},
-        {t:"Meno tasse automatiche", c:false},
-        {t:"Crescita senza costi", c:false},
-        {t:"Nessun impatto", c:false}
+      q:"Aumento debito pubblico indica:",
+      cat:"economia",
+      options:[
+        {t:"Spesa > entrate",c:true},
+        {t:"Crescita senza costi",c:false},
+        {t:"Tasse eliminate",c:false},
+        {t:"Zero conseguenze",c:false}
       ]
     },
     {
-      q: "Crisi energetica: soluzione strutturale?",
-      options: [
-        {t:"Diversificazione fonti energia", c:true},
-        {t:"Stop economia", c:false},
-        {t:"Bloccare consumi", c:false},
-        {t:"Chiusura industria", c:false}
+      q:"Criminalità percepita alta:",
+      cat:"societa",
+      options:[
+        {t:"Problema multifattoriale reale e percepito",c:true},
+        {t:"Solo percezione falsa",c:false},
+        {t:"Non esiste problema",c:false},
+        {t:"Dipende solo dai media",c:false}
       ]
     }
   ],
 
   regionale: [
     {
-      q: "Liste d’attesa sanitarie alte: causa probabile?",
-      options: [
-        {t:"Carenza personale medico", c:true},
-        {t:"Troppi ospedali", c:false},
-        {t:"Zero pazienti", c:false},
-        {t:"Sistema perfetto", c:false}
+      q:"Liste d’attesa sanità regionale:",
+      cat:"servizi",
+      options:[
+        {t:"Carenza personale e risorse",c:true},
+        {t:"Sistema perfetto",c:false},
+        {t:"Troppi ospedali",c:false},
+        {t:"Nessun problema",c:false}
       ]
     },
     {
-      q: "Trasporti regionali inefficienti:",
-      options: [
-        {t:"Investire nel trasporto pubblico", c:true},
-        {t:"Eliminare treni", c:false},
-        {t:"Bloccare mobilità", c:false},
-        {t:"Chiusura sistema", c:false}
+      q:"Trasporti regionali inefficienti:",
+      cat:"servizi",
+      options:[
+        {t:"Investimenti infrastrutturali",c:true},
+        {t:"Eliminazione trasporto pubblico",c:false},
+        {t:"Stop mobilità",c:false},
+        {t:"Nessuna soluzione",c:false}
       ]
     }
   ],
 
   comunale: [
     {
-      q: "Traffico urbano elevato:",
-      options: [
-        {t:"Potenziare trasporto pubblico", c:true},
-        {t:"Chiudere città", c:false},
-        {t:"Eliminare auto", c:false},
-        {t:"Bloccare strade", c:false}
+      q:"Traffico urbano:",
+      cat:"servizi",
+      options:[
+        {t:"Trasporto pubblico potenziato",c:true},
+        {t:"Chiusura città",c:false},
+        {t:"Eliminare auto",c:false},
+        {t:"Bloccare strade",c:false}
       ]
     },
     {
-      q: "Sicurezza urbana percepita bassa:",
-      options: [
-        {t:"Più controlli e illuminazione", c:true},
-        {t:"Meno forze ordine", c:false},
-        {t:"Zero controlli", c:false},
-        {t:"Nessuna azione", c:false}
+      q:"Sicurezza urbana:",
+      cat:"societa",
+      options:[
+        {t:"Controlli + illuminazione",c:true},
+        {t:"Meno forze ordine",c:false},
+        {t:"Zero controlli",c:false},
+        {t:"Nessuna azione",c:false}
       ]
     }
   ]
+
 };
 
 
 // =====================
-// START (ANTI-BLOCCO)
+// START
 // =====================
 
 function start(level){
 
-  const input = document.getElementById("username");
-
   state.level = level;
-  state.name = (input && input.value) ? input.value.trim() : "Utente";
+  state.name = document.getElementById("username").value || "Utente";
 
   state.index = 0;
   state.score = 0;
-
-  // 🔥 GUARD CLAUSE (QUESTA È LA FIX VERA)
-  if(!bank[level]){
-    alert("Errore: livello non trovato -> " + level);
-    return;
-  }
+  state.categories = {economia:0,societa:0,servizi:0};
 
   state.questions = shuffle(bank[level]);
 
-  if(state.questions.length === 0){
-    alert("Errore: nessuna domanda nel livello");
-    return;
-  }
-
-  document.getElementById("home").style.display = "none";
-  document.getElementById("quiz").style.display = "block";
-  document.getElementById("result").style.display = "none";
+  document.getElementById("home").style.display="none";
+  document.getElementById("quiz").style.display="block";
 
   render();
 }
@@ -128,21 +124,20 @@ function start(level){
 
 function render(){
 
-  const q = state.questions[state.index];
+  let q = state.questions[state.index];
+  if(!q) return finish();
 
-  if(!q){
-    return finish();
-  }
-
-  const options = shuffle([...q.options]);
-  state.currentOptions = options;
+  let opts = shuffle([...q.options]);
+  state.currentOptions = opts;
 
   document.getElementById("quiz").innerHTML = `
-    <div class="progress">${state.index+1} / ${state.questions.length}</div>
+    <div class="progress">${state.index+1}/${state.questions.length}</div>
+
+    <div class="tag">${q.cat}</div>
 
     <div class="question">${q.q}</div>
 
-    ${options.map((o,i)=>`
+    ${opts.map((o,i)=>`
       <button class="answer" onclick="answer(${i})">${o.t}</button>
     `).join("")}
   `;
@@ -155,8 +150,12 @@ function render(){
 
 function answer(i){
 
-  if(state.currentOptions[i].c){
+  let q = state.questions[state.index];
+  let selected = state.currentOptions[i];
+
+  if(selected.c){
     state.score++;
+    state.categories[q.cat]++;
   }
 
   state.index++;
@@ -165,22 +164,27 @@ function answer(i){
 
 
 // =====================
-// FINISH
+// FINISH + DASHBOARD
 // =====================
 
 function finish(){
 
-  document.getElementById("quiz").style.display = "none";
-  document.getElementById("result").style.display = "block";
+  document.getElementById("quiz").style.display="none";
+  document.getElementById("result").style.display="block";
 
-  const percent = Math.round((state.score/state.questions.length)*100);
+  let percent = Math.round((state.score/state.questions.length)*100);
 
   document.getElementById("result").innerHTML = `
-    <h2>Risultato</h2>
+    <h2>Risultato finale</h2>
     <h1>${percent}% Consapevolezza</h1>
 
-    <p>Nome: <b>${state.name}</b></p>
-    <p>Livello: <b>${state.level}</b></p>
+    <p><b>Nome:</b> ${state.name}</p>
+    <p><b>Livello:</b> ${state.level}</p>
+
+    <h3>Analisi</h3>
+    <p>Economia: ${state.categories.economia}</p>
+    <p>Società: ${state.categories.societa}</p>
+    <p>Servizi: ${state.categories.servizi}</p>
 
     <button onclick="downloadPDF()">Scarica Report</button>
     <button onclick="location.reload()">Riprova</button>
@@ -194,22 +198,26 @@ function finish(){
 
 function downloadPDF(){
 
-  const text = `
-PATENTE DI CONSAPEVOLEZZA CIVICA
+  let text = `
+PATENTE CONSAPEVOLEZZA CIVICA
 
 Nome: ${state.name}
 Livello: ${state.level}
 
-Punteggio: ${state.score}/${state.questions.length}
+Score: ${state.score}/${state.questions.length}
 Percentuale: ${Math.round((state.score/state.questions.length)*100)}%
+
+Economia: ${state.categories.economia}
+Società: ${state.categories.societa}
+Servizi: ${state.categories.servizi}
   `;
 
-  const blob = new Blob([text], {type:"text/plain"});
-  const url = URL.createObjectURL(blob);
+  let blob = new Blob([text], {type:"text/plain"});
+  let url = URL.createObjectURL(blob);
 
-  const a = document.createElement("a");
+  let a = document.createElement("a");
   a.href = url;
-  a.download = `report_${state.name}.txt`;
+  a.download = "report.txt";
   a.click();
 }
 
@@ -218,6 +226,6 @@ Percentuale: ${Math.round((state.score/state.questions.length)*100)}%
 // UTILS
 // =====================
 
-function shuffle(arr){
-  return [...arr].sort(()=>Math.random()-0.5);
+function shuffle(a){
+  return [...a].sort(()=>Math.random()-0.5);
 }
