@@ -1,10 +1,104 @@
 <!DOCTYPE html>
-<html>
-<body>
-<h1>TEST OK</h1>
-<script>
-alert("JS FUNZIONA");
-document.body.style.background="green";
-</script>
-</body>
-</html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Citizen Insight - Dashboard</title>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<style>
+
+body{
+  margin:0;
+  font-family:Arial;
+  background: linear-gradient(135deg,#eef3ea,#ffffff);
+  color:#1a1a1a;
+}
+
+/* LAYOUT DASHBOARD */
+.topbar{
+  background:#1f3a2e;
+  color:white;
+  padding:14px 20px;
+  font-weight:600;
+}
+
+.container{
+  max-width:1000px;
+  margin:auto;
+  padding:20px;
+}
+
+/* CARD STILE APP */
+.card{
+  background:#fff;
+  border-radius:16px;
+  padding:24px;
+  margin-top:20px;
+  box-shadow:0 12px 30px rgba(0,0,0,0.08);
+  border:1px solid #e6e6e6;
+}
+
+/* INPUT */
+input{
+  width:100%;
+  padding:14px;
+  border-radius:10px;
+  border:1px solid #ccc;
+  margin:10px 0;
+}
+
+/* BOTTONI */
+button{
+  width:100%;
+  padding:14px;
+  margin:8px 0;
+  border:none;
+  border-radius:12px;
+  cursor:pointer;
+  font-weight:600;
+}
+
+/* PRIMARY */
+.primary{
+  background:#1f3a2e;
+  color:white;
+}
+
+/* SECONDARY */
+.secondary{
+  background:#e8efe6;
+  color:#1a1a1a;
+}
+
+/* RISPOSTE */
+.answer{
+  background:#fff;
+  border:1px solid #d7d7d7;
+  color:#111;
+  text-align:left;
+}
+
+.answer:hover{
+  background:#f3f6f1;
+}
+
+/* TAG CATEGORIA */
+.tag{
+  display:inline-block;
+  padding:5px 10px;
+  font-size:12px;
+  border-radius:20px;
+  background:#e7efe6;
+  margin-bottom:10px;
+}
+
+/* DASHBOARD GRID */
+.grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:20px;
+}
+
+@media(max-width:800px){
