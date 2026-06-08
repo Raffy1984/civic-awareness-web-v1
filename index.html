@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Patente di Consapevolezza Civica</title>
 
 <style>
 body{
   margin:0;
-  font-family:Arial;
+  font-family:Arial, sans-serif;
   background:#050914;
   color:white;
 }
@@ -26,20 +26,20 @@ body{
 .overlay{
   position:absolute;
   inset:0;
-  background:rgba(0,0,0,0.72);
+  background:rgba(0,0,0,0.75);
   display:flex;
   align-items:center;
   justify-content:center;
   padding:20px;
-}
-
-.box{
-  max-width:780px;
   text-align:center;
 }
 
+.box{
+  max-width:750px;
+}
+
 h1{
-  font-size:40px;
+  font-size:38px;
   margin-bottom:10px;
 }
 
@@ -110,10 +110,11 @@ button{
 }
 
 .big{
-  font-size:34px;
+  font-size:36px;
   font-weight:bold;
 }
 </style>
+
 </head>
 
 <body>
@@ -124,17 +125,18 @@ button{
     <div class="box">
       <h1>Patente di Consapevolezza Civica</h1>
       <p>
-        Questo strumento non misura conoscenze.<br>
-        Misura la capacità di valutare conseguenze reali su economia, sanità e società.
+        Simulazione di decisioni pubbliche reali.<br>
+        Non misura conoscenza. Misura impatto delle scelte.
       </p>
-      <button class="primary" onclick="startApp()">Inizia simulazione</button>
+
+      <button class="primary" onclick="startApp()">Inizia</button>
     </div>
   </div>
 </div>
 
 <!-- DASHBOARD -->
 <div class="dashboard" id="dashboard">
-  <h2>Seleziona scenario</h2>
+  <h2>Seleziona livello</h2>
 
   <div class="card">
     <button class="primary" onclick="start('nazionale')">🇮🇹 Nazionale</button>
@@ -152,43 +154,31 @@ button{
 <script>
 
 /* =========================
-   ENGINE
+   DATABASE
 ========================= */
 
 const DB = {
-
   nazionale:[
     {
       cat:"Economia",
-      scenario:"L’inflazione cresce costantemente da 14 mesi e il potere d’acquisto delle famiglie si riduce.",
-      q:"Quale intervento è più equilibrato tra stabilità e impatto sociale?",
+      scenario:"L’inflazione aumenta da oltre un anno e il potere d’acquisto diminuisce.",
+      q:"Quale scelta ha impatto più equilibrato?",
       options:[
-        {t:"Aumentare salari e introdurre sostegni mirati",v:2},
-        {t:"Bloccare prezzi dei beni essenziali",v:1},
-        {t:"Ridurre la spesa pubblica in modo drastico",v:0},
-        {t:"Non intervenire per mantenere equilibrio di mercato",v:1}
+        {t:"Aumento salari e sostegni mirati",v:2},
+        {t:"Controllo prezzi immediato",v:1},
+        {t:"Taglio spesa pubblica",v:0},
+        {t:"Nessun intervento",v:1}
       ]
     },
     {
       cat:"Energia",
-      scenario:"La dipendenza energetica estera espone il Paese a forti oscillazioni dei prezzi.",
-      q:"Quale strategia riduce il rischio strutturale nel lungo periodo?",
+      scenario:"Dipendenza energetica estera e prezzi instabili.",
+      q:"Quale strategia è più strutturale?",
       options:[
-        {t:"Investimenti in rinnovabili e rete energetica nazionale",v:2},
-        {t:"Sussidi temporanei alle bollette",v:1},
-        {t:"Aumento tasse consumo energia",v:0},
-        {t:"Controllo prezzi senza riforma infrastrutturale",v:0}
-      ]
-    },
-    {
-      cat:"Lavoro",
-      scenario:"Il mercato del lavoro mostra precarietà diffusa tra i giovani.",
-      q:"Quale politica affronta meglio il problema strutturale?",
-      options:[
-        {t:"Incentivi alle imprese per contratti stabili",v:2},
-        {t:"Riduzione salario minimo",v:0},
-        {t:"Aumento contratti a termine",v:0},
-        {t:"Taglio contributi pensionistici",v:1}
+        {t:"Investimenti in rinnovabili",v:2},
+        {t:"Sussidi temporanei",v:1},
+        {t:"Aumento tasse energia",v:0},
+        {t:"Blocchi prezzi",v:0}
       ]
     }
   ],
@@ -196,24 +186,13 @@ const DB = {
   regionale:[
     {
       cat:"Sanità",
-      scenario:"Le liste d’attesa ospedaliere aumentano e il personale è insufficiente.",
-      q:"Quale intervento è più efficace nel medio periodo?",
+      scenario:"Liste d’attesa in crescita e personale insufficiente.",
+      q:"Quale intervento è più efficace?",
       options:[
-        {t:"Assunzioni + riorganizzazione del sistema sanitario",v:2},
-        {t:"Privatizzazione immediata dei servizi",v:0},
-        {t:"Riduzione prestazioni non urgenti",v:1},
-        {t:"Taglio budget ospedaliero",v:0}
-      ]
-    },
-    {
-      cat:"Trasporti",
-      scenario:"Le infrastrutture regionali risultano obsolete e frammentate.",
-      q:"Qual è la scelta più sostenibile?",
-      options:[
-        {t:"Piano infrastrutturale integrato regionale",v:2},
-        {t:"Riduzione linee pubbliche non redditizie",v:0},
-        {t:"Aumento tasse trasporto",v:0},
-        {t:"Privatizzazione totale senza regolazione",v:1}
+        {t:"Assunzioni + riorganizzazione",v:2},
+        {t:"Privatizzazione rapida",v:0},
+        {t:"Riduzione prestazioni",v:1},
+        {t:"Taglio budget",v:0}
       ]
     }
   ],
@@ -221,24 +200,13 @@ const DB = {
   comunale:[
     {
       cat:"Mobilità",
-      scenario:"Il traffico urbano aumenta e i tempi medi di spostamento peggiorano.",
-      q:"Quale soluzione è più efficace nel medio periodo?",
+      scenario:"Traffico urbano in aumento costante.",
+      q:"Quale soluzione è più efficace?",
       options:[
-        {t:"Trasporto pubblico potenziato + limitazioni traffico",v:2},
-        {t:"Aumento parcheggi centrali",v:0},
+        {t:"Trasporto pubblico potenziato",v:2},
+        {t:"Più parcheggi",v:0},
         {t:"Eliminazione ZTL",v:0},
-        {t:"Riduzione controlli stradali",v:1}
-      ]
-    },
-    {
-      cat:"Sicurezza urbana",
-      scenario:"In alcune aree urbane cresce la percezione di insicurezza.",
-      q:"Qual è l’approccio più equilibrato?",
-      options:[
-        {t:"Investimenti in prevenzione e presenza sul territorio",v:2},
-        {t:"Riduzione illuminazione pubblica",v:0},
-        {t:"Ritiro forze dell’ordine dalle aree critiche",v:0},
-        {t:"Aumento sanzioni senza interventi sociali",v:1}
+        {t:"Meno controlli",v:1}
       ]
     }
   ]
@@ -282,7 +250,7 @@ function start(level){
 
 function render(){
 
-  const item=state.data[state.i];
+  const item = state.data[state.i];
 
   if(!item) return finish();
 
@@ -295,12 +263,14 @@ function render(){
 
     <div class="card">
       ${item.options.map(o=>`
-        <button class="option" onclick="answer(${o.v})">${o.t}</button>
+        <button class="option" onclick="answer(${Number(o.v)})">
+          ${o.t}
+        </button>
       `).join("")}
     </div>
 
     <div class="card">
-      ${state.i+1} / ${state.data.length}
+      Progresso: ${state.i+1} / ${state.data.length}
     </div>
   `;
 }
@@ -310,7 +280,7 @@ function render(){
 ========================= */
 
 function answer(v){
-  state.score += v;
+  state.score += Number(v);
   state.i++;
   render();
 }
@@ -325,13 +295,13 @@ function finish(){
   document.getElementById("report").style.display="block";
 
   const max = state.data.length * 2;
-  const perc = Math.round((state.score/max)*100);
+  const perc = Math.round((state.score / max) * 100);
 
   document.getElementById("report").innerHTML=`
     <div class="card">
       <h2>Indice Consapevolezza Civica</h2>
       <div class="big">${perc}%</div>
-      <p>Valutazione basata su impatto delle decisioni selezionate</p>
+      <p>Valutazione basata su impatto delle decisioni</p>
     </div>
 
     <button class="primary" onclick="location.reload()">Ricomincia</button>
