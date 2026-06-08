@@ -1,17 +1,23 @@
 let nome = "";
 let livello = "";
 let regione = "";
+let comune = "";
 
 let index = 0;
-let score = { sociale: 0, economico: 0, consenso: 0 };
+
+let score = {
+  sociale: 0,
+  economico: 0,
+  consenso: 0
+};
 
 let current = [];
 
 /* =========================
-   SCENARI
+   DATI COMPLETI
 ========================= */
 
-const SCENARI = {
+const DATA = {
   nazionale: [
     {
       titolo: "Crisi economica e salari stagnanti",
@@ -25,14 +31,14 @@ const SCENARI = {
       ]
     },
     {
-      titolo: "Sistema sanitario nazionale",
+      titolo: "Sanità nazionale sotto pressione",
       scenario:
-        "Liste d’attesa crescenti e pressione sul sistema pubblico.",
+        "Liste d’attesa in aumento e sistema pubblico sovraccarico.",
       scelte: [
         { testo: "Assunzioni e investimenti pubblici", impatto: { sociale: 2, economico: -1, consenso: 1 } },
         { testo: "Accordi con privati", impatto: { sociale: 0, economico: 1, consenso: 1 } },
         { testo: "Riduzione prestazioni", impatto: { sociale: -1, economico: 1, consenso: -2 } },
-        { testo: "Nessun cambiamento", impatto: { sociale: -2, economico: 0, consenso: -1 } }
+        { testo: "Nessun intervento", impatto: { sociale: -2, economico: 0, consenso: -1 } }
       ]
     }
   ],
@@ -40,13 +46,12 @@ const SCENARI = {
   regionale: {
     "Lazio": [
       {
-        titolo: "Sanità sotto pressione",
-        scenario:
-          "Liste d’attesa lunghe e strutture sovraccariche.",
+        titolo: "Sanità regionale critica",
+        scenario: "Liste d’attesa e strutture sovraccariche.",
         scelte: [
-          { testo: "Assunzioni e digitalizzazione", impatto: { sociale: 2, economico: -1, consenso: 1 } },
+          { testo: "Investimenti + personale", impatto: { sociale: 2, economico: -1, consenso: 1 } },
           { testo: "Accordi privati", impatto: { sociale: 0, economico: 1, consenso: 1 } },
-          { testo: "Riduzione servizi", impatto: { sociale: -1, economico: 1, consenso: -2 } },
+          { testo: "Tagli servizi", impatto: { sociale: -1, economico: 1, consenso: -2 } },
           { testo: "Nessun intervento", impatto: { sociale: -2, economico: 0, consenso: -1 } }
         ]
       }
@@ -55,8 +60,7 @@ const SCENARI = {
     "Lombardia": [
       {
         titolo: "Traffico e inquinamento",
-        scenario:
-          "Area metropolitana congestionata e inquinamento elevato.",
+        scenario: "Congestione urbana e pressione ambientale.",
         scelte: [
           { testo: "ZTL estese", impatto: { sociale: -1, economico: -1, consenso: -1 } },
           { testo: "Trasporto pubblico potenziato", impatto: { sociale: 2, economico: 1, consenso: 2 } },
@@ -68,9 +72,8 @@ const SCENARI = {
 
     "default": [
       {
-        titolo: "Gestione territoriale",
-        scenario:
-          "Problemi generali di gestione pubblica e risorse limitate.",
+        titolo: "Gestione regionale",
+        scenario: "Problemi generali di governance territoriale.",
         scelte: [
           { testo: "Investimenti strutturali", impatto: { sociale: 2, economico: 1, consenso: 1 } },
           { testo: "Tagli spesa", impatto: { sociale: -1, economico: 1, consenso: -1 } },
@@ -85,13 +88,51 @@ const SCENARI = {
     "Bologna": [
       {
         titolo: "Centro storico e ZTL",
-        scenario:
-          "Conflitto tra residenti, commercianti e turismo.",
+        scenario: "Conflitto tra residenti e commercianti.",
         scelte: [
           { testo: "Ampliare ZTL", impatto: { sociale: 1, economico: -1, consenso: -1 } },
           { testo: "Bloccare restrizioni", impatto: { sociale: -1, economico: 2, consenso: 1 } },
           { testo: "Compromesso orari", impatto: { sociale: 2, economico: 1, consenso: 2 } },
           { testo: "Nessun intervento", impatto: { sociale: -2, economico: 0, consenso: -1 } }
+        ]
+      }
+    ],
+
+    "Milano": [
+      {
+        titolo: "Mobilità urbana critica",
+        scenario: "Traffico e inquinamento elevati.",
+        scelte: [
+          { testo: "ZTL estese", impatto: { sociale: -1, economico: -1, consenso: -1 } },
+          { testo: "Trasporto pubblico", impatto: { sociale: 2, economico: 1, consenso: 2 } },
+          { testo: "Riduzione vincoli", impatto: { sociale: -2, economico: 1, consenso: 1 } },
+          { testo: "Nessun intervento", impatto: { sociale: -2, economico: 0, consenso: -1 } }
+        ]
+      }
+    ],
+
+    "Roma": [
+      {
+        titolo: "Trasporti pubblici inefficienti",
+        scenario: "Sistema trasporti sotto pressione costante.",
+        scelte: [
+          { testo: "Investimenti ATAC", impatto: { sociale: 2, economico: -1, consenso: 1 } },
+          { testo: "Privatizzazione parziale", impatto: { sociale: 0, economico: 1, consenso: 1 } },
+          { testo: "Riduzione linee", impatto: { sociale: -2, economico: 1, consenso: -1 } },
+          { testo: "Nessun intervento", impatto: { sociale: -2, economico: 0, consenso: -1 } }
+        ]
+      }
+    ],
+
+    "default": [
+      {
+        titolo: "Gestione comunale",
+        scenario: "Problemi urbani generici e risorse limitate.",
+        scelte: [
+          { testo: "Investimenti pubblici", impatto: { sociale: 2, economico: 1, consenso: 1 } },
+          { testo: "Tagli servizi", impatto: { sociale: -1, economico: 1, consenso: -1 } },
+          { testo: "Privatizzazione", impatto: { sociale: 0, economico: 2, consenso: 0 } },
+          { testo: "Nessun intervento", impatto: { sociale: -2, economico: 0, consenso: -2 } }
         ]
       }
     ]
@@ -115,34 +156,58 @@ function selezionaLivello(l){
     startQuiz();
   }
 
+  if(l === "regionale"){
+    document.getElementById("selector").style.display = "block";
+    mostraRegioni();
+  }
+
   if(l === "comunale"){
-    startQuiz();
+    document.getElementById("selector").style.display = "block";
+    mostraComuni();
   }
 }
 
 /* =========================
-   REGIONI
+   REGIONI / COMUNI
 ========================= */
 
-function mostraRegioni(){
-  document.getElementById("selector").style.display = "block";
+const REGIONI = ["Lazio","Lombardia","Campania"];
 
+function mostraRegioni(){
   const sel = document.getElementById("regioneSelect");
   sel.innerHTML = "";
-
   REGIONI.forEach(r=>{
-    let opt = document.createElement("option");
-    opt.value = r;
-    opt.textContent = r;
-    sel.appendChild(opt);
+    let o=document.createElement("option");
+    o.value=r;
+    o.textContent=r;
+    sel.appendChild(o);
+  });
+}
+
+const COMUNI = ["Bologna","Milano","Roma"];
+
+function mostraComuni(){
+  const sel = document.getElementById("regioneSelect");
+  sel.innerHTML = "";
+  COMUNI.forEach(c=>{
+    let o=document.createElement("option");
+    o.value=c;
+    o.textContent=c;
+    sel.appendChild(o);
   });
 }
 
 function confermaRegione(){
   regione = document.getElementById("regioneSelect").value;
-  if(!regione) return alert("Seleziona una regione");
 
-  livello = "regionale";
+  if(livello === "regionale"){
+    livello = "regionale";
+  }
+
+  if(livello === "comunale"){
+    livello = "comunale";
+  }
+
   startQuiz();
 }
 
@@ -157,10 +222,16 @@ function startQuiz(){
   index = 0;
   score = { sociale: 0, economico: 0, consenso: 0 };
 
+  if(livello === "nazionale"){
+    current = DATA.nazionale;
+  }
+
   if(livello === "regionale"){
-    current = SCENARI.regionale[regione] || SCENARI.regionale["default"];
-  } else {
-    current = SCENARI[livello] || [];
+    current = DATA.regionale[regione] || DATA.regionale["default"];
+  }
+
+  if(livello === "comunale"){
+    current = DATA.comunale[regione] || DATA.comunale["default"];
   }
 
   render();
@@ -196,7 +267,6 @@ function answer(s,e,c){
   score.sociale += s;
   score.economico += e;
   score.consenso += c;
-
   index++;
   render();
 }
@@ -219,10 +289,9 @@ function finish(){
 
   document.getElementById("report").innerHTML = `
     <h1>${nome}</h1>
-    <p>Livello: ${livello}</p>
-    <p>Regione: ${regione}</p>
+    <p>${livello} - ${regione}</p>
 
-    <h2>Profilo: ${profilo}</h2>
+    <h2>${profilo}</h2>
 
     <p>Sociale: ${score.sociale}</p>
     <p>Economico: ${score.economico}</p>
