@@ -3,194 +3,79 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Consapevolezza Civica</title>
-
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<title>Quiz Base Fix</title>
 
 <style>
-body{
-  margin:0;
-  font-family:Arial;
-  background:#f6f4e8;
-  color:#111;
-}
-
-.container{
-  max-width:850px;
-  margin:auto;
-  padding:20px;
-}
-
-.card{
-  background:#fff;
-  border:2px solid #a7b39a;
-  border-radius:14px;
-  padding:20px;
-  margin-top:20px;
-}
-
-h1,h2,p{
-  color:#111;
-}
-
-input{
-  width:100%;
-  padding:12px;
-  border:2px solid #a7b39a;
-  border-radius:10px;
-  margin:10px 0;
-}
-
-button{
-  width:100%;
-  padding:12px;
-  margin:8px 0;
-  border:none;
-  border-radius:10px;
-  background:#4d5c43;
-  color:white;
-  cursor:pointer;
-}
-
-.answer{
-  width:100%;
-  padding:12px;
-  margin:8px 0;
-  border:2px solid #a7b39a;
-  border-radius:10px;
-  background:#fff;
-  color:#111;
-  cursor:pointer;
-}
-
-.answer:hover{
-  background:#f0eddc;
-}
-
-.tag{
-  display:inline-block;
-  padding:4px 10px;
-  border-radius:20px;
-  background:#e7ecd9;
-  font-size:12px;
-}
+body{font-family:Arial;margin:0;background:#f4f4f4}
+.container{max-width:800px;margin:auto;padding:20px}
+.card{background:white;padding:20px;border-radius:12px;margin-top:20px}
+button{width:100%;padding:12px;margin:6px 0;border:0;background:#333;color:white;border-radius:8px}
+.answer{background:white;border:1px solid #ccc;color:black}
 </style>
 </head>
 
 <body>
 
 <div class="container">
-<div id="app"></div>
+  <div id="app">Caricamento...</div>
 </div>
 
 <script>
 
-const DB = {
-  nazionale: [
-    {
-      q:"Se aumenta l'inflazione cosa succede?",
-      cat:"economia",
-      a:[
-        {t:"Diminuisce il potere d'acquisto",v:1},
-        {t:"Aumenta automaticamente il salario",v:0},
-        {t:"Non cambia nulla",v:0},
-        {t:"Diventa illimitato",v:0}
-      ]
-    },
-    {
-      q:"Il debito pubblico è:",
-      cat:"economia",
-      a:[
-        {t:"Somma dei debiti dello Stato",v:1},
-        {t:"Risparmio pubblico",v:0},
-        {t:"Profitto automatico",v:0},
-        {t:"Nessuna definizione",v:0}
-      ]
-    }
-  ],
+const DB = [
+  {
+    q:"L'inflazione cosa provoca?",
+    a:[
+      {t:"Riduce il potere d'acquisto",v:1},
+      {t:"Aumenta il potere d'acquisto",v:0},
+      {t:"Non ha effetti",v:0},
+      {t:"Blocca i prezzi",v:0}
+    ]
+  },
+  {
+    q:"Il debito pubblico è:",
+    a:[
+      {t:"Debiti dello Stato",v:1},
+      {t:"Risparmio dello Stato",v:0},
+      {t:"Tasse eliminate",v:0},
+      {t:"Entrate extra",v:0}
+    ]
+  }
+];
 
-  regionale: [
-    {
-      q:"Liste d'attesa sanità:",
-      cat:"servizi",
-      a:[
-        {t:"Dipendono da risorse e personale",v:1},
-        {t:"Sono casuali",v:0},
-        {t:"Non esistono",v:0},
-        {t:"Dipendono dal meteo",v:0}
-      ]
-    }
-  ],
-
-  comunale: [
-    {
-      q:"Il traffico urbano si riduce con:",
-      cat:"servizi",
-      a:[
-        {t:"Trasporto pubblico efficiente",v:1},
-        {t:"Più auto private",v:0},
-        {t:"Blocchi casuali",v:0},
-        {t:"Nessuna infrastruttura",v:0}
-      ]
-    }
-  ]
-};
+let i = 0;
+let score = 0;
 
 const app = document.getElementById("app");
 
-let state = {
-  level:null,
-  name:"",
-  i:0,
-  score:0,
-  q:[],
-  stats:{economia:0,societa:0,servizi:0}
-};
-
-function home(){
-  app.innerHTML = `
-    <div class="card">
-      <h1>Consapevolezza Civica</h1>
-
-      <input id="name" placeholder="Nome">
-
-      <button onclick="start('nazionale')">Nazionale</button>
-      <button onclick="start('regionale')">Regionale</button>
-      <button onclick="start('comunale')">Comunale</button>
-    </div>
-  `;
-}
-
-home();
-
-function start(level){
-
-  state.level = level;
-  state.name = document.getElementById("name").value || "Utente";
-
-  state.i = 0;
-  state.score = 0;
-  state.stats = {economia:0,societa:0,servizi:0};
-
-  state.q = DB[level];
-
-  render();
-}
-
 function render(){
 
-  const q = state.q[state.i];
+  const q = DB[i];
 
   if(!q){
-    return finish();
+    app.innerHTML = `<div class="card"><h2>Fine test</h2><p>Punteggio: ${score}/${DB.length}</p><button onclick="location.reload()">Riprova</button></div>`;
+    return;
   }
 
   app.innerHTML = `
     <div class="card">
-
-      <div class="tag">${q.cat}</div>
-
       <h2>${q.q}</h2>
+      ${q.a.map((x,idx)=>`
+        <button class="answer" onclick="answer(${idx})">${x.t}</button>
+      `).join("")}
+    </div>
+  `;
+}
 
-      ${q.a.map((x,i)=>`
-        <button class="answer" onclick
+function answer(idx){
+  if(DB[i].a[idx].v) score++;
+  i++;
+  render();
+}
+
+render();
+
+</script>
+
+</body>
+</html>
