@@ -8,54 +8,36 @@ let user = {
 
 
 // =====================
-// DATABASE
+// DATABASE (MINIMO MA SICURO)
 // =====================
 
 const bank = {
   nazionale: [
     {
-      q: "Il governo riduce le accise sui carburanti. Cosa succede più probabilmente?",
+      q: "Il governo riduce le accise sui carburanti. Cosa succede?",
       options: [
         {t:"Diminuzione entrate fiscali", correct:true},
         {t:"Eliminazione inflazione", correct:false},
-        {t:"Aumento automatico salari", correct:false},
+        {t:"Aumento salari automatico", correct:false},
         {t:"Nessun effetto", correct:false}
       ]
     },
     {
-      q: "Aumenta la spesa pubblica senza nuove entrate. Effetto probabile?",
+      q: "Aumenta la spesa pubblica senza nuove entrate. Effetto?",
       options: [
         {t:"Aumento debito pubblico", correct:true},
-        {t:"Riduzione prezzi", correct:false},
+        {t:"Riduzione prezzi immediata", correct:false},
         {t:"Crescita senza limiti", correct:false},
-        {t:"Azzeramento tasse", correct:false}
+        {t:"Eliminazione tasse", correct:false}
       ]
     },
     {
-      q: "Crisi energetica. Qual è soluzione strutturale?",
+      q: "Crisi energetica: soluzione strutturale migliore?",
       options: [
         {t:"Diversificazione fonti energetiche", correct:true},
         {t:"Blocco economia", correct:false},
-        {t:"Stop consumi globali", correct:false},
-        {t:"Eliminazione industria", correct:false}
-      ]
-    },
-    {
-      q: "Aumento sicurezza urbana. Qual è intervento efficace?",
-      options: [
-        {t:"Prevenzione + controllo territorio", correct:true},
-        {t:"Eliminare città", correct:false},
-        {t:"Nessun intervento", correct:false},
-        {t:"Stop popolazione", correct:false}
-      ]
-    },
-    {
-      q: "Sanità pubblica sotto pressione. Possibile causa?",
-      options: [
-        {t:"Carenza personale medico", correct:true},
-        {t:"Troppi ospedali inutili", correct:false},
-        {t:"Zero pazienti", correct:false},
-        {t:"Eccesso di fondi illimitati", correct:false}
+        {t:"Stop consumi", correct:false},
+        {t:"Azzeramento industria", correct:false}
       ]
     }
   ]
@@ -63,38 +45,59 @@ const bank = {
 
 
 // =====================
-// START
+// START (SAFE MODE)
 // =====================
 
 function setLevel(level){
 
-  user.level = level;
-  user.score = 0;
-  user.index = 0;
+  try {
 
-  let pool = bank[level];
+    user.level = level;
+    user.score = 0;
+    user.index = 0;
 
-  // 🔥 NESSUN slice basso → test reale
-  user.questions = shuffle(pool);
+    if(!bank[level] || bank[level].length === 0){
+      alert("Errore: database vuoto");
+      return;
+    }
 
-  document.getElementById("home").style.display = "none";
-  document.getElementById("quiz").style.display = "block";
+    user.questions = shuffle(bank[level]);
 
-  render();
+    document.getElementById("home").style.display = "none";
+    document.getElementById("quiz").style.display = "block";
+    document.getElementById("result").style.display = "none";
+
+    render();
+
+  } catch(e){
+    console.error(e);
+    alert("Errore avvio quiz");
+  }
 }
 
 
 // =====================
-// RENDER
+// RENDER (SAFE)
 // =====================
 
 function render(){
 
   let q = user.questions[user.index];
 
-  // 🔥 shuffle vero delle opzioni
-  let options = shuffle([...q.options]);
+  // 🔥 BLOCCO ANTI-CRASH
+  if(!q){
+    finish();
+    return;
+  }
 
+  if(!q.options || q.options.length === 0){
+    console.error("Domanda senza opzioni:", q);
+    user.index++;
+    render();
+    return;
+  }
+
+  let options = shuffle([...q.options]);
   user.currentOptions = options;
 
   document.getElementById("quiz").innerHTML = `
@@ -123,22 +126,20 @@ function render(){
 
 function answer(i){
 
+  if(!user.currentOptions[i]) return;
+
   if(user.currentOptions[i].correct){
     user.score++;
   }
 
   user.index++;
 
-  if(user.index >= user.questions.length){
-    finish();
-  } else {
-    render();
-  }
+  render();
 }
 
 
 // =====================
-// FINISH
+// FINISH (SAFE)
 // =====================
 
 function finish(){
@@ -146,12 +147,14 @@ function finish(){
   document.getElementById("quiz").style.display = "none";
   document.getElementById("result").style.display = "block";
 
-  let percent = Math.round((user.score / user.questions.length) * 100);
+  let total = user.questions.length || 1;
+  let percent = Math.round((user.score / total) * 100);
 
   document.getElementById("result").innerHTML = `
     <div class="hero-card">
 
       <h2>Risultato</h2>
+
       <h1>${percent}% Consapevolezza Civica</h1>
 
       <button onclick="location.reload()">Riprova</button>
