@@ -3,12 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Patente Consapevolezza Civica</title>
+<title>Patente di Consapevolezza Civica</title>
 
 <style>
 body{
   margin:0;
-  font-family:Arial;
+  font-family:Arial, sans-serif;
   background:#0b1220;
   color:white;
 }
@@ -21,40 +21,40 @@ body{
   justify-content:center;
   text-align:center;
   background:
-    radial-gradient(circle at center, rgba(255,255,255,0.08), transparent 60%),
-    url("https://upload.wikimedia.org/wikipedia/commons/0/03/Italy_satellite_map.jpg");
-  background-size:cover;
-  background-position:center;
+    url("https://upload.wikimedia.org/wikipedia/commons/0/03/Italy_satellite_map.jpg") center/cover no-repeat;
+  position:relative;
 }
 
 .overlay{
+  position:absolute;
+  inset:0;
   background:rgba(0,0,0,0.65);
-  padding:30px;
-  border-radius:18px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+}
+
+.intro-box{
   max-width:700px;
 }
 
 h1{
-  font-size:34px;
+  font-size:36px;
   margin-bottom:10px;
 }
 
 p{
   opacity:0.85;
+  line-height:1.5;
 }
 
 /* DASHBOARD */
 .dashboard{
   display:none;
-  padding:25px;
+  padding:20px;
   max-width:900px;
   margin:auto;
-}
-
-.grid{
-  display:grid;
-  grid-template-columns:1fr;
-  gap:12px;
 }
 
 .card{
@@ -71,6 +71,7 @@ button{
   border-radius:12px;
   cursor:pointer;
   font-weight:600;
+  margin-top:10px;
 }
 
 .primary{background:#22c55e;color:#000;}
@@ -79,7 +80,7 @@ button{
 /* QUIZ */
 .quiz{
   display:none;
-  padding:25px;
+  padding:20px;
   max-width:900px;
   margin:auto;
 }
@@ -93,8 +94,8 @@ button{
   background:#0f172a;
   border:1px solid #334155;
   color:white;
-  margin:8px 0;
   text-align:left;
+  margin-top:8px;
 }
 
 .answer:hover{
@@ -104,7 +105,7 @@ button{
 /* REPORT */
 .report{
   display:none;
-  padding:25px;
+  padding:20px;
   max-width:900px;
   margin:auto;
 }
@@ -116,24 +117,26 @@ button{
 <!-- INTRO -->
 <div class="intro" id="intro">
   <div class="overlay">
-    <h1>Patente di Consapevolezza Civica</h1>
-    <p>
-      Non è un test di conoscenza.<br>
-      È una simulazione delle conseguenze reali delle decisioni pubbliche.
-    </p>
+    <div class="intro-box">
+      <h1>Patente di Consapevolezza Civica</h1>
+      <p>
+        Un sistema di simulazione delle decisioni pubbliche e dei loro effetti reali.<br>
+        Non misura cosa sai. Misura come ragioni.
+      </p>
 
-    <button class="primary" onclick="go()">Inizia</button>
+      <button class="primary" onclick="goDashboard()">Inizia</button>
+    </div>
   </div>
 </div>
 
 <!-- DASHBOARD -->
-<div class="dashboard" id="dash">
-  <h2>Scegli area</h2>
+<div class="dashboard" id="dashboard">
+  <h2>Scegli livello</h2>
 
   <div class="card">
     <button class="primary" onclick="start('nazionale')">🇮🇹 Nazionale</button>
-    <button class="secondary" onclick="start('regionale')">🏛 Regione</button>
-    <button class="secondary" onclick="start('comunale')">🏙 Comune</button>
+    <button class="secondary" onclick="start('regionale')">🏛 Regionale</button>
+    <button class="secondary" onclick="start('comunale')">🏙 Comunale</button>
   </div>
 </div>
 
@@ -146,29 +149,39 @@ button{
 <script>
 
 /* =========================
-   DATASET REALISTICO
+   SHUFFLE FIX (CRUCIALE)
+========================= */
+function shuffle(arr){
+  return arr
+    .map(v => ({v, r:Math.random()}))
+    .sort((a,b)=>a.r-b.r)
+    .map(x=>x.v);
+}
+
+/* =========================
+   DATABASE
 ========================= */
 
 const DB = {
   nazionale:[
     {
       cat:"Economia reale",
-      q:"Il costo della vita aumenta rapidamente, ma i salari restano fermi. Quale misura può dare sollievo immediato ma crea rischio inflattivo?",
+      q:"Il costo della vita aumenta, ma gli stipendi restano fermi. Quale misura ha effetto immediato ma rischio inflattivo?",
       a:[
         {t:"Aumento salari pubblici generalizzato",v:1},
         {t:"Riduzione spesa sanitaria",v:0},
-        {t:"Blocco totale investimenti pubblici",v:0},
-        {t:"Aumento tasse indirette",v:0}
+        {t:"Taglio investimenti pubblici",v:0},
+        {t:"Aumento IVA sui beni essenziali",v:0}
       ]
     },
     {
       cat:"Energia",
-      q:"Un aumento del prezzo dell’energia colpisce famiglie e imprese. Quale intervento ha effetto più lento ma strutturale?",
+      q:"Un aumento del costo energetico colpisce famiglie e imprese. Quale soluzione è strutturale ma lenta?",
       a:[
         {t:"Investimenti in rinnovabili",v:1},
-        {t:"Sussidi temporanei ai carburanti",v:0},
+        {t:"Sussidi temporanei carburanti",v:0},
         {t:"Riduzione salari pubblici",v:0},
-        {t:"Aumento IVA energia",v:0}
+        {t:"Controllo prezzi totale immediato",v:0}
       ]
     }
   ],
@@ -176,12 +189,12 @@ const DB = {
   regionale:[
     {
       cat:"Sanità",
-      q:"Le liste d’attesa aumentano. Quale intervento migliora il sistema nel medio periodo?",
+      q:"Le liste d’attesa aumentano. Qual è la causa più probabile?",
       a:[
-        {t:"Assunzione personale sanitario e riorganizzazione strutturale",v:1},
-        {t:"Riduzione numero ospedali",v:0},
-        {t:"Taglio budget sanitario",v:0},
-        {t:"Privatizzazione totale immediata",v:0}
+        {t:"Squilibrio tra domanda e risorse disponibili",v:1},
+        {t:"Troppi medici inutilizzati",v:0},
+        {t:"Nessuna domanda sanitaria",v:0},
+        {t:"Eccesso di infrastrutture ospedaliere",v:0}
       ]
     }
   ],
@@ -189,12 +202,12 @@ const DB = {
   comunale:[
     {
       cat:"Mobilità",
-      q:"Una città è congestionata dal traffico privato. Quale misura è più efficace nel medio termine?",
+      q:"Il traffico urbano è in crescita costante. Quale intervento è più efficace nel medio periodo?",
       a:[
-        {t:"Potenziare trasporto pubblico e ZTL",v:1},
-        {t:"Eliminare tutte le regole stradali",v:0},
+        {t:"Potenziare trasporto pubblico",v:1},
         {t:"Aumentare parcheggi centrali",v:0},
-        {t:"Ridurre illuminazione stradale",v:0}
+        {t:"Rimuovere limiti traffico",v:0},
+        {t:"Ridurre semafori",v:0}
       ]
     }
   ]
@@ -215,9 +228,9 @@ let state={
    NAV
 ========================= */
 
-function go(){
+function goDashboard(){
   document.getElementById("intro").style.display="none";
-  document.getElementById("dash").style.display="block";
+  document.getElementById("dashboard").style.display="block";
 }
 
 /* =========================
@@ -230,21 +243,25 @@ function start(l){
   state.i=0;
   state.score=0;
 
-  document.getElementById("dash").style.display="none";
+  document.getElementById("dashboard").style.display="none";
   document.getElementById("quiz").style.display="block";
 
   render();
 }
 
 /* =========================
-   RENDER
+   RENDER QUIZ
 ========================= */
 
 function render(){
 
   const q=state.q[state.i];
 
-  if(!q) return finish();
+  if(!q){
+    return finish();
+  }
+
+  const shuffled = shuffle(q.a);
 
   document.getElementById("quiz").innerHTML=`
     <div class="card">
@@ -253,13 +270,13 @@ function render(){
     </div>
 
     <div class="card">
-      ${q.a.map(x=>`
+      ${shuffled.map(x=>`
         <button class="answer" onclick="answer(${x.v})">${x.t}</button>
       `).join("")}
     </div>
 
     <div class="card">
-      ${state.i+1}/${state.q.length}
+      Domanda ${state.i+1} / ${state.q.length}
     </div>
   `;
 }
@@ -283,18 +300,21 @@ function finish(){
   document.getElementById("quiz").style.display="none";
   document.getElementById("report").style.display="block";
 
-  let perc=Math.round((state.score/state.q.length)*100);
+  const perc = Math.round((state.score/state.q.length)*100);
 
   document.getElementById("report").innerHTML=`
     <div class="card">
-      <h2>Risultato</h2>
+      <h2>Risultato finale</h2>
       <h1>${perc}%</h1>
       <p>Consapevolezza su impatto delle decisioni pubbliche</p>
     </div>
 
-    <button class="primary" onclick="location.reload()">Restart</button>
+    <button class="primary" onclick="location.reload()">Ricomincia</button>
   `;
 }
+
+/* INIT */
+goDashboard();
 
 </script>
 
