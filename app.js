@@ -1,11 +1,8 @@
-// =========================
-// DATA (SCALABILE)
-// =========================
-
 const DB = {
+
   nazionale: [
     {
-      q:"Riduzione accise carburanti: effetto principale?",
+      q:"Riduzione accise carburanti: cosa comporta?",
       cat:"economia",
       a:[
         {t:"Riduce entrate fiscali",v:1},
@@ -15,7 +12,7 @@ const DB = {
       ]
     },
     {
-      q:"Debito pubblico in crescita indica:",
+      q:"Debito pubblico in crescita significa:",
       cat:"economia",
       a:[
         {t:"Spesa superiore alle entrate",v:1},
@@ -23,23 +20,40 @@ const DB = {
         {t:"Crescita gratuita",v:0},
         {t:"Nessun impatto",v:0}
       ]
-    },
+    }
+  ],
+
+  regionale: [
     {
-      q:"Criminalità urbana:",
-      cat:"societa",
+      q:"Liste d’attesa sanità regionale:",
+      cat:"servizi",
       a:[
-        {t:"Fenomeno reale e sociale",v:1},
-        {t:"Solo percezione",v:0},
-        {t:"Non esiste problema",v:0},
-        {t:"Solo media",v:0}
+        {t:"Carenza risorse e personale",v:1},
+        {t:"Sistema perfetto",v:0},
+        {t:"Troppi ospedali",v:0},
+        {t:"Nessun problema",v:0}
+      ]
+    }
+  ],
+
+  comunale: [
+    {
+      q:"Traffico urbano:",
+      cat:"servizi",
+      a:[
+        {t:"Potenziare trasporto pubblico",v:1},
+        {t:"Chiudere città",v:0},
+        {t:"Eliminare auto",v:0},
+        {t:"Bloccare tutto",v:0}
       ]
     }
   ]
 };
 
-// =========================
-// STATE ENGINE
-// =========================
+
+// =====================
+// STATE
+// =====================
 
 const state = {
   level:null,
@@ -50,17 +64,14 @@ const state = {
   stats:{economia:0,societa:0,servizi:0}
 };
 
-// =========================
-// UI ROOT
-// =========================
-
 const app = document.getElementById("app");
 
-// =========================
-// HOME
-// =========================
 
-function renderHome(){
+// =====================
+// HOME
+// =====================
+
+function home(){
   app.innerHTML = `
     <div class="card">
       <h1>Consapevolezza Civica</h1>
@@ -68,33 +79,39 @@ function renderHome(){
       <input id="name" placeholder="Nome">
 
       <button onclick="start('nazionale')">Nazionale</button>
+      <button onclick="start('regionale')">Regionale</button>
+      <button onclick="start('comunale')">Comunale</button>
     </div>
   `;
 }
 
-renderHome();
+home();
 
-// =========================
+
+// =====================
 // START
-// =========================
+// =====================
 
 function start(level){
 
   state.level = level;
   state.name = document.getElementById("name").value || "Utente";
-  state.q = shuffle([...DB[level]]);
+
   state.i = 0;
   state.score = 0;
   state.stats = {economia:0,societa:0,servizi:0};
 
-  renderQuestion();
+  state.q = shuffle([...DB[level]]);
+
+  render();
 }
 
-// =========================
-// QUESTION
-// =========================
 
-function renderQuestion(){
+// =====================
+// RENDER
+// =====================
+
+function render(){
 
   const q = state.q[state.i];
 
@@ -113,38 +130,39 @@ function renderQuestion(){
         <button class="answer" onclick="answer(${idx})">${x.t}</button>
       `).join("")}
 
-      <p>${state.i+1} / ${state.q.length}</p>
+      <p>${state.i+1}/${state.q.length}</p>
 
     </div>
   `;
 }
 
-// =========================
-// ANSWER
-// =========================
 
-function answer(idx){
+// =====================
+// ANSWER
+// =====================
+
+function answer(i){
 
   const q = state.q[state.i];
-  const ans = q.a[idx];
+  const a = q.a[i];
 
-  if(ans.v){
+  if(a.v){
     state.score++;
     state.stats[q.cat]++;
   }
 
   state.i++;
-  renderQuestion();
+  render();
 }
 
-// =========================
+
+// =====================
 // FINISH
-// =========================
+// =====================
 
 function finish(){
 
-  const total = state.q.length;
-  const percent = Math.round((state.score/total)*100);
+  const percent = Math.round((state.score/state.q.length)*100);
 
   app.innerHTML = `
     <div class="card">
@@ -152,18 +170,18 @@ function finish(){
       <h2>Report finale</h2>
       <h1>${percent}%</h1>
 
-      <p>Nome: ${state.name}</p>
-      <p>Livello: ${state.level}</p>
+      <p>${state.name}</p>
+      <p>${state.level}</p>
 
       <canvas id="chart"></canvas>
 
-      <button onclick="download()">Scarica Report</button>
+      <button onclick="pdf()">Scarica PDF</button>
       <button onclick="location.reload()">Riprova</button>
 
     </div>
   `;
 
-  new Chart(document.getElementById("chart"), {
+  new Chart(document.getElementById("chart"),{
     type:"pie",
     data:{
       labels:["Economia","Società","Servizi"],
@@ -178,40 +196,37 @@ function finish(){
   });
 }
 
-// =========================
-// PDF (PRINT CLEAN)
-// =========================
 
-function download(){
+// =====================
+// PDF
+// =====================
 
-  const percent = Math.round((state.score/state.q.length)*100);
+function pdf(){
 
   const w = window.open();
 
   w.document.write(`
     <html>
     <head>
-      <title>Report</title>
+      <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
       <style>
-        body{font-family:Arial;padding:40px;background:#f6f6f6}
-        .box{border:3px solid #4f5f45;padding:25px;background:white}
-        h1{color:#4f5f45}
+        body{font-family:Arial;padding:30px;background:#eee}
+        .box{background:white;border:3px solid #4f5f45;padding:20px}
       </style>
     </head>
+
     <body>
 
       <div class="box">
         <h1>Consapevolezza Civica</h1>
         <p>${state.name}</p>
         <p>${state.level}</p>
-        <p>${percent}%</p>
 
         <canvas id="c"></canvas>
       </div>
 
-      <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
       <script>
-        new Chart(document.getElementById("c"), {
+        new Chart(document.getElementById("c"),{
           type:"pie",
           data:{
             labels:["Economia","Società","Servizi"],
@@ -235,9 +250,10 @@ function download(){
   w.document.close();
 }
 
-// =========================
+
+// =====================
 // UTILS
-// =========================
+// =====================
 
 function shuffle(a){
   return a.sort(()=>Math.random()-0.5);
