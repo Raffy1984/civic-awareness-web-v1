@@ -5,50 +5,154 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Patente di Consapevolezza Civica</title>
 
-<link rel="stylesheet" href="style.css">
+<style>
+body{
+  margin:0;
+  font-family:Arial, sans-serif;
+  background:#050914;
+  color:white;
+}
+
+/* INTRO */
+.intro{
+  height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:url("https://upload.wikimedia.org/wikipedia/commons/0/03/Italy_satellite_map.jpg") center/cover no-repeat;
+  position:relative;
+}
+
+.overlay{
+  position:absolute;
+  inset:0;
+  background:rgba(0,0,0,0.75);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  padding:20px;
+}
+
+.box{
+  max-width:700px;
+}
+
+h1{
+  font-size:38px;
+}
+
+input{
+  padding:12px;
+  width:80%;
+  margin-top:10px;
+  border-radius:8px;
+  border:none;
+}
+
+button{
+  padding:12px;
+  margin-top:10px;
+  border:none;
+  border-radius:10px;
+  cursor:pointer;
+  font-weight:bold;
+}
+
+.primary{background:#22c55e;color:black;}
+.secondary{background:#1f2937;color:white;}
+
+/* DASHBOARD */
+.dashboard{
+  display:none;
+  padding:20px;
+  text-align:center;
+}
+
+/* SELECTOR */
+.selector{
+  display:none;
+  margin-top:20px;
+}
+
+select{
+  padding:12px;
+  border-radius:8px;
+  width:60%;
+}
+
+/* QUIZ */
+#quiz{
+  display:none;
+  padding:20px;
+}
+
+.card{
+  background:#0f172a;
+  padding:15px;
+  border-radius:12px;
+  margin-top:10px;
+}
+
+.optionBtn{
+  width:100%;
+  margin-top:10px;
+  background:#111827;
+  color:white;
+}
+
+/* REPORT */
+#report{
+  display:none;
+  padding:20px;
+}
+</style>
+
 </head>
 
 <body>
 
 <!-- INTRO -->
-<div id="intro" class="intro">
+<div class="intro" id="intro">
   <div class="overlay">
     <div class="box">
       <h1>Patente di Consapevolezza Civica</h1>
-      <p>Simulazione decisionale su temi pubblici reali. Le tue scelte determinano il profilo finale.</p>
-      <input id="nomeUtente" placeholder="Inserisci il tuo nome">
-      <button onclick="avvia()">Inizia</button>
+      <p>Simulatore di decisioni pubbliche reali. Ogni scelta ha conseguenze.</p>
+
+      <input id="nomeUtente" placeholder="Inserisci il tuo nome" />
+
+      <button class="primary" onclick="avvia()">Inizia</button>
     </div>
   </div>
 </div>
 
 <!-- DASHBOARD -->
-<div id="dashboard" class="dashboard" style="display:none;">
+<div class="dashboard" id="dashboard">
 
   <h2>Seleziona livello</h2>
 
-  <button onclick="selezionaLivello('nazionale')">🇮🇹 Nazionale</button>
-  <button onclick="mostraRegioni()">🏛 Regionale</button>
-  <button onclick="selezionaLivello('comunale')">🏙 Comunale (demo)</button>
+  <button class="primary" onclick="selezionaLivello('nazionale')">🇮🇹 Nazionale</button>
+  <button class="secondary" onclick="selezionaLivello('regionale')">🏛 Regionale</button>
+  <button class="secondary" onclick="selezionaLivello('comunale')">🏙 Comunale</button>
 
-  <!-- REGIONI -->
-  <div id="selector" style="display:none; margin-top:20px;">
-    <h3>Seleziona Regione</h3>
+  <!-- SELECTOR REGIONI / COMUNI -->
+  <div class="selector" id="selector">
+
+    <h3>Seleziona territorio</h3>
 
     <select id="regioneSelect"></select>
 
-    <button onclick="confermaRegione()">Conferma Regione</button>
-  </div>
+    <button class="primary" onclick="confermaRegione()">Conferma</button>
 
+  </div>
 </div>
 
 <!-- QUIZ -->
-<div id="quiz" class="quiz"></div>
+<div id="quiz"></div>
 
 <!-- REPORT -->
-<div id="report" class="report"></div>
+<div id="report"></div>
 
-<script src="territori.js"></script>
 <script src="app.js"></script>
 
 </body>
