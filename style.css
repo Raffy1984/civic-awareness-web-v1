@@ -1,8 +1,7 @@
 body{
   font-family: Arial, sans-serif;
   margin:0;
-  padding:0;
-  background: radial-gradient(circle at top, #ffec8d, #ffffff);
+  background: radial-gradient(circle at top, #ffeaa0, #ffffff);
   color:#1f1f1f;
 }
 
@@ -12,71 +11,67 @@ body{
   padding:20px;
 }
 
-.hero-card{
-  background:#fff;
+.card{
+  background:white;
   border:2px solid #9eb888;
-  border-radius:20px;
-  padding:40px;
+  border-radius:18px;
+  padding:30px;
+  margin-top:20px;
   text-align:center;
-  color:#1f1f1f;
 }
 
-h1,h2,h3,p{
-  color:#1f1f1f;
+h1{
+  color:#4f5f45;
 }
 
 input{
   width:100%;
   max-width:500px;
-  padding:14px;
+  padding:12px;
   margin:10px 0;
   border:2px solid #9eb888;
   border-radius:10px;
-  color:#000;
-  background:#fff;
 }
 
 button{
   width:100%;
   max-width:500px;
-  padding:14px;
-  margin-top:10px;
+  padding:12px;
+  margin:8px 0;
   border:none;
   border-radius:10px;
-  background:#5f6f55;
-  color:#ffffff;
+  background:#4f5f45;
+  color:white;
   cursor:pointer;
 }
 
-.question-card{
-  background:#fff;
-  border:2px solid #9eb888;
-  border-radius:15px;
-  padding:25px;
-  margin-top:20px;
-  color:#1f1f1f;
+.question{
+  font-size:18px;
+  margin-bottom:15px;
 }
 
-.answer-btn{
-  display:block;
+.answer{
   width:100%;
-  margin:10px 0;
   padding:12px;
-  border-radius:10px;
+  margin:8px 0;
   border:2px solid #9eb888;
-  background:#ffffff;
-  color:#1f1f1f !important;   /* 🔥 FIX CRUCIALE */
+  background:white;
+  border-radius:10px;
   cursor:pointer;
-  font-size:16px;
+  color:#1f1f1f;
 }
 
-.answer-btn:hover{
-  background:#ffec8d;
-  color:#1f1f1f;
+.answer:hover{
+  background:#ffeaa0;
 }
 
 .progress{
   font-weight:bold;
   margin-bottom:10px;
-  color:#1f1f1f;
+}
+
+.small{
+  font-size:14px;
+  opacity:0.8;
+  margin-top:10px;
 }
