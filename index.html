@@ -1,36 +1,28 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Patente Civica</title>
-<link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quiz Civico</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
 <div class="container">
 
-  <!-- HOME -->
   <div id="home" class="hero-card">
 
-    <h1>Patente di Consapevolezza Civica</h1>
-
-    <p class="hook">
-      Scegli il livello del test
-    </p>
+    <h1>Patente Civica</h1>
 
     <input id="username" placeholder="Nome (opzionale)">
 
-    <button onclick="setLevel('nazionale')">Nazionale</button>
-    <button onclick="setLevel('regionale')">Regionale</button>
-    <button onclick="setLevel('comunale')">Comunale</button>
+    <button onclick="initQuiz('nazionale')">Nazionale</button>
 
   </div>
 
-  <div id="quiz" style="display:none;"></div>
-
-  <div id="result" style="display:none;"></div>
+  <div id="quiz"></div>
+  <div id="result"></div>
 
 </div>
 
