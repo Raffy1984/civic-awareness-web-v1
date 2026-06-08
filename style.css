@@ -1,7 +1,7 @@
 body{
-  font-family: Arial, sans-serif;
   margin:0;
-  background: radial-gradient(circle at top, #ffeaa0, #ffffff);
+  font-family: Arial;
+  background: linear-gradient(180deg,#fff3b0,#ffffff);
   color:#1f1f1f;
 }
 
@@ -12,32 +12,37 @@ body{
 }
 
 .card{
-  background:white;
+  background:#fff;
   border:2px solid #9eb888;
   border-radius:18px;
   padding:30px;
   margin-top:20px;
-  text-align:center;
 }
 
 h1{
   color:#4f5f45;
 }
 
+.sub{
+  opacity:0.7;
+}
+
 input{
   width:100%;
-  max-width:500px;
   padding:12px;
   margin:10px 0;
   border:2px solid #9eb888;
   border-radius:10px;
 }
 
+.grid{
+  display:grid;
+  grid-template-columns:1fr;
+  gap:10px;
+}
+
 button{
-  width:100%;
-  max-width:500px;
   padding:12px;
-  margin:8px 0;
   border:none;
   border-radius:10px;
   background:#4f5f45;
@@ -55,14 +60,13 @@ button{
   padding:12px;
   margin:8px 0;
   border:2px solid #9eb888;
-  background:white;
   border-radius:10px;
+  background:white;
   cursor:pointer;
-  color:#1f1f1f;
 }
 
 .answer:hover{
-  background:#ffeaa0;
+  background:#fff3b0;
 }
 
 .progress{
@@ -70,7 +74,11 @@ button{
   margin-bottom:10px;
 }
 
-.small{
-  font-size:13px;
-  opacity:0.7;
+.tag{
+  display:inline-block;
+  padding:4px 10px;
+  border-radius:20px;
+  background:#e9f0df;
+  font-size:12px;
+  margin-bottom:10px;
 }
