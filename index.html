@@ -2,19 +2,48 @@
 <html lang="it">
 <head>
   <meta charset="UTF-8">
-  <title>Quiz</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Patente di Consapevolezza Civica</title>
+
+  <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-  <!-- BOTTONE START -->
-  <button onclick="start()">START TEST</button>
+<div class="container">
 
-  <!-- QUI APPARE IL QUIZ -->
-  <div id="output"></div>
+  <!-- DASHBOARD INIZIALE -->
+  <div id="home" class="hero-card">
 
-  <!-- COLLEGAMENTO AL JS -->
-  <script src="app.js"></script>
+    <h1>Patente di Consapevolezza Civica</h1>
+
+    <p class="hook">
+      Ogni giorno si parla di politica, economia, sicurezza e società.
+      Ma comprendere le conseguenze delle decisioni pubbliche è un'altra cosa.
+    </p>
+
+    <p class="topics">
+      Questo test non misura le tue opinioni.<br>
+      Misura quanto conosci le conseguenze delle scelte reali.
+    </p>
+
+    <input id="username" placeholder="Nome (opzionale)">
+
+    <button onclick="startTest()">Inizia il test</button>
+
+  </div>
+
+
+  <!-- QUIZ -->
+  <div id="quiz" style="display:none;"></div>
+
+
+  <!-- RISULTATO -->
+  <div id="result" style="display:none;"></div>
+
+</div>
+
+<script src="app.js"></script>
 
 </body>
 </html>
