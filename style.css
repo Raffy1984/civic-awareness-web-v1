@@ -2,7 +2,7 @@ body{
   margin:0;
   font-family: Arial;
   background: linear-gradient(180deg,#fff3b0,#ffffff);
-  color:#1a1a1a;
+  color:#111;
 }
 
 .container{
@@ -17,11 +17,22 @@ body{
   border-radius:18px;
   padding:30px;
   margin-top:20px;
-  color:#1a1a1a;
+  color:#111;
 }
 
-h1,h2,h3,p,div,span{
-  color:#1a1a1a;
+h1,h2,p,div,span{
+  color:#111;
+}
+
+.intro{
+  font-size:14px;
+  opacity:0.8;
+  margin-bottom:10px;
+}
+
+.sub{
+  opacity:0.7;
+  margin-bottom:15px;
 }
 
 input{
@@ -39,7 +50,7 @@ button{
   border:none;
   border-radius:10px;
   background:#4f5f45;
-  color:white;
+  color:#fff;
   cursor:pointer;
 }
 
@@ -49,7 +60,7 @@ button:hover{
 
 .question{
   font-size:18px;
-  margin-bottom:15px;
+  margin:15px 0;
 }
 
 .answer{
@@ -59,6 +70,7 @@ button:hover{
   border:2px solid #9eb888;
   border-radius:10px;
   background:#fff;
+  color:#111;
   cursor:pointer;
 }
 
@@ -73,9 +85,9 @@ button:hover{
 
 .tag{
   display:inline-block;
-  padding:4px 10px;
+  padding:5px 10px;
   border-radius:20px;
-  background:#e9f0df;
+  background:#e8efe2;
   font-size:12px;
   margin-bottom:10px;
 }
