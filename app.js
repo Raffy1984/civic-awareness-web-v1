@@ -8,41 +8,42 @@ let state = {
   categories:{economia:0,societa:0,servizi:0}
 };
 
+
 // =====================
-// DATABASE VERO (ESTENSIBILE)
+// DATABASE
 // =====================
 
 const bank = {
 
   nazionale: [
     {
-      q:"Riduzione accise carburanti: effetto principale?",
+      q:"Riduzione accise carburanti: cosa comporta?",
       cat:"economia",
       options:[
-        {t:"Riduce entrate fiscali",c:true},
-        {t:"Aumenta salari subito",c:false},
-        {t:"Elimina inflazione",c:false},
+        {t:"Riduzione entrate fiscali dello Stato",c:true},
+        {t:"Aumento automatico salari",c:false},
+        {t:"Eliminazione inflazione",c:false},
         {t:"Nessun effetto",c:false}
       ]
     },
     {
-      q:"Aumento debito pubblico indica:",
+      q:"Aumento debito pubblico significa:",
       cat:"economia",
       options:[
-        {t:"Spesa > entrate",c:true},
+        {t:"Spesa superiore alle entrate",c:true},
         {t:"Crescita senza costi",c:false},
         {t:"Tasse eliminate",c:false},
-        {t:"Zero conseguenze",c:false}
+        {t:"Nessun impatto",c:false}
       ]
     },
     {
-      q:"Criminalità percepita alta:",
+      q:"Criminalità urbana:",
       cat:"societa",
       options:[
-        {t:"Problema multifattoriale reale e percepito",c:true},
-        {t:"Solo percezione falsa",c:false},
+        {t:"Fenomeno reale + percezione sociale",c:true},
+        {t:"Solo percezione mediatica",c:false},
         {t:"Non esiste problema",c:false},
-        {t:"Dipende solo dai media",c:false}
+        {t:"Dipende solo dalla politica",c:false}
       ]
     }
   ],
@@ -57,16 +58,6 @@ const bank = {
         {t:"Troppi ospedali",c:false},
         {t:"Nessun problema",c:false}
       ]
-    },
-    {
-      q:"Trasporti regionali inefficienti:",
-      cat:"servizi",
-      options:[
-        {t:"Investimenti infrastrutturali",c:true},
-        {t:"Eliminazione trasporto pubblico",c:false},
-        {t:"Stop mobilità",c:false},
-        {t:"Nessuna soluzione",c:false}
-      ]
     }
   ],
 
@@ -75,24 +66,13 @@ const bank = {
       q:"Traffico urbano:",
       cat:"servizi",
       options:[
-        {t:"Trasporto pubblico potenziato",c:true},
+        {t:"Potenziamento trasporto pubblico",c:true},
         {t:"Chiusura città",c:false},
-        {t:"Eliminare auto",c:false},
-        {t:"Bloccare strade",c:false}
-      ]
-    },
-    {
-      q:"Sicurezza urbana:",
-      cat:"societa",
-      options:[
-        {t:"Controlli + illuminazione",c:true},
-        {t:"Meno forze ordine",c:false},
-        {t:"Zero controlli",c:false},
-        {t:"Nessuna azione",c:false}
+        {t:"Eliminazione auto",c:false},
+        {t:"Bloccare tutto",c:false}
       ]
     }
   ]
-
 };
 
 
@@ -113,6 +93,7 @@ function start(level){
 
   document.getElementById("home").style.display="none";
   document.getElementById("quiz").style.display="block";
+  document.getElementById("result").style.display="none";
 
   render();
 }
@@ -151,9 +132,9 @@ function render(){
 function answer(i){
 
   let q = state.questions[state.index];
-  let selected = state.currentOptions[i];
+  let sel = state.currentOptions[i];
 
-  if(selected.c){
+  if(sel.c){
     state.score++;
     state.categories[q.cat]++;
   }
@@ -164,7 +145,7 @@ function answer(i){
 
 
 // =====================
-// FINISH + DASHBOARD
+// FINISH
 // =====================
 
 function finish(){
@@ -172,53 +153,103 @@ function finish(){
   document.getElementById("quiz").style.display="none";
   document.getElementById("result").style.display="block";
 
-  let percent = Math.round((state.score/state.questions.length)*100);
+  let total = state.questions.length;
+  let percent = Math.round((state.score/total)*100);
 
   document.getElementById("result").innerHTML = `
-    <h2>Risultato finale</h2>
-    <h1>${percent}% Consapevolezza</h1>
+    <h2>Patente di Consapevolezza Civica</h2>
+    <h1>${percent}%</h1>
 
     <p><b>Nome:</b> ${state.name}</p>
     <p><b>Livello:</b> ${state.level}</p>
 
-    <h3>Analisi</h3>
-    <p>Economia: ${state.categories.economia}</p>
-    <p>Società: ${state.categories.societa}</p>
-    <p>Servizi: ${state.categories.servizi}</p>
+    <canvas id="chart" width="300" height="300"></canvas>
 
-    <button onclick="downloadPDF()">Scarica Report</button>
+    <button onclick="downloadPDF()">Scarica PDF</button>
     <button onclick="location.reload()">Riprova</button>
   `;
+
+  drawChart();
 }
 
 
 // =====================
-// PDF
+// GRAFICO
+// =====================
+
+function drawChart(){
+
+  new Chart(document.getElementById("chart"), {
+    type:"pie",
+    data:{
+      labels:["Economia","Società","Servizi"],
+      datasets:[{
+        data:[
+          state.categories.economia,
+          state.categories.societa,
+          state.categories.servizi
+        ]
+      }]
+    }
+  });
+}
+
+
+// =====================
+// PDF (STAMPA PROFESSIONALE)
 // =====================
 
 function downloadPDF(){
 
-  let text = `
-PATENTE CONSAPEVOLEZZA CIVICA
+  const percent = Math.round((state.score/state.questions.length)*100);
 
-Nome: ${state.name}
-Livello: ${state.level}
+  const win = window.open("", "_blank");
 
-Score: ${state.score}/${state.questions.length}
-Percentuale: ${Math.round((state.score/state.questions.length)*100)}%
+  win.document.write(`
+  <html>
+  <head>
+    <title>Report</title>
+    <style>
+      body{font-family:Arial;padding:40px;}
+      h1{color:#4f5f45;}
+    </style>
+  </head>
 
-Economia: ${state.categories.economia}
-Società: ${state.categories.societa}
-Servizi: ${state.categories.servizi}
-  `;
+  <body>
 
-  let blob = new Blob([text], {type:"text/plain"});
-  let url = URL.createObjectURL(blob);
+    <h1>Patente di Consapevolezza Civica</h1>
 
-  let a = document.createElement("a");
-  a.href = url;
-  a.download = "report.txt";
-  a.click();
+    <p><b>Nome:</b> ${state.name}</p>
+    <p><b>Livello:</b> ${state.level}</p>
+    <p><b>Punteggio:</b> ${percent}%</p>
+
+    <canvas id="pdfChart" width="400" height="400"></canvas>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <script>
+      new Chart(document.getElementById("pdfChart"), {
+        type:"pie",
+        data:{
+          labels:["Economia","Società","Servizi"],
+          datasets:[{
+            data:[
+              ${state.categories.economia},
+              ${state.categories.societa},
+              ${state.categories.servizi}
+            ]
+          }]
+        }
+      });
+
+      setTimeout(()=>window.print(), 600);
+    </script>
+
+  </body>
+  </html>
+  `);
+
+  win.document.close();
 }
 
 
