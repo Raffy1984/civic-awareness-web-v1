@@ -4,53 +4,66 @@ let state = {
   index: 0,
   score: 0,
   questions: [],
-  currentOptions: [],
-  wrong: []
+  currentOptions: []
 };
 
 
 // =====================
-// DATABASE
+// DATABASE COMPLETO
 // =====================
 
 const bank = {
+
   nazionale: [
     {
       q: "Riduzione delle accise sui carburanti: effetto principale?",
       options: [
         {t:"Riduzione entrate fiscali per lo Stato", c:true},
-        {t:"Aumento salari immediato", c:false},
+        {t:"Aumento immediato salari", c:false},
         {t:"Eliminazione inflazione", c:false},
         {t:"Nessun effetto economico", c:false}
-      ],
-      area:"economia"
+      ]
     },
     {
-      q: "Aumento spesa pubblica senza nuove entrate:",
+      q: "Aumento del debito pubblico cosa indica?",
       options: [
-        {t:"Aumento debito pubblico", c:true},
-        {t:"Riduzione prezzi automatica", c:false},
+        {t:"Più spesa rispetto alle entrate", c:true},
+        {t:"Più tasse automatiche basse", c:false},
         {t:"Crescita senza costi", c:false},
-        {t:"Eliminazione tasse", c:false}
-      ],
-      area:"economia"
-    },
+        {t:"Riduzione dello Stato", c:false}
+      ]
+    }
+  ],
+
+  regionale: [
     {
-      q: "Crisi energetica: soluzione strutturale migliore?",
+      q: "Liste d’attesa sanitarie in aumento: causa più probabile?",
       options: [
-        {t:"Diversificazione fonti energetiche", c:true},
-        {t:"Stop economia", c:false},
-        {t:"Blocco consumi totali", c:false},
-        {t:"Chiusura industrie", c:false}
-      ],
-      area:"energia"
+        {t:"Carenza personale sanitario", c:true},
+        {t:"Troppi ospedali", c:false},
+        {t:"Zero pazienti", c:false},
+        {t:"Sistema perfetto", c:false}
+      ]
+    }
+  ],
+
+  comunale: [
+    {
+      q: "Traffico urbano in aumento: soluzione efficace?",
+      options: [
+        {t:"Potenziamento trasporto pubblico", c:true},
+        {t:"Chiusura totale città", c:false},
+        {t:"Eliminazione auto", c:false},
+        {t:"Stop mobilità", c:false}
+      ]
     }
   ]
+
 };
 
 
 // =====================
-// START FIX (QUI ERA IL BUG)
+// START
 // =====================
 
 function start(level){
@@ -58,15 +71,10 @@ function start(level){
   const input = document.getElementById("username");
 
   state.level = level;
-
-  // 🔥 FIX DEFINITIVO NOME
-  state.name = (input && input.value)
-    ? input.value.trim()
-    : "Utente";
+  state.name = input.value.trim() || "Utente";
 
   state.index = 0;
   state.score = 0;
-  state.wrong = [];
 
   state.questions = shuffle(bank[level]);
 
@@ -83,31 +91,23 @@ function start(level){
 
 function render(){
 
-  let q = state.questions[state.index];
+  const q = state.questions[state.index];
 
   if(!q){
-    finish();
-    return;
+    return finish();
   }
 
-  let options = shuffle([...q.options]);
+  const options = shuffle([...q.options]);
   state.currentOptions = options;
 
   document.getElementById("quiz").innerHTML = `
-    <div class="progress">
-      ${state.index + 1} / ${state.questions.length}
-    </div>
+    <div class="progress">${state.index+1} / ${state.questions.length}</div>
 
-    <div class="question">
-      ${q.q}
-    </div>
+    <div class="question">${q.q}</div>
 
     ${options.map((o,i)=>`
-      <button class="answer" onclick="answer(${i})">
-        ${o.t}
-      </button>
+      <button class="answer" onclick="answer(${i})">${o.t}</button>
     `).join("")}
-
   `;
 }
 
@@ -118,9 +118,7 @@ function render(){
 
 function answer(i){
 
-  let selected = state.currentOptions[i];
-
-  if(selected.c){
+  if(state.currentOptions[i].c){
     state.score++;
   }
 
@@ -130,56 +128,51 @@ function answer(i){
 
 
 // =====================
-// FINISH + PDF FIX
+// FINISH + PDF
 // =====================
 
 function finish(){
 
   document.getElementById("quiz").style.display = "none";
+  document.getElementById("result").style.display = "block";
 
-  const name = state.name || "Utente";
-
-  let percent = Math.round((state.score / state.questions.length) * 100);
+  const percent = Math.round((state.score/state.questions.length)*100);
 
   document.getElementById("result").innerHTML = `
     <h2>Risultato finale</h2>
-    <h1>${percent}% Consapevolezza Civica</h1>
+    <h1>${percent}% Consapevolezza</h1>
 
-    <p>Nome: <b>${name}</b></p>
+    <p>Nome: <b>${state.name}</b></p>
     <p>Livello: <b>${state.level}</b></p>
 
     <button onclick="downloadPDF()">Scarica Report</button>
     <button onclick="location.reload()">Riprova</button>
   `;
-
-  document.getElementById("result").style.display = "block";
 }
 
 
 // =====================
-// PDF FIX
+// PDF
 // =====================
 
 function downloadPDF(){
 
-  const name = state.name || "Utente";
-
-  let text = `
+  const text = `
 PATENTE DI CONSAPEVOLEZZA CIVICA
 
-Nome: ${name}
+Nome: ${state.name}
 Livello: ${state.level}
 
 Punteggio: ${state.score} / ${state.questions.length}
-Consapevolezza: ${Math.round((state.score/state.questions.length)*100)}%
+Percentuale: ${Math.round((state.score/state.questions.length)*100)}%
   `;
 
-  let blob = new Blob([text], {type:"text/plain"});
-  let url = URL.createObjectURL(blob);
+  const blob = new Blob([text], {type:"text/plain"});
+  const url = URL.createObjectURL(blob);
 
-  let a = document.createElement("a");
+  const a = document.createElement("a");
   a.href = url;
-  a.download = `report_${name}.txt`;
+  a.download = "report_consapevolezza.txt";
   a.click();
 }
 
@@ -188,6 +181,6 @@ Consapevolezza: ${Math.round((state.score/state.questions.length)*100)}%
 // UTILS
 // =====================
 
-function shuffle(a){
-  return [...a].sort(()=>Math.random()-0.5);
+function shuffle(arr){
+  return [...arr].sort(()=>Math.random()-0.5);
 }
