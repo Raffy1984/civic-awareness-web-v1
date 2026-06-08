@@ -3,13 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Citizen Insight PRO</title>
+<title>Citizen Insight - Step 3</title>
 
 <style>
 body{
   margin:0;
   font-family:Arial;
-  background:#f4f6f1;
+  background:#eef2ed;
 }
 
 .header{
@@ -28,9 +28,9 @@ body{
 .card{
   background:white;
   padding:22px;
-  border-radius:14px;
+  border-radius:16px;
   margin-top:20px;
-  box-shadow:0 8px 25px rgba(0,0,0,0.06);
+  box-shadow:0 10px 30px rgba(0,0,0,0.06);
 }
 
 button{
@@ -50,133 +50,114 @@ button{
 
 .tag{
   display:inline-block;
-  padding:4px 10px;
+  padding:5px 12px;
   border-radius:20px;
   background:#e7efe6;
   font-size:12px;
   margin-bottom:10px;
+}
+
+/* PROGRESS BAR */
+.bar{
+  width:100%;
+  background:#e6e6e6;
+  border-radius:10px;
+  overflow:hidden;
+  margin:6px 0 14px;
+}
+
+.fill{
+  height:10px;
+  background:#1f3a2e;
+}
+
+/* REPORT BOX */
+.metric{
+  margin:10px 0;
+}
+.small{
+  font-size:13px;
+  color:#666;
+}
+.big{
+  font-size:20px;
+  font-weight:700;
 }
 </style>
 </head>
 
 <body>
 
-<div class="header">Citizen Insight PRO</div>
+<div class="header">Citizen Insight Platform</div>
 
 <div class="container">
-<div class="card" id="app">Caricamento...</div>
+<div class="card" id="app">Loading...</div>
 </div>
 
 <script>
 
 /* =========================
-   DATABASE MIGLIORATO
+   DATABASE (STABILE)
 ========================= */
 
 const DB = {
-
   nazionale:[
-    {
-      cat:"Economia",
-      q:"Inflazione significa:",
-      a:[
-        {t:"Aumento generale prezzi",v:1},
-        {t:"Aumento salari sempre maggiore",v:0},
-        {t:"Riduzione costi energia automatica",v:0},
-        {t:"Stabilità totale economia",v:0}
-      ]
-    },
-    {
-      cat:"Stato",
-      q:"Il debito pubblico è:",
-      a:[
-        {t:"Somma debiti dello Stato",v:1},
-        {t:"Risparmi privati cittadini",v:0},
-        {t:"Solo tasse locali",v:0},
-        {t:"Entrate turismo",v:0}
-      ]
-    },
-    {
-      cat:"Sicurezza",
-      q:"La sicurezza urbana dipende da:",
-      a:[
-        {t:"Forze dell’ordine e politiche pubbliche",v:1},
-        {t:"Solo numero negozi",v:0},
-        {t:"Clima meteo",v:0},
-        {t:"Caso casuale",v:0}
-      ]
-    },
-    {
-      cat:"Energia",
-      q:"Se aumenta il prezzo energia cosa succede?",
-      a:[
-        {t:"Aumentano costi produzione",v:1},
-        {t:"Diminuisce inflazione automaticamente",v:0},
-        {t:"Nulla cambia mai",v:0},
-        {t:"Aumenta PIL sempre",v:0}
-      ]
-    },
-    {
-      cat:"Politiche",
-      q:"Tagliare tasse senza copertura provoca:",
-      a:[
-        {t:"Squilibrio di bilancio",v:1},
-        {t:"Più soldi infiniti",v:0},
-        {t:"Fine inflazione automatica",v:0},
-        {t:"Nessun effetto",v:0}
-      ]
-    }
+    {cat:"Economia",q:"Inflazione significa:",a:[
+      {t:"Aumento generale prezzi",v:1},
+      {t:"Prezzi fissi",v:0},
+      {t:"Zero cambiamenti",v:0}
+    ]},
+    {cat:"Stato",q:"Il debito pubblico è:",a:[
+      {t:"Debito dello Stato",v:1},
+      {t:"Risparmi privati",v:0},
+      {t:"Tasse eliminate",v:0}
+    ]},
+    {cat:"Sicurezza",q:"La sicurezza urbana dipende da:",a:[
+      {t:"Politiche e forze dell’ordine",v:1},
+      {t:"Caso",v:0},
+      {t:"Clima",v:0}
+    ]},
+    {cat:"Energia",q:"Aumento energia causa:",a:[
+      {t:"Aumento prezzi generali",v:1},
+      {t:"Nulla",v:0},
+      {t:"Deflazione automatica",v:0}
+    ]},
+    {cat:"Economia",q:"Tagliare tasse senza copertura:",a:[
+      {t:"Crea deficit",v:1},
+      {t:"Genera ricchezza infinita",v:0},
+      {t:"Non cambia nulla",v:0}
+    ]}
   ],
 
   regionale:[
-    {
-      cat:"Sanità",
-      q:"Liste d’attesa lunghe sono causate da:",
-      a:[
-        {t:"Squilibrio risorse/demanda",v:1},
-        {t:"Troppi ospedali",v:0},
-        {t:"Zero pazienti",v:0},
-        {t:"Sistema perfetto",v:0}
-      ]
-    },
-    {
-      cat:"Trasporti",
-      q:"Trasporto inefficiente causa:",
-      a:[
-        {t:"Più traffico privato",v:1},
-        {t:"Zero auto",v:0},
-        {t:"Meno persone",v:0},
-        {t:"Nessun effetto",v:0}
-      ]
-    }
+    {cat:"Sanità",q:"Liste d’attesa lunghe:",a:[
+      {t:"Squilibrio risorse",v:1},
+      {t:"Sistema perfetto",v:0},
+      {t:"Zero pazienti",v:0}
+    ]},
+    {cat:"Trasporti",q:"Trasporto inefficiente causa:",a:[
+      {t:"Più traffico auto",v:1},
+      {t:"Meno persone",v:0},
+      {t:"Nessun effetto",v:0}
+    ]}
   ],
 
   comunale:[
-    {
-      cat:"Mobilità",
-      q:"Migliorare traffico urbano significa:",
-      a:[
-        {t:"Potenziare mezzi pubblici",v:1},
-        {t:"Aumentare auto",v:0},
-        {t:"Chiudere tutto senza alternative",v:0},
-        {t:"Nessuna gestione",v:0}
-      ]
-    },
-    {
-      cat:"Servizi",
-      q:"Rifiuti mal gestiti causano:",
-      a:[
-        {t:"Degrado urbano",v:1},
-        {t:"Città più pulita",v:0},
-        {t:"Riduzione popolazione",v:0},
-        {t:"Nessun effetto",v:0}
-      ]
-    }
+    {cat:"Mobilità",q:"Migliorare traffico:",a:[
+      {t:"Trasporto pubblico",v:1},
+      {t:"Più auto",v:0},
+      {t:"Caos totale",v:0}
+    ]},
+    {cat:"Servizi",q:"Rifiuti mal gestiti:",a:[
+      {t:"Degrado urbano",v:1},
+      {t:"Città pulita",v:0},
+      {t:"Nessun effetto",v:0}
+    ]}
   ]
 };
 
 /* =========================
-   STATE AVANZATO
+   STATE
 ========================= */
 
 let state = {
@@ -185,7 +166,7 @@ let state = {
   i:0,
   score:0,
   q:[],
-  breakdown:{}   // per categorie
+  breakdown:{}
 };
 
 const app = document.getElementById("app");
@@ -196,7 +177,7 @@ const app = document.getElementById("app");
 
 function home(){
   app.innerHTML = `
-    <h2>Dashboard Consapevolezza</h2>
+    <h2>Dashboard</h2>
 
     <input id="name" placeholder="Inserisci nome">
 
@@ -223,7 +204,7 @@ function start(level){
 }
 
 /* =========================
-   RENDER
+   RENDER QUIZ
 ========================= */
 
 function render(){
@@ -233,79 +214,9 @@ function render(){
   if(!q) return finish();
 
   app.innerHTML = `
-    <div class="tag">${state.level} - ${q.cat}</div>
+    <div class="tag">${state.level} · ${q.cat}</div>
 
     <h3>${q.q}</h3>
 
     ${shuffle(q.a).map(x=>`
-      <button class="answer" onclick="answer(${x.v},'${q.cat}')">${x.t}</button>
-    `).join("")}
-
-    <p>${state.i+1}/${state.q.length}</p>
-
-    <button class="secondary" onclick="home()">Torna alla dashboard</button>
-  `;
-}
-
-/* =========================
-   ANSWER
-========================= */
-
-function answer(v,cat){
-
-  if(!state.breakdown[cat]){
-    state.breakdown[cat] = {ok:0,total:0};
-  }
-
-  state.breakdown[cat].total++;
-
-  if(v){
-    state.score++;
-    state.breakdown[cat].ok++;
-  }
-
-  state.i++;
-  render();
-}
-
-/* =========================
-   FINISH REPORT
-========================= */
-
-function finish(){
-
-  let report = "";
-
-  Object.keys(state.breakdown).forEach(k=>{
-    let b = state.breakdown[k];
-    let perc = Math.round((b.ok / b.total)*100);
-    report += `<p><b>${k}</b>: ${perc}% consapevolezza</p>`;
-  });
-
-  app.innerHTML = `
-    <h2>Report finale</h2>
-
-    <h1>${state.score}/${state.q.length}</h1>
-
-    <p><b>${state.name}</b> - ${state.level}</p>
-
-    ${report}
-
-    <button class="primary" onclick="home()">Ricomincia</button>
-  `;
-}
-
-/* =========================
-   UTILS
-========================= */
-
-function shuffle(arr){
-  return [...arr].sort(()=>Math.random()-0.5);
-}
-
-home();
-
-</script>
-
-</body>
-</html>
+      <button class="answer" onclick="answer(${x.v},'
