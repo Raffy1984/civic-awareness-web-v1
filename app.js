@@ -1,61 +1,118 @@
 // =====================================
-// 📘 LEZIONE MODE - QUIZ STABILE BASE
+// PATENTE DI CONSAPEVOLEZZA CIVICA v1
 // =====================================
 
 
 // =====================
-// DATABASE SEMPLICE
+// USER STATE
+// =====================
+
+let user = {
+  name: "",
+  level: "nazionale",
+  score: 0,
+  index: 0,
+  questions: []
+};
+
+
+// =====================
+// DATABASE GRANDE (SIMULATO STRUTTURATO)
 // =====================
 
 const bank = {
-  Generale: [
+
+  nazionale: [
     {
-      q: "Cos'è la democrazia?",
+      q: "Il costo dell’energia aumenta del 30%. Il governo riduce le tasse sui carburanti. Qual è un possibile effetto?",
       a: [
-        "Un sistema in cui il popolo decide",
-        "Un governo militare",
-        "Un sistema monarchico",
-        "Un sistema religioso"
+        "Aumento del debito pubblico o riduzione delle entrate",
+        "Eliminazione automatica dell’inflazione",
+        "Aumento immediato dei salari",
+        "Nessun effetto sull’economia"
       ],
       c: 0
     },
+
     {
-      q: "Cos'è l'Unione Europea?",
+      q: "Aumentano i prezzi dei beni di prima necessità. Quale misura può avere effetti immediati ma temporanei?",
       a: [
-        "Un'unione di stati europei",
-        "Un singolo paese",
-        "Un esercito mondiale",
-        "Una banca centrale"
+        "Sussidi diretti alle famiglie",
+        "Aumento produzione agricola immediata",
+        "Cancellazione inflazione globale",
+        "Eliminazione IVA mondiale"
       ],
       c: 0
     },
+
     {
-      q: "Cos'è l'euro?",
+      q: "Un Paese aumenta la spesa pubblica senza aumentare le entrate. Cosa accade più probabilmente?",
       a: [
-        "La valuta europea",
-        "Una legge",
-        "Una città",
-        "Un organismo politico"
+        "Aumento del deficit o del debito",
+        "Riduzione automatica dei prezzi",
+        "Crescita immediata del PIL reale senza rischi",
+        "Eliminazione del debito"
       ],
       c: 0
     },
+
     {
-      q: "Cos'è una costituzione?",
+      q: "In una crisi energetica, quale strategia è più sostenibile nel lungo periodo?",
       a: [
-        "L'insieme delle leggi fondamentali di uno Stato",
-        "Un trattato commerciale",
-        "Un partito politico",
-        "Un documento privato"
+        "Diversificazione delle fonti energetiche",
+        "Sospensione totale dei consumi",
+        "Riduzione immediata dei salari",
+        "Blocco totale del commercio"
+      ],
+      c: 0
+    }
+  ],
+
+
+  regionale: [
+    {
+      q: "In una regione aumentano le liste d’attesa sanitarie. Qual è una causa possibile?",
+      a: [
+        "Carenza di personale medico",
+        "Eccesso di ospedali privati gratuiti",
+        "Assenza totale di pazienti",
+        "Riduzione della popolazione a zero"
       ],
       c: 0
     },
+
     {
-      q: "Cos'è il Parlamento?",
+      q: "Una regione investe meno nella sanità pubblica. Possibile effetto?",
       a: [
-        "Un organo legislativo",
-        "Un tribunale",
-        "Un esercito",
-        "Una scuola"
+        "Aumento della pressione sul sistema privato",
+        "Eliminazione delle malattie",
+        "Riduzione automatica dei costi sanitari per tutti",
+        "Aumento immediato della qualità senza investimenti"
+      ],
+      c: 0
+    }
+  ],
+
+
+  comunale: [
+    {
+      q: "In una città aumenta il traffico urbano. Quale intervento è strutturalmente più efficace?",
+      a: [
+        "Potenziamento del trasporto pubblico",
+        "Divieto totale di circolazione per sempre",
+        "Eliminazione delle strade",
+        "Riduzione della popolazione mondiale locale"
+      ],
+      c: 0
+    },
+
+    {
+      q: "Aumenta la raccolta rifiuti non gestita. Cosa è una soluzione sistemica?",
+      a: [
+        "Miglioramento infrastruttura e raccolta differenziata",
+        "Ignorare il problema",
+        "Chiudere la città",
+        "Eliminare i cittadini"
       ],
       c: 0
     }
@@ -64,78 +121,52 @@ const bank = {
 
 
 // =====================
-// STATE
+// START
 // =====================
 
-let questions = [];
-let index = 0;
-let score = 0;
+function startTest(){
 
-const TOTAL = 5;
+  user.name = document.getElementById("username").value || "Utente";
 
+  user.score = 0;
+  user.index = 0;
 
-// =====================
-// START (STABILE)
-// =====================
+  // merge livello scelto (per ora nazionale default)
+  let all = bank.nazionale;
 
-function start(){
+  user.questions = shuffle(all).slice(0, 4);
 
-  const out = document.getElementById("output");
+  document.getElementById("home").style.display = "none";
+  document.getElementById("quiz").style.display = "block";
 
-  if(!out){
-    alert("Errore: manca <div id='output'> nel tuo HTML");
-    return;
-  }
-
-  index = 0;
-  score = 0;
-
-  let all = [];
-
-  Object.keys(bank).forEach(cat=>{
-    bank[cat].forEach(q=>{
-      all.push(q);
-    });
-  });
-
-  questions = shuffle(all).slice(0, TOTAL);
-
-  showQuestion();
+  renderQuestion();
 }
 
 
 // =====================
-// SHOW QUESTION
+// RENDER QUESTION
 // =====================
 
-function showQuestion(){
+function renderQuestion(){
 
-  const out = document.getElementById("output");
-  const q = questions[index];
+  let q = user.questions[user.index];
 
-  if(!out || !q) return;
+  let quiz = document.getElementById("quiz");
 
-  out.innerHTML = `
-    <div style="max-width:600px;margin:auto;font-family:Arial">
+  quiz.innerHTML = `
+    <div class="question-card">
+
+      <div class="progress">
+        Domanda ${user.index + 1} / ${user.questions.length}
+      </div>
 
       <h3>${q.q}</h3>
 
-      ${q.a.map((x,i)=>`
-        <button onclick="answer(${i})"
-          style="
-            display:block;
-            width:100%;
-            margin:8px 0;
-            padding:12px;
-            border:1px solid #ccc;
-            background:white;
-            cursor:pointer;
-          ">
-          ${x}
+      ${q.a.map((r,i)=>`
+        <button class="answer-btn" onclick="answer(${i})">
+          ${r}
         </button>
       `).join("")}
-
-      <p>Domanda ${index+1} / ${questions.length}</p>
 
     </div>
   `;
@@ -148,18 +179,18 @@ function showQuestion(){
 
 function answer(i){
 
-  const q = questions[index];
+  let q = user.questions[user.index];
 
   if(i === q.c){
-    score++;
+    user.score++;
   }
 
-  index++;
+  user.index++;
 
-  if(index >= questions.length){
+  if(user.index >= user.questions.length){
     finish();
   } else {
-    showQuestion();
+    renderQuestion();
   }
 }
 
@@ -170,17 +201,25 @@ function answer(i){
 
 function finish(){
 
-  const out = document.getElementById("output");
+  document.getElementById("quiz").style.display = "none";
+  document.getElementById("result").style.display = "block";
 
-  out.innerHTML = `
-    <div style="text-align:center;font-family:Arial">
-      <h2>Risultato finale</h2>
-      <h1>${score} / ${questions.length}</h1>
+  let percent = Math.round((user.score / user.questions.length) * 100);
 
-      <button onclick="start()"
-        style="padding:12px 20px;margin-top:20px;cursor:pointer;">
-        Riprova
-      </button>
+  document.getElementById("result").innerHTML = `
+    <div class="hero-card">
+
+      <h2>Risultato di ${user.name}</h2>
+
+      <h1>${percent}% Consapevolezza Civica</h1>
+
+      <p>
+        Questo risultato non misura le tue idee politiche,
+        ma la tua capacità di valutare le conseguenze delle decisioni pubbliche.
+      </p>
+
+      <button onclick="location.reload()">Rifai il test</button>
+
     </div>
   `;
 }
