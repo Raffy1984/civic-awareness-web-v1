@@ -1,182 +1,166 @@
-let state = {
-  level:"",
-  name:"",
-  index:0,
-  score:0,
-  questions:[],
-  options:[],
-  categories:{economia:0,societa:0,servizi:0}
-};
+// =========================
+// DATA (SCALABILE)
+// =========================
 
-
-// =====================
-// DATABASE
-// =====================
-
-const bank = {
-
+const DB = {
   nazionale: [
     {
       q:"Riduzione accise carburanti: effetto principale?",
       cat:"economia",
-      options:[
-        {t:"Riduce entrate fiscali dello Stato",c:true},
-        {t:"Aumenta salari automaticamente",c:false},
-        {t:"Elimina inflazione",c:false},
-        {t:"Nessun effetto",c:false}
+      a:[
+        {t:"Riduce entrate fiscali",v:1},
+        {t:"Aumenta salari automaticamente",v:0},
+        {t:"Elimina inflazione",v:0},
+        {t:"Nessun effetto",v:0}
       ]
     },
     {
-      q:"Debito pubblico in crescita significa:",
+      q:"Debito pubblico in crescita indica:",
       cat:"economia",
-      options:[
-        {t:"Spesa superiore alle entrate",c:true},
-        {t:"Zero conseguenze",c:false},
-        {t:"Aumento immediato salari",c:false},
-        {t:"Eliminazione tasse",c:false}
+      a:[
+        {t:"Spesa superiore alle entrate",v:1},
+        {t:"Zero conseguenze",v:0},
+        {t:"Crescita gratuita",v:0},
+        {t:"Nessun impatto",v:0}
       ]
     },
     {
-      q:"Criminalità percepita:",
+      q:"Criminalità urbana:",
       cat:"societa",
-      options:[
-        {t:"Fenomeno reale + percezione sociale",c:true},
-        {t:"Solo invenzione mediatica",c:false},
-        {t:"Non esiste problema",c:false},
-        {t:"Solo politica",c:false}
-      ]
-    }
-  ],
-
-  regionale: [
-    {
-      q:"Liste d’attesa sanità:",
-      cat:"servizi",
-      options:[
-        {t:"Carenza risorse e personale",c:true},
-        {t:"Sistema perfetto",c:false},
-        {t:"Troppi ospedali",c:false},
-        {t:"Nessun problema",c:false}
-      ]
-    }
-  ],
-
-  comunale: [
-    {
-      q:"Traffico urbano:",
-      cat:"servizi",
-      options:[
-        {t:"Potenziare trasporto pubblico",c:true},
-        {t:"Chiudere città",c:false},
-        {t:"Eliminare auto",c:false},
-        {t:"Bloccare tutto",c:false}
+      a:[
+        {t:"Fenomeno reale e sociale",v:1},
+        {t:"Solo percezione",v:0},
+        {t:"Non esiste problema",v:0},
+        {t:"Solo media",v:0}
       ]
     }
   ]
 };
 
+// =========================
+// STATE ENGINE
+// =========================
 
-// =====================
-// START (FIX BIANCO)
-// =====================
+const state = {
+  level:null,
+  name:"",
+  i:0,
+  score:0,
+  q:[],
+  stats:{economia:0,societa:0,servizi:0}
+};
+
+// =========================
+// UI ROOT
+// =========================
+
+const app = document.getElementById("app");
+
+// =========================
+// HOME
+// =========================
+
+function renderHome(){
+  app.innerHTML = `
+    <div class="card">
+      <h1>Consapevolezza Civica</h1>
+
+      <input id="name" placeholder="Nome">
+
+      <button onclick="start('nazionale')">Nazionale</button>
+    </div>
+  `;
+}
+
+renderHome();
+
+// =========================
+// START
+// =========================
 
 function start(level){
 
   state.level = level;
-  state.name = document.getElementById("username").value || "Utente";
-
-  state.index = 0;
+  state.name = document.getElementById("name").value || "Utente";
+  state.q = shuffle([...DB[level]]);
+  state.i = 0;
   state.score = 0;
-  state.categories = {economia:0,societa:0,servizi:0};
+  state.stats = {economia:0,societa:0,servizi:0};
 
-  if(!bank[level]){
-    alert("Errore livello");
-    return;
-  }
-
-  state.questions = shuffle(bank[level]);
-
-  document.getElementById("home").style.display="none";
-  document.getElementById("quiz").style.display="block";
-  document.getElementById("result").style.display="none";
-
-  render();
+  renderQuestion();
 }
 
+// =========================
+// QUESTION
+// =========================
 
-// =====================
-// RENDER (NO BUG BIANCO)
-// =====================
+function renderQuestion(){
 
-function render(){
-
-  let q = state.questions[state.index];
+  const q = state.q[state.i];
 
   if(!q){
-    finish();
-    return;
+    return finish();
   }
 
-  state.options = shuffle([...q.options]);
+  app.innerHTML = `
+    <div class="card">
 
-  let html = `
-    <div class="progress">${state.index+1}/${state.questions.length}</div>
+      <div class="tag">${q.cat}</div>
 
-    <div class="tag">${q.cat}</div>
+      <h2>${q.q}</h2>
 
-    <div class="question">${q.q}</div>
+      ${q.a.map((x,idx)=>`
+        <button class="answer" onclick="answer(${idx})">${x.t}</button>
+      `).join("")}
+
+      <p>${state.i+1} / ${state.q.length}</p>
+
+    </div>
   `;
-
-  state.options.forEach((o,i)=>{
-    html += `<button class="answer" onclick="answer(${i})">${o.t}</button>`;
-  });
-
-  document.getElementById("quiz").innerHTML = html;
 }
 
-
-// =====================
+// =========================
 // ANSWER
-// =====================
+// =========================
 
-function answer(i){
+function answer(idx){
 
-  let q = state.questions[state.index];
-  let sel = state.options[i];
+  const q = state.q[state.i];
+  const ans = q.a[idx];
 
-  if(sel.c){
+  if(ans.v){
     state.score++;
-    state.categories[q.cat]++;
+    state.stats[q.cat]++;
   }
 
-  state.index++;
-  render();
+  state.i++;
+  renderQuestion();
 }
 
-
-// =====================
-// FINISH + PDF
-// =====================
+// =========================
+// FINISH
+// =========================
 
 function finish(){
 
-  document.getElementById("quiz").style.display="none";
-  document.getElementById("result").style.display="block";
+  const total = state.q.length;
+  const percent = Math.round((state.score/total)*100);
 
-  let total = state.questions.length;
-  let percent = Math.round((state.score/total)*100);
+  app.innerHTML = `
+    <div class="card">
 
-  document.getElementById("result").innerHTML = `
-    <h2>Patente di Consapevolezza Civica</h2>
-    <h1>${percent}%</h1>
+      <h2>Report finale</h2>
+      <h1>${percent}%</h1>
 
-    <p><b>Nome:</b> ${state.name}</p>
-    <p><b>Livello:</b> ${state.level}</p>
+      <p>Nome: ${state.name}</p>
+      <p>Livello: ${state.level}</p>
 
-    <canvas id="chart" width="300" height="300"></canvas>
+      <canvas id="chart"></canvas>
 
-    <button onclick="downloadPDF()">Scarica PDF</button>
-    <button onclick="location.reload()">Riprova</button>
+      <button onclick="download()">Scarica Report</button>
+      <button onclick="location.reload()">Riprova</button>
+
+    </div>
   `;
 
   new Chart(document.getElementById("chart"), {
@@ -185,97 +169,76 @@ function finish(){
       labels:["Economia","Società","Servizi"],
       datasets:[{
         data:[
-          state.categories.economia,
-          state.categories.societa,
-          state.categories.servizi
+          state.stats.economia,
+          state.stats.societa,
+          state.stats.servizi
         ]
       }]
     }
   });
 }
 
+// =========================
+// PDF (PRINT CLEAN)
+// =========================
 
-// =====================
-// PDF CON CORNICE (FIX BELLO)
-// =====================
+function download(){
 
-function downloadPDF(){
+  const percent = Math.round((state.score/state.q.length)*100);
 
-  const percent = Math.round((state.score/state.questions.length)*100);
-
-  const w = window.open("", "_blank");
+  const w = window.open();
 
   w.document.write(`
-  <html>
-  <head>
-    <title>Report</title>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <html>
+    <head>
+      <title>Report</title>
+      <style>
+        body{font-family:Arial;padding:40px;background:#f6f6f6}
+        .box{border:3px solid #4f5f45;padding:25px;background:white}
+        h1{color:#4f5f45}
+      </style>
+    </head>
+    <body>
 
-    <style>
-      body{
-        font-family:Arial;
-        padding:30px;
-        background:#f4f4f4;
-      }
+      <div class="box">
+        <h1>Consapevolezza Civica</h1>
+        <p>${state.name}</p>
+        <p>${state.level}</p>
+        <p>${percent}%</p>
 
-      .box{
-        border:4px solid #4f5f45;
-        padding:30px;
-        background:white;
-        border-radius:12px;
-      }
+        <canvas id="c"></canvas>
+      </div>
 
-      h1{
-        text-align:center;
-        color:#4f5f45;
-      }
-    </style>
-  </head>
+      <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+      <script>
+        new Chart(document.getElementById("c"), {
+          type:"pie",
+          data:{
+            labels:["Economia","Società","Servizi"],
+            datasets:[{
+              data:[
+                ${state.stats.economia},
+                ${state.stats.societa},
+                ${state.stats.servizi}
+              ]
+            }]
+          }
+        });
 
-  <body>
+        setTimeout(()=>window.print(),500);
+      </script>
 
-    <div class="box">
-
-      <h1>Patente di Consapevolezza Civica</h1>
-
-      <p><b>Nome:</b> ${state.name}</p>
-      <p><b>Livello:</b> ${state.level}</p>
-      <p><b>Risultato:</b> ${percent}%</p>
-
-      <canvas id="pdfChart" width="400" height="400"></canvas>
-
-    </div>
-
-    <script>
-      new Chart(document.getElementById("pdfChart"), {
-        type:"pie",
-        data:{
-          labels:["Economia","Società","Servizi"],
-          datasets:[{
-            data:[
-              ${state.categories.economia},
-              ${state.categories.societa},
-              ${state.categories.servizi}
-            ]
-          }]
-        }
-      });
-
-      setTimeout(()=>window.print(), 600);
-    </script>
-
-  </body>
-  </html>
+    </body>
+    </html>
   `);
 
   w.document.close();
 }
 
-
-// =====================
+// =========================
 // UTILS
-// =====================
+// =========================
 
 function shuffle(a){
-  return [...a].sort(()=>Math.random()-0.5);
+  return a.sort(()=>Math.random()-0.5);
 }
