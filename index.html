@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Citizen Insight Step 1</title>
+<title>Citizen Insight - Dashboard</title>
 
 <style>
 body{
@@ -35,6 +35,14 @@ body{
   border:1px solid #e6e6e6;
 }
 
+input{
+  width:100%;
+  padding:12px;
+  border-radius:10px;
+  border:1px solid #ccc;
+  margin:10px 0;
+}
+
 button{
   width:100%;
   padding:12px;
@@ -43,6 +51,16 @@ button{
   border-radius:10px;
   cursor:pointer;
   font-weight:600;
+}
+
+.primary{
+  background:#1f3a2e;
+  color:white;
+}
+
+.secondary{
+  background:#e7efe6;
+  color:#111;
 }
 
 .answer{
@@ -54,7 +72,13 @@ button{
   background:#f3f6ef;
 }
 
-h2{margin-top:0}
+.tag{
+  display:inline-block;
+  padding:4px 10px;
+  font-size:12px;
+  border-radius:20px;
+  background:#e7efe6;
+}
 
 </style>
 </head>
@@ -71,64 +95,92 @@ Citizen Insight Platform
 
 <script>
 
-const DB = [
-  {
-    q:"Inflazione cosa significa?",
-    a:[
-      {t:"Aumento prezzi",v:1},
-      {t:"Diminuzione prezzi",v:0}
-    ]
-  },
-  {
-    q:"Debito pubblico è:",
-    a:[
-      {t:"Debiti dello Stato",v:1},
-      {t:"Risparmio privato",v:0}
-    ]
-  }
-];
+/* =========================
+   DATABASE MINIMA (SOLO TEST STABILE)
+========================= */
 
-let i=0;
-let score=0;
+const DB = {
+  nazionale:[
+    {
+      q:"Inflazione cosa significa?",
+      a:[
+        {t:"Aumento prezzi",v:1},
+        {t:"Diminuzione prezzi",v:0}
+      ]
+    },
+    {
+      q:"Debito pubblico è:",
+      a:[
+        {t:"Debiti dello Stato",v:1},
+        {t:"Risparmio privato",v:0}
+      ]
+    }
+  ],
+
+  regionale:[
+    {
+      q:"Sanità inefficiente causa:",
+      a:[
+        {t:"Liste d'attesa",v:1},
+        {t:"Miglioramento automatico",v:0}
+      ]
+    }
+  ],
+
+  comunale:[
+    {
+      q:"Traffico urbano si riduce con:",
+      a:[
+        {t:"Trasporto pubblico",v:1},
+        {t:"Più auto",v:0}
+      ]
+    }
+  ]
+};
+
+
+/* =========================
+   STATE
+========================= */
+
+let state = {
+  level:null,
+  i:0,
+  score:0,
+  q:[]
+};
 
 const app=document.getElementById("app");
 
-function render(){
 
-  const q=DB[i];
+/* =========================
+   DASHBOARD HOME
+========================= */
 
-  if(!q){
-    app.innerHTML=`
-      <div class="card">
-        <h2>Fine test</h2>
-        <p>Punteggio: ${score}/${DB.length}</p>
-        <button onclick="location.reload()">Riprova</button>
-      </div>`;
-    return;
-  }
+function home(){
 
   app.innerHTML=`
     <div class="card">
 
-      <h2>${q.q}</h2>
+      <h2>Dashboard cittadina</h2>
+      <p>Seleziona area di analisi</p>
 
-      ${q.a.map(x=>`
-        <button class="answer" onclick="answer(${x.v})">${x.t}</button>
-      `).join("")}
+      <button class="primary" onclick="start('nazionale')">Nazionale</button>
+      <button class="secondary" onclick="start('regionale')">Regionale</button>
+      <button class="secondary" onclick="start('comunale')">Comunale</button>
 
     </div>
   `;
 }
 
-function answer(v){
-  if(v) score++;
-  i++;
-  render();
-}
+home();
 
-render();
 
-</script>
+/* =========================
+   START QUIZ
+========================= */
 
-</body>
-</html>
+function start(level){
+
+  state.level=level;
+  state.q=DB[level];
