@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Citizen Insight</title>
+<title>Citizen Insight DEBUG</title>
 
 <style>
 body{
@@ -33,59 +33,21 @@ body{
   box-shadow:0 8px 20px rgba(0,0,0,0.06);
 }
 
-input{
-  width:100%;
-  padding:12px;
-  border-radius:10px;
-  border:1px solid #ccc;
-  margin:10px 0;
-  box-sizing:border-box;
+.error{
+  color:red;
+  white-space:pre-wrap;
 }
-
 button{
   width:100%;
   padding:12px;
   margin:6px 0;
-  border:none;
-  border-radius:10px;
-  cursor:pointer;
-  font-weight:600;
-}
-
-.primary{
-  background:#1f3a2e;
-  color:white;
-}
-
-.secondary{
-  background:#e7efe6;
-  color:#111;
-}
-
-.answer{
-  background:#fff;
-  border:1px solid #ccc;
-  text-align:left;
-}
-
-.answer:hover{
-  background:#f3f6ef;
-}
-
-.tag{
-  display:inline-block;
-  padding:4px 10px;
-  font-size:12px;
-  border-radius:20px;
-  background:#e7efe6;
-  margin-bottom:10px;
 }
 </style>
 </head>
 
 <body>
 
-<div class="header">Citizen Insight Platform</div>
+<div class="header">Citizen Insight DEBUG</div>
 
 <div class="container">
 <div class="card" id="app">Caricamento...</div>
@@ -93,9 +55,15 @@ button{
 
 <script>
 
-/* =========================
-   DATABASE
-========================= */
+try{
+
+console.log("JS AVVIATO");
+
+const app = document.getElementById("app");
+
+if(!app){
+  throw new Error("Elemento #app non trovato");
+}
 
 const DB = {
   nazionale:[
@@ -103,80 +71,65 @@ const DB = {
       q:"Inflazione cosa rappresenta?",
       a:[
         {t:"Aumento prezzi",v:1},
-        {t:"Diminuzione prezzi",v:0},
-        {t:"Nessun effetto",v:0}
-      ]
-    },
-    {
-      q:"Debito pubblico è:",
-      a:[
-        {t:"Debiti dello Stato",v:1},
-        {t:"Risparmi privati",v:0},
-        {t:"Tasse eliminate",v:0}
-      ]
-    }
-  ],
-
-  regionale:[
-    {
-      q:"Sanità inefficiente porta a:",
-      a:[
-        {t:"Liste d'attesa",v:1},
-        {t:"Sistema perfetto",v:0},
-        {t:"Zero effetti",v:0}
-      ]
-    }
-  ],
-
-  comunale:[
-    {
-      q:"Traffico urbano si riduce con:",
-      a:[
-        {t:"Trasporto pubblico",v:1},
-        {t:"Più auto",v:0},
-        {t:"Nessuna regola",v:0}
+        {t:"Diminuzione prezzi",v:0}
       ]
     }
   ]
 };
 
-/* =========================
-   STATE
-========================= */
-
 let state = {
-  name:"",
-  level:"",
   i:0,
   score:0,
-  q:[]
+  q:DB.nazionale
 };
 
-const app = document.getElementById("app");
-
-/* =========================
-   HOME
-========================= */
-
 function home(){
+  console.log("HOME OK");
+
   app.innerHTML = `
-    <h2>Dashboard</h2>
-
-    <input id="name" placeholder="Inserisci nome">
-
-    <button class="primary" onclick="start('nazionale')">Nazionale</button>
-    <button class="secondary" onclick="start('regionale')">Regionale</button>
-    <button class="secondary" onclick="start('comunale')">Comunale</button>
+    <h2>Funzionamento OK</h2>
+    <button onclick="start()">Avvia test</button>
   `;
 }
 
-/* =========================
-   START
-========================= */
+function start(){
+  console.log("START OK");
+  render();
+}
 
-function start(level){
+function render(){
 
-  state.name = document.getElementById("name").value || "Utente";
-  state.level = level;
-  state.q = DB[level];
-  state
+  const q = state.q[state.i];
+
+  if(!q){
+    app.innerHTML = "<h2>Fine test</h2>";
+    return;
+  }
+
+  app.innerHTML = `
+    <h3>${q.q}</h3>
+    ${q.a.map(x=>`
+      <button onclick="answer(${x.v})">${x.t}</button>
+    `).join("")}
+  `;
+}
+
+function answer(v){
+  if(v) state.score++;
+  state.i++;
+  render();
+}
+
+home();
+
+}catch(e){
+
+document.body.innerHTML =
+"<div class='card error'><h2>ERRORE BLOCCANTE</h2><pre>"+e.stack+"</pre></div>";
+
+}
+
+</script>
+
+</body>
+</html>
