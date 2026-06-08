@@ -3,65 +3,65 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Patente di Consapevolezza Civica</title>
+<title>Patente Consapevolezza Civica</title>
 
 <style>
 body{
   margin:0;
-  font-family:Arial, sans-serif;
-  background:#0b1220;
+  font-family:Arial;
+  background:#070b14;
   color:white;
 }
 
-/* INTRO */
+/* ================= INTRO ================= */
 .intro{
   height:100vh;
   display:flex;
   align-items:center;
   justify-content:center;
   text-align:center;
-  background:
-    url("https://upload.wikimedia.org/wikipedia/commons/0/03/Italy_satellite_map.jpg") center/cover no-repeat;
+  background:url("https://upload.wikimedia.org/wikipedia/commons/0/03/Italy_satellite_map.jpg") center/cover no-repeat;
   position:relative;
 }
 
 .overlay{
   position:absolute;
   inset:0;
-  background:rgba(0,0,0,0.65);
+  background:rgba(0,0,0,0.70);
   display:flex;
   align-items:center;
   justify-content:center;
   padding:20px;
 }
 
-.intro-box{
-  max-width:700px;
+.box{
+  max-width:750px;
 }
 
 h1{
-  font-size:36px;
+  font-size:38px;
   margin-bottom:10px;
 }
 
 p{
   opacity:0.85;
-  line-height:1.5;
+  line-height:1.6;
 }
 
-/* DASHBOARD */
+/* ================= DASHBOARD ================= */
 .dashboard{
   display:none;
-  padding:20px;
+  padding:25px;
   max-width:900px;
   margin:auto;
 }
 
 .card{
-  background:#111a2e;
-  padding:20px;
+  background:#111827;
+  padding:18px;
   border-radius:14px;
-  margin-top:16px;
+  margin-top:14px;
+  border:1px solid #1f2937;
 }
 
 button{
@@ -69,45 +69,50 @@ button{
   padding:14px;
   border:none;
   border-radius:12px;
+  margin-top:10px;
   cursor:pointer;
   font-weight:600;
-  margin-top:10px;
 }
 
 .primary{background:#22c55e;color:#000;}
 .secondary{background:#1f2937;color:#fff;}
 
-/* QUIZ */
+/* ================= QUIZ ================= */
 .quiz{
   display:none;
-  padding:20px;
+  padding:25px;
   max-width:900px;
   margin:auto;
 }
 
 .tag{
   font-size:12px;
-  opacity:0.7;
+  opacity:0.6;
 }
 
-.answer{
+.option{
   background:#0f172a;
   border:1px solid #334155;
   color:white;
   text-align:left;
-  margin-top:8px;
 }
 
-.answer:hover{
+.option:hover{
   background:#1e293b;
 }
 
-/* REPORT */
+/* ================= REPORT ================= */
 .report{
   display:none;
-  padding:20px;
+  padding:25px;
   max-width:900px;
   margin:auto;
+}
+
+.metric{
+  font-size:32px;
+  font-weight:bold;
+  margin-top:10px;
 }
 </style>
 </head>
@@ -117,26 +122,26 @@ button{
 <!-- INTRO -->
 <div class="intro" id="intro">
   <div class="overlay">
-    <div class="intro-box">
+    <div class="box">
       <h1>Patente di Consapevolezza Civica</h1>
       <p>
-        Un sistema di simulazione delle decisioni pubbliche e dei loro effetti reali.<br>
-        Non misura cosa sai. Misura come ragioni.
+        Non misura ciò che sai.<br>
+        Misura come reagisci a problemi reali che influenzano la società.
       </p>
 
-      <button class="primary" onclick="goDashboard()">Inizia</button>
+      <button class="primary" onclick="startApp()">Inizia simulazione</button>
     </div>
   </div>
 </div>
 
 <!-- DASHBOARD -->
 <div class="dashboard" id="dashboard">
-  <h2>Scegli livello</h2>
+  <h2>Scegli contesto</h2>
 
   <div class="card">
-    <button class="primary" onclick="start('nazionale')">🇮🇹 Nazionale</button>
-    <button class="secondary" onclick="start('regionale')">🏛 Regionale</button>
-    <button class="secondary" onclick="start('comunale')">🏙 Comunale</button>
+    <button class="primary" onclick="start('nazionale')">🇮🇹 Scenario Nazionale</button>
+    <button class="secondary" onclick="start('regionale')">🏛 Scenario Regionale</button>
+    <button class="secondary" onclick="start('comunale')">🏙 Scenario Comunale</button>
   </div>
 </div>
 
@@ -148,40 +153,32 @@ button{
 
 <script>
 
-/* =========================
-   SHUFFLE FIX (CRUCIALE)
-========================= */
-function shuffle(arr){
-  return arr
-    .map(v => ({v, r:Math.random()}))
-    .sort((a,b)=>a.r-b.r)
-    .map(x=>x.v);
-}
-
-/* =========================
-   DATABASE
-========================= */
+/* ==============================
+   SCENARIO ENGINE (CORE)
+============================== */
 
 const DB = {
   nazionale:[
     {
       cat:"Economia reale",
-      q:"Il costo della vita aumenta, ma gli stipendi restano fermi. Quale misura ha effetto immediato ma rischio inflattivo?",
-      a:[
-        {t:"Aumento salari pubblici generalizzato",v:1},
-        {t:"Riduzione spesa sanitaria",v:0},
-        {t:"Taglio investimenti pubblici",v:0},
-        {t:"Aumento IVA sui beni essenziali",v:0}
+      scenario:"L’inflazione cresce per 18 mesi consecutivi. Le famiglie riducono consumi e il governo deve intervenire.",
+      q:"Quale strategia è più sostenibile nel medio periodo?",
+      options:[
+        {t:"Aumento salari e intervento fiscale mirato",v:2},
+        {t:"Controllo prezzi generalizzato immediato",v:1},
+        {t:"Riduzione spesa pubblica drastica",v:0},
+        {t:"Nessun intervento per lasciare il mercato libero",v:1}
       ]
     },
     {
       cat:"Energia",
-      q:"Un aumento del costo energetico colpisce famiglie e imprese. Quale soluzione è strutturale ma lenta?",
-      a:[
-        {t:"Investimenti in rinnovabili",v:1},
-        {t:"Sussidi temporanei carburanti",v:0},
-        {t:"Riduzione salari pubblici",v:0},
-        {t:"Controllo prezzi totale immediato",v:0}
+      scenario:"Il costo dell’energia aumenta per instabilità geopolitica e dipendenza estera.",
+      q:"Quale scelta è più efficace strutturalmente?",
+      options:[
+        {t:"Investimenti massicci in rinnovabili e infrastrutture",v:2},
+        {t:"Sussidi temporanei alle bollette",v:1},
+        {t:"Aumento tasse energia per ridurre consumi",v:0},
+        {t:"Blocco totale dei prezzi senza riforme",v:0}
       ]
     }
   ],
@@ -189,57 +186,55 @@ const DB = {
   regionale:[
     {
       cat:"Sanità",
-      q:"Le liste d’attesa aumentano. Qual è la causa più probabile?",
-      a:[
-        {t:"Squilibrio tra domanda e risorse disponibili",v:1},
-        {t:"Troppi medici inutilizzati",v:0},
-        {t:"Nessuna domanda sanitaria",v:0},
-        {t:"Eccesso di infrastrutture ospedaliere",v:0}
+      scenario:"Le liste d’attesa crescono e il personale sanitario è sotto pressione.",
+      q:"Qual è l’intervento più equilibrato?",
+      options:[
+        {t:"Assunzioni + riorganizzazione strutturale del sistema",v:2},
+        {t:"Privatizzazione rapida dei servizi",v:0},
+        {t:"Riduzione prestazioni non urgenti",v:1},
+        {t:"Taglio costi ospedalieri",v:0}
       ]
     }
   ],
 
   comunale:[
     {
-      cat:"Mobilità",
-      q:"Il traffico urbano è in crescita costante. Quale intervento è più efficace nel medio periodo?",
-      a:[
-        {t:"Potenziare trasporto pubblico",v:1},
-        {t:"Aumentare parcheggi centrali",v:0},
-        {t:"Rimuovere limiti traffico",v:0},
-        {t:"Ridurre semafori",v:0}
+      cat:"Mobilità urbana",
+      scenario:"Una città registra traffico crescente e tempi medi di spostamento in aumento.",
+      q:"Quale politica è più efficace nel medio termine?",
+      options:[
+        {t:"Trasporto pubblico potenziato + limitazioni traffico",v:2},
+        {t:"Aumento parcheggi centrali",v:0},
+        {t:"Eliminazione ZTL",v:0},
+        {t:"Riduzione controlli stradali",v:1}
       ]
     }
   ]
 };
 
-/* =========================
+/* ==============================
    STATE
-========================= */
+============================== */
 
 let state={
   level:"",
   i:0,
   score:0,
-  q:[]
+  data:[]
 };
 
-/* =========================
-   NAV
-========================= */
+/* ==============================
+   START FLOW
+============================== */
 
-function goDashboard(){
+function startApp(){
   document.getElementById("intro").style.display="none";
   document.getElementById("dashboard").style.display="block";
 }
 
-/* =========================
-   START
-========================= */
-
-function start(l){
-  state.level=l;
-  state.q=DB[l];
+function start(level){
+  state.level=level;
+  state.data=DB[level];
   state.i=0;
   state.score=0;
 
@@ -249,72 +244,67 @@ function start(l){
   render();
 }
 
-/* =========================
-   RENDER QUIZ
-========================= */
+/* ==============================
+   RENDER SCENARIO
+============================== */
 
 function render(){
 
-  const q=state.q[state.i];
+  const item=state.data[state.i];
 
-  if(!q){
-    return finish();
-  }
-
-  const shuffled = shuffle(q.a);
+  if(!item) return finish();
 
   document.getElementById("quiz").innerHTML=`
     <div class="card">
-      <div class="tag">${state.level} · ${q.cat}</div>
-      <h3>${q.q}</h3>
+      <div class="tag">${state.level} · ${item.cat}</div>
+      <h3>${item.scenario}</h3>
+      <p><b>${item.q}</b></p>
     </div>
 
     <div class="card">
-      ${shuffled.map(x=>`
-        <button class="answer" onclick="answer(${x.v})">${x.t}</button>
+      ${item.options.map(o=>`
+        <button class="option" onclick="answer(${o.v})">${o.t}</button>
       `).join("")}
     </div>
 
     <div class="card">
-      Domanda ${state.i+1} / ${state.q.length}
+      Progresso: ${state.i+1}/${state.data.length}
     </div>
   `;
 }
 
-/* =========================
-   ANSWER
-========================= */
+/* ==============================
+   ANSWER SYSTEM
+============================== */
 
 function answer(v){
-  if(v) state.score++;
+  state.score += v;
   state.i++;
   render();
 }
 
-/* =========================
+/* ==============================
    REPORT
-========================= */
+============================== */
 
 function finish(){
 
   document.getElementById("quiz").style.display="none";
   document.getElementById("report").style.display="block";
 
-  const perc = Math.round((state.score/state.q.length)*100);
+  let max = state.data.length * 2;
+  let perc = Math.round((state.score / max) * 100);
 
   document.getElementById("report").innerHTML=`
     <div class="card">
-      <h2>Risultato finale</h2>
-      <h1>${perc}%</h1>
-      <p>Consapevolezza su impatto delle decisioni pubbliche</p>
+      <h2>Indice di Consapevolezza</h2>
+      <div class="metric">${perc}%</div>
+      <p>Valutazione basata su impatto delle decisioni selezionate</p>
     </div>
 
-    <button class="primary" onclick="location.reload()">Ricomincia</button>
+    <button class="primary" onclick="location.reload()">Ricomincia simulazione</button>
   `;
 }
-
-/* INIT */
-goDashboard();
 
 </script>
 
