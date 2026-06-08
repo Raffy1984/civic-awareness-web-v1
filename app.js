@@ -1,8 +1,10 @@
 // =====================
-// SAFE MODE ENGINE
+// STATE
 // =====================
 
-let user = {
+let state = {
+  level: "",
+  name: "",
   score: 0,
   index: 0,
   questions: [],
@@ -11,27 +13,60 @@ let user = {
 
 
 // =====================
-// DATABASE MINIMO SICURO
+// DATABASE
 // =====================
 
 const bank = {
   nazionale: [
     {
-      q: "Riduzione accise carburanti. Effetto principale?",
+      q: "Lo Stato riduce le accise sui carburanti. Effetto più probabile?",
       options: [
         {t:"Riduzione entrate fiscali", correct:true},
+        {t:"Aumento immediato salari", correct:false},
         {t:"Eliminazione inflazione", correct:false},
-        {t:"Aumento salari automatico", correct:false},
         {t:"Nessun effetto", correct:false}
       ]
     },
     {
-      q: "Aumento spesa pubblica senza entrate?",
+      q: "Aumenta la spesa pubblica senza nuove entrate. Cosa accade?",
       options: [
         {t:"Aumento debito pubblico", correct:true},
-        {t:"Riduzione prezzi", correct:false},
+        {t:"Riduzione prezzi automatica", correct:false},
         {t:"Crescita senza costi", correct:false},
-        {t:"Azzeramento tasse", correct:false}
+        {t:"Eliminazione tasse", correct:false}
+      ]
+    },
+    {
+      q: "Crisi energetica: soluzione più strutturale?",
+      options: [
+        {t:"Diversificazione fonti energetiche", correct:true},
+        {t:"Stop economia", correct:false},
+        {t:"Blocco consumi totali", correct:false},
+        {t:"Chiusura industria", correct:false}
+      ]
+    }
+  ],
+
+  regionale: [
+    {
+      q: "Aumentano liste d’attesa sanitarie. Possibile causa?",
+      options: [
+        {t:"Carenza personale medico", correct:true},
+        {t:"Troppi ospedali inutili", correct:false},
+        {t:"Zero pazienti", correct:false},
+        {t:"Sanità automatica", correct:false}
+      ]
+    }
+  ],
+
+  comunale: [
+    {
+      q: "Aumenta il traffico urbano. Soluzione strutturale?",
+      options: [
+        {t:"Trasporto pubblico potenziato", correct:true},
+        {t:"Divieto totale auto", correct:false},
+        {t:"Chiusura città", correct:false},
+        {t:"Eliminazione strade", correct:false}
       ]
     }
   ]
@@ -39,32 +74,23 @@ const bank = {
 
 
 // =====================
-// INIT (🔥 DEBUG SAFE)
+// START
 // =====================
 
-function initQuiz(level){
+function startQuiz(level){
 
-  try {
+  state.level = level;
+  state.name = document.getElementById("username").value || "Utente";
 
-    console.log("START QUIZ:", level);
+  state.score = 0;
+  state.index = 0;
 
-    if(!bank[level]){
-      alert("Livello non trovato: " + level);
-      return;
-    }
+  state.questions = shuffle(bank[level]);
 
-    user.score = 0;
-    user.index = 0;
-    user.questions = bank[level];
+  document.getElementById("home").style.display = "none";
+  document.getElementById("quiz").style.display = "block";
 
-    document.getElementById("home").style.display = "none";
-
-    render();
-
-  } catch (e) {
-    console.error(e);
-    document.body.innerHTML = "ERRORE AVVIO QUIZ";
-  }
+  render();
 }
 
 
@@ -74,7 +100,7 @@ function initQuiz(level){
 
 function render(){
 
-  let q = user.questions[user.index];
+  let q = state.questions[state.index];
 
   if(!q){
     finish();
@@ -82,15 +108,21 @@ function render(){
   }
 
   let options = shuffle([...q.options]);
-  user.currentOptions = options;
+  state.currentOptions = options;
 
   document.getElementById("quiz").innerHTML = `
     <div class="question-card">
 
+      <div class="progress">
+        ${state.index + 1} / ${state.questions.length}
+      </div>
+
       <h3>${q.q}</h3>
 
       ${options.map((o,i)=>`
-        <button onclick="answer(${i})">${o.t}</button>
+        <button class="answer-btn" onclick="answer(${i})">
+          ${o.t}
+        </button>
       `).join("")}
 
     </div>
@@ -104,11 +136,12 @@ function render(){
 
 function answer(i){
 
-  if(user.currentOptions[i].correct){
-    user.score++;
+  if(state.currentOptions[i].correct){
+    state.score++;
   }
 
-  user.index++;
+  state.index++;
+
   render();
 }
 
@@ -119,11 +152,18 @@ function answer(i){
 
 function finish(){
 
-  document.getElementById("quiz").innerHTML = "";
+  let percent = Math.round((state.score / state.questions.length) * 100);
+
+  document.getElementById("quiz").style.display = "none";
   document.getElementById("result").innerHTML = `
-    <h2>Risultato</h2>
-    <h1>${user.score} / ${user.questions.length}</h1>
-    <button onclick="location.reload()">Riprova</button>
+    <div class="hero-card">
+
+      <h2>Risultato</h2>
+      <h1>${percent}% Consapevolezza Civica</h1>
+
+      <button onclick="location.reload()">Riprova</button>
+
+    </div>
   `;
 }
 
@@ -132,6 +172,6 @@ function finish(){
 // UTILS
 // =====================
 
-function shuffle(a){
-  return [...a].sort(()=>Math.random()-0.5);
+function shuffle(arr){
+  return [...arr].sort(()=>Math.random()-0.5);
 }
