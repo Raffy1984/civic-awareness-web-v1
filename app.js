@@ -4,7 +4,7 @@ let state = {
   index:0,
   score:0,
   questions:[],
-  currentOptions:[],
+  options:[],
   categories:{economia:0,societa:0,servizi:0}
 };
 
@@ -17,43 +17,43 @@ const bank = {
 
   nazionale: [
     {
-      q:"Riduzione accise carburanti: cosa comporta?",
+      q:"Riduzione accise carburanti: effetto principale?",
       cat:"economia",
       options:[
-        {t:"Riduzione entrate fiscali dello Stato",c:true},
-        {t:"Aumento automatico salari",c:false},
-        {t:"Eliminazione inflazione",c:false},
+        {t:"Riduce entrate fiscali dello Stato",c:true},
+        {t:"Aumenta salari automaticamente",c:false},
+        {t:"Elimina inflazione",c:false},
         {t:"Nessun effetto",c:false}
       ]
     },
     {
-      q:"Aumento debito pubblico significa:",
+      q:"Debito pubblico in crescita significa:",
       cat:"economia",
       options:[
         {t:"Spesa superiore alle entrate",c:true},
-        {t:"Crescita senza costi",c:false},
-        {t:"Tasse eliminate",c:false},
-        {t:"Nessun impatto",c:false}
+        {t:"Zero conseguenze",c:false},
+        {t:"Aumento immediato salari",c:false},
+        {t:"Eliminazione tasse",c:false}
       ]
     },
     {
-      q:"Criminalità urbana:",
+      q:"Criminalità percepita:",
       cat:"societa",
       options:[
         {t:"Fenomeno reale + percezione sociale",c:true},
-        {t:"Solo percezione mediatica",c:false},
+        {t:"Solo invenzione mediatica",c:false},
         {t:"Non esiste problema",c:false},
-        {t:"Dipende solo dalla politica",c:false}
+        {t:"Solo politica",c:false}
       ]
     }
   ],
 
   regionale: [
     {
-      q:"Liste d’attesa sanità regionale:",
+      q:"Liste d’attesa sanità:",
       cat:"servizi",
       options:[
-        {t:"Carenza personale e risorse",c:true},
+        {t:"Carenza risorse e personale",c:true},
         {t:"Sistema perfetto",c:false},
         {t:"Troppi ospedali",c:false},
         {t:"Nessun problema",c:false}
@@ -66,9 +66,9 @@ const bank = {
       q:"Traffico urbano:",
       cat:"servizi",
       options:[
-        {t:"Potenziamento trasporto pubblico",c:true},
-        {t:"Chiusura città",c:false},
-        {t:"Eliminazione auto",c:false},
+        {t:"Potenziare trasporto pubblico",c:true},
+        {t:"Chiudere città",c:false},
+        {t:"Eliminare auto",c:false},
         {t:"Bloccare tutto",c:false}
       ]
     }
@@ -77,7 +77,7 @@ const bank = {
 
 
 // =====================
-// START
+// START (FIX BIANCO)
 // =====================
 
 function start(level){
@@ -88,6 +88,11 @@ function start(level){
   state.index = 0;
   state.score = 0;
   state.categories = {economia:0,societa:0,servizi:0};
+
+  if(!bank[level]){
+    alert("Errore livello");
+    return;
+  }
 
   state.questions = shuffle(bank[level]);
 
@@ -100,28 +105,33 @@ function start(level){
 
 
 // =====================
-// RENDER
+// RENDER (NO BUG BIANCO)
 // =====================
 
 function render(){
 
   let q = state.questions[state.index];
-  if(!q) return finish();
 
-  let opts = shuffle([...q.options]);
-  state.currentOptions = opts;
+  if(!q){
+    finish();
+    return;
+  }
 
-  document.getElementById("quiz").innerHTML = `
+  state.options = shuffle([...q.options]);
+
+  let html = `
     <div class="progress">${state.index+1}/${state.questions.length}</div>
 
     <div class="tag">${q.cat}</div>
 
     <div class="question">${q.q}</div>
-
-    ${opts.map((o,i)=>`
-      <button class="answer" onclick="answer(${i})">${o.t}</button>
-    `).join("")}
   `;
+
+  state.options.forEach((o,i)=>{
+    html += `<button class="answer" onclick="answer(${i})">${o.t}</button>`;
+  });
+
+  document.getElementById("quiz").innerHTML = html;
 }
 
 
@@ -132,7 +142,7 @@ function render(){
 function answer(i){
 
   let q = state.questions[state.index];
-  let sel = state.currentOptions[i];
+  let sel = state.options[i];
 
   if(sel.c){
     state.score++;
@@ -145,7 +155,7 @@ function answer(i){
 
 
 // =====================
-// FINISH
+// FINISH + PDF
 // =====================
 
 function finish(){
@@ -169,16 +179,6 @@ function finish(){
     <button onclick="location.reload()">Riprova</button>
   `;
 
-  drawChart();
-}
-
-
-// =====================
-// GRAFICO
-// =====================
-
-function drawChart(){
-
   new Chart(document.getElementById("chart"), {
     type:"pie",
     data:{
@@ -196,36 +196,55 @@ function drawChart(){
 
 
 // =====================
-// PDF (STAMPA PROFESSIONALE)
+// PDF CON CORNICE (FIX BELLO)
 // =====================
 
 function downloadPDF(){
 
   const percent = Math.round((state.score/state.questions.length)*100);
 
-  const win = window.open("", "_blank");
+  const w = window.open("", "_blank");
 
-  win.document.write(`
+  w.document.write(`
   <html>
   <head>
     <title>Report</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
     <style>
-      body{font-family:Arial;padding:40px;}
-      h1{color:#4f5f45;}
+      body{
+        font-family:Arial;
+        padding:30px;
+        background:#f4f4f4;
+      }
+
+      .box{
+        border:4px solid #4f5f45;
+        padding:30px;
+        background:white;
+        border-radius:12px;
+      }
+
+      h1{
+        text-align:center;
+        color:#4f5f45;
+      }
     </style>
   </head>
 
   <body>
 
-    <h1>Patente di Consapevolezza Civica</h1>
+    <div class="box">
 
-    <p><b>Nome:</b> ${state.name}</p>
-    <p><b>Livello:</b> ${state.level}</p>
-    <p><b>Punteggio:</b> ${percent}%</p>
+      <h1>Patente di Consapevolezza Civica</h1>
 
-    <canvas id="pdfChart" width="400" height="400"></canvas>
+      <p><b>Nome:</b> ${state.name}</p>
+      <p><b>Livello:</b> ${state.level}</p>
+      <p><b>Risultato:</b> ${percent}%</p>
 
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+      <canvas id="pdfChart" width="400" height="400"></canvas>
+
+    </div>
 
     <script>
       new Chart(document.getElementById("pdfChart"), {
@@ -249,7 +268,7 @@ function downloadPDF(){
   </html>
   `);
 
-  win.document.close();
+  w.document.close();
 }
 
 
