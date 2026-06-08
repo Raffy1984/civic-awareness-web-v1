@@ -1,8 +1,8 @@
 body{
   margin:0;
-  font-family: Arial, sans-serif;
+  font-family: Arial;
   background: linear-gradient(180deg,#fff3b0,#ffffff);
-  color:#1a1a1a; /* 🔥 FIX globale testo */
+  color:#1a1a1a;
 }
 
 .container{
@@ -12,17 +12,16 @@ body{
 }
 
 .card{
-  background:#ffffff;
+  background:#fff;
   border:2px solid #9eb888;
   border-radius:18px;
   padding:30px;
   margin-top:20px;
-  color:#1a1a1a; /* 🔥 FIX card */
+  color:#1a1a1a;
 }
 
-/* 🔥 FIX TOTALE TUTTO TESTO */
-h1,h2,h3,p,div,span,label{
-  color:#1a1a1a !important;
+h1,h2,h3,p,div,span{
+  color:#1a1a1a;
 }
 
 input{
@@ -31,8 +30,6 @@ input{
   margin:10px 0;
   border:2px solid #9eb888;
   border-radius:10px;
-  background:#fff;
-  color:#000; /* input sempre leggibile */
 }
 
 button{
@@ -42,7 +39,7 @@ button{
   border:none;
   border-radius:10px;
   background:#4f5f45;
-  color:#ffffff !important; /* bottoni sempre visibili */
+  color:white;
   cursor:pointer;
 }
 
@@ -53,7 +50,6 @@ button:hover{
 .question{
   font-size:18px;
   margin-bottom:15px;
-  color:#1a1a1a !important;
 }
 
 .answer{
@@ -62,8 +58,7 @@ button:hover{
   margin:8px 0;
   border:2px solid #9eb888;
   border-radius:10px;
-  background:#ffffff;
-  color:#1a1a1a !important; /* 🔥 FIX risposte invisibili */
+  background:#fff;
   cursor:pointer;
 }
 
@@ -74,7 +69,6 @@ button:hover{
 .progress{
   font-weight:bold;
   margin-bottom:10px;
-  color:#1a1a1a !important;
 }
 
 .tag{
@@ -84,5 +78,4 @@ button:hover{
   background:#e9f0df;
   font-size:12px;
   margin-bottom:10px;
-  color:#1a1a1a !important;
 }
