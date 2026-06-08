@@ -3,24 +3,24 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Citizen Insight DEBUG</title>
+<title>Citizen Insight - Pro</title>
 
 <style>
 body{
   margin:0;
   font-family:Arial;
-  background:#f3f5ef;
+  background:#f4f6f1;
 }
 
 .header{
   background:#1f3a2e;
   color:white;
   padding:14px;
-  font-weight:600;
+  font-weight:700;
 }
 
 .container{
-  max-width:800px;
+  max-width:900px;
   margin:auto;
   padding:20px;
 }
@@ -30,89 +30,225 @@ body{
   padding:22px;
   border-radius:14px;
   margin-top:20px;
-  box-shadow:0 8px 20px rgba(0,0,0,0.06);
+  box-shadow:0 8px 25px rgba(0,0,0,0.06);
 }
 
-.error{
-  color:red;
-  white-space:pre-wrap;
-}
 button{
   width:100%;
   padding:12px;
   margin:6px 0;
+  border:none;
+  border-radius:10px;
+  cursor:pointer;
+  font-weight:600;
+}
+
+.primary{background:#1f3a2e;color:white;}
+.secondary{background:#e7efe6;color:#111;}
+.answer{background:#fff;border:1px solid #ccc;text-align:left;}
+.answer:hover{background:#f2f6ef;}
+
+.tag{
+  display:inline-block;
+  padding:4px 10px;
+  border-radius:20px;
+  background:#e7efe6;
+  font-size:12px;
+  margin-bottom:10px;
 }
 </style>
 </head>
 
 <body>
 
-<div class="header">Citizen Insight DEBUG</div>
+<div class="header">Citizen Insight Platform</div>
 
 <div class="container">
-<div class="card" id="app">Caricamento...</div>
+<div class="card" id="app">Loading...</div>
 </div>
 
 <script>
 
-try{
-
-console.log("JS AVVIATO");
-
-const app = document.getElementById("app");
-
-if(!app){
-  throw new Error("Elemento #app non trovato");
-}
+/* =========================
+   DATABASE SERIO (STRUTTURATO)
+========================= */
 
 const DB = {
-  nazionale:[
+
+  nazionale: [
     {
-      q:"Inflazione cosa rappresenta?",
+      cat:"Economia",
+      q:"Cosa indica l'inflazione?",
       a:[
-        {t:"Aumento prezzi",v:1},
-        {t:"Diminuzione prezzi",v:0}
+        {t:"Aumento generale dei prezzi",v:1},
+        {t:"Riduzione salari automatici",v:0},
+        {t:"Aumento PIL reale sempre positivo",v:0},
+        {t:"Debito privato nullo",v:0}
+      ]
+    },
+    {
+      cat:"Economia",
+      q:"Cosa succede se aumentano le accise sui carburanti?",
+      a:[
+        {t:"Aumenta il prezzo finale alla pompa",v:1},
+        {t:"Diminuisce automaticamente il debito pubblico a zero",v:0},
+        {t:"Non cambia nulla",v:0},
+        {t:"Aumenta solo il traffico",v:0}
+      ]
+    },
+    {
+      cat:"Stato",
+      q:"Il debito pubblico rappresenta:",
+      a:[
+        {t:"Totale dei debiti dello Stato",v:1},
+        {t:"Risparmi privati dei cittadini",v:0},
+        {t:"Solo tasse locali",v:0},
+        {t:"Entrate turistiche",v:0}
+      ]
+    },
+    {
+      cat:"Sicurezza",
+      q:"Cosa influenza la sicurezza urbana?",
+      a:[
+        {t:"Forze dell’ordine e politiche locali",v:1},
+        {t:"Solo meteo",v:0},
+        {t:"Solo turismo",v:0},
+        {t:"Nessun fattore reale",v:0}
+      ]
+    },
+    {
+      cat:"Energia",
+      q:"Qual è un effetto della dipendenza energetica estera?",
+      a:[
+        {t:"Vulnerabilità ai prezzi internazionali",v:1},
+        {t:"Prezzi sempre fissi",v:0},
+        {t:"Azzeramento inflazione",v:0},
+        {t:"Nessun effetto economico",v:0}
+      ]
+    }
+  ],
+
+  regionale: [
+    {
+      cat:"Sanità",
+      q:"Cosa causa le liste d'attesa lunghe?",
+      a:[
+        {t:"Squilibrio tra domanda e offerta sanitaria",v:1},
+        {t:"Troppi ospedali moderni",v:0},
+        {t:"Zero pazienti",v:0},
+        {t:"Automazione totale",v:0}
+      ]
+    },
+    {
+      cat:"Trasporti",
+      q:"Un sistema ferroviario regionale inefficiente porta a:",
+      a:[
+        {t:"Maggiore uso auto private",v:1},
+        {t:"Riduzione traffico immediata",v:0},
+        {t:"Eliminazione carburante",v:0},
+        {t:"Nessun impatto",v:0}
+      ]
+    }
+  ],
+
+  comunale: [
+    {
+      cat:"Mobilità",
+      q:"Cosa migliora il traffico cittadino?",
+      a:[
+        {t:"Trasporto pubblico efficiente",v:1},
+        {t:"Più auto private",v:0},
+        {t:"Strade chiuse senza alternative",v:0},
+        {t:"Nessuna pianificazione",v:0}
+      ]
+    },
+    {
+      cat:"Servizi",
+      q:"La gestione dei rifiuti inefficiente causa:",
+      a:[
+        {t:"Degrado urbano",v:1},
+        {t:"Città più pulita automaticamente",v:0},
+        {t:"Riduzione popolazione",v:0},
+        {t:"Nessun effetto",v:0}
       ]
     }
   ]
 };
 
+/* =========================
+   STATE
+========================= */
+
 let state = {
+  name:"",
+  level:"",
   i:0,
   score:0,
-  q:DB.nazionale
+  q:[]
 };
 
-function home(){
-  console.log("HOME OK");
+const app = document.getElementById("app");
 
+/* =========================
+   HOME
+========================= */
+
+function home(){
   app.innerHTML = `
-    <h2>Funzionamento OK</h2>
-    <button onclick="start()">Avvia test</button>
+    <h2>Dashboard Consapevolezza</h2>
+
+    <input id="name" placeholder="Inserisci nome">
+
+    <button class="primary" onclick="start('nazionale')">Nazionale</button>
+    <button class="secondary" onclick="start('regionale')">Regionale</button>
+    <button class="secondary" onclick="start('comunale')">Comunale</button>
   `;
 }
 
-function start(){
-  console.log("START OK");
+/* =========================
+   START
+========================= */
+
+function start(level){
+
+  state.name = document.getElementById("name").value || "Utente";
+  state.level = level;
+
+  state.q = shuffle(DB[level]); // random vero
+  state.i = 0;
+  state.score = 0;
+
   render();
 }
+
+/* =========================
+   RENDER
+========================= */
 
 function render(){
 
   const q = state.q[state.i];
 
-  if(!q){
-    app.innerHTML = "<h2>Fine test</h2>";
-    return;
-  }
+  if(!q) return finish();
 
   app.innerHTML = `
+    <div class="tag">${state.level} - ${q.cat}</div>
+
     <h3>${q.q}</h3>
+
     ${q.a.map(x=>`
-      <button onclick="answer(${x.v})">${x.t}</button>
+      <button class="answer" onclick="answer(${x.v})">${x.t}</button>
     `).join("")}
+
+    <p>${state.i+1} / ${state.q.length}</p>
+
+    <button class="secondary" onclick="home()">Torna alla dashboard</button>
   `;
 }
+
+/* =========================
+   ANSWER
+========================= */
 
 function answer(v){
   if(v) state.score++;
@@ -120,14 +256,32 @@ function answer(v){
   render();
 }
 
-home();
+/* =========================
+   FINISH
+========================= */
 
-}catch(e){
+function finish(){
 
-document.body.innerHTML =
-"<div class='card error'><h2>ERRORE BLOCCANTE</h2><pre>"+e.stack+"</pre></div>";
+  app.innerHTML = `
+    <h2>Report finale</h2>
 
+    <h1>${state.score} / ${state.q.length}</h1>
+
+    <p><b>${state.name}</b> - livello ${state.level}</p>
+
+    <button class="primary" onclick="home()">Ricomincia</button>
+  `;
 }
+
+/* =========================
+   UTILS
+========================= */
+
+function shuffle(arr){
+  return [...arr].sort(()=>Math.random()-0.5);
+}
+
+home();
 
 </script>
 
