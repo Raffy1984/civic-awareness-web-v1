@@ -13,21 +13,23 @@ let current = [];
 const DOMANDE = {
   nazionale:[
     {
-      q:"L'Italia ha debito pubblico elevato. Qual è una strategia sostenibile?",
+      cat:"Economia",
+      q:"L'Italia ha debito elevato e crescita lenta. Quale approccio è più equilibrato?",
       options:[
-        {t:"Investimenti produttivi e riforme",v:2},
+        {t:"Investimenti produttivi + riforme",v:2},
         {t:"Tagli drastici immediati",v:0},
         {t:"Aumento tasse generalizzato",v:0},
         {t:"Nessuna azione",v:1}
       ]
     },
     {
-      q:"Giovani e lavoro instabile. Qual è la soluzione più efficace?",
+      cat:"Lavoro",
+      q:"Alta precarietà giovanile. Qual è la soluzione più efficace?",
       options:[
-        {t:"Formazione e contratti stabili",v:2},
-        {t:"Più contratti precari",v:0},
+        {t:"Formazione + contratti stabili",v:2},
+        {t:"Più flessibilità senza regole",v:1},
         {t:"Riduzione salari",v:0},
-        {t:"Mercato totalmente libero",v:1}
+        {t:"Aumento contratti precari",v:0}
       ]
     }
   ],
@@ -35,9 +37,10 @@ const DOMANDE = {
   regionale:{
     "Lazio":[
       {
-        q:"Sanità con lunghe liste d’attesa nel Lazio. Cosa è prioritario?",
+        cat:"Sanità",
+        q:"Liste d'attesa alte nel Lazio. Cosa è prioritario?",
         options:[
-          {t:"Assunzioni e digitalizzazione",v:2},
+          {t:"Digitalizzazione + assunzioni",v:2},
           {t:"Riduzione servizi",v:0},
           {t:"Privatizzazione totale",v:1}
         ]
@@ -45,19 +48,21 @@ const DOMANDE = {
     ],
     "Lombardia":[
       {
-        q:"Pressione su sanità e mobilità in Lombardia. Cosa è più efficace?",
+        cat:"Mobilità",
+        q:"Traffico e pressione sanitaria in Lombardia. Intervento migliore?",
         options:[
-          {t:"Trasporto pubblico e sanità territoriale",v:2},
-          {t:"Tagli alla spesa",v:0},
+          {t:"Trasporto pubblico + sanità territoriale",v:2},
+          {t:"Taglio spesa pubblica",v:0},
           {t:"Aumento costi servizi",v:1}
         ]
       }
     ],
     "Campania":[
       {
-        q:"Problemi infrastrutturali in Campania. Qual è la scelta migliore?",
+        cat:"Infrastrutture",
+        q:"Criticità infrastrutturali in Campania. Cosa funziona meglio?",
         options:[
-          {t:"Investimenti mirati e controllo spesa",v:2},
+          {t:"Investimenti mirati + controllo spesa",v:2},
           {t:"Riduzione investimenti",v:0},
           {t:"Privatizzazione immediata",v:1}
         ]
@@ -67,7 +72,8 @@ const DOMANDE = {
 
   comunale:[
     {
-      q:"Traffico urbano elevato. Cosa funziona meglio?",
+      cat:"Mobilità",
+      q:"Traffico urbano elevato. Soluzione più efficace?",
       options:[
         {t:"Trasporto pubblico potenziato",v:2},
         {t:"Più parcheggi",v:0},
@@ -121,10 +127,7 @@ function mostraRegioni(){
 function confermaRegione(){
   regione = document.getElementById("regioneSelect").value;
 
-  if(!regione){
-    alert("Seleziona una regione");
-    return;
-  }
+  if(!regione) return alert("Seleziona una regione");
 
   livello = "regionale";
   startQuiz();
@@ -154,14 +157,15 @@ function render(){
 
   let d = current[index];
 
-  if(!d){
-    return finish();
-  }
+  if(!d) return finish();
 
   let shuffled = [...d.options].sort(()=>Math.random()-0.5);
 
   document.getElementById("quiz").innerHTML = `
-    <h2>${d.q}</h2>
+    <div>
+      <h4>${d.cat}</h4>
+      <h2>${d.q}</h2>
+    </div>
 
     ${shuffled.map(o=>`
       <button onclick="answer(${o.v})">${o.t}</button>
@@ -178,7 +182,7 @@ function answer(v){
 }
 
 /* =========================
-   REPORT
+   REPORT EVOLUTO
 ========================= */
 
 function finish(){
@@ -189,11 +193,19 @@ function finish(){
   let max = current.length * 2;
   let perc = Math.round((score / max) * 100);
 
+  let livelloTesto = "";
+
+  if(perc >= 70) livelloTesto = "🟢 Consapevolezza alta";
+  else if(perc >= 40) livelloTesto = "🟡 Consapevolezza media";
+  else livelloTesto = "🔴 Consapevolezza critica";
+
   document.getElementById("report").innerHTML = `
     <h1>Report ${nome}</h1>
     <p>Livello: ${livello}</p>
     <p>Regione: ${regione}</p>
-    <h2>Indice Consapevolezza: ${perc}%</h2>
+
+    <h2>${livelloTesto}</h2>
+    <h3>Indice: ${perc}%</h3>
 
     <button onclick="location.reload()">Ricomincia</button>
   `;
