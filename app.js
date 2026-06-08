@@ -3,6 +3,84 @@ let livello = "";
 let regione = "";
 let score = 0;
 
+let index = 0;
+let current = [];
+
+/* =========================
+   DOMANDE
+========================= */
+
+const DOMANDE = {
+  nazionale:[
+    {
+      q:"L'Italia ha debito pubblico elevato. Qual è una strategia sostenibile?",
+      options:[
+        {t:"Investimenti produttivi e riforme",v:2},
+        {t:"Tagli drastici immediati",v:0},
+        {t:"Aumento tasse generalizzato",v:0},
+        {t:"Nessuna azione",v:1}
+      ]
+    },
+    {
+      q:"Giovani e lavoro instabile. Qual è la soluzione più efficace?",
+      options:[
+        {t:"Formazione e contratti stabili",v:2},
+        {t:"Più contratti precari",v:0},
+        {t:"Riduzione salari",v:0},
+        {t:"Mercato totalmente libero",v:1}
+      ]
+    }
+  ],
+
+  regionale:{
+    "Lazio":[
+      {
+        q:"Sanità con lunghe liste d’attesa nel Lazio. Cosa è prioritario?",
+        options:[
+          {t:"Assunzioni e digitalizzazione",v:2},
+          {t:"Riduzione servizi",v:0},
+          {t:"Privatizzazione totale",v:1}
+        ]
+      }
+    ],
+    "Lombardia":[
+      {
+        q:"Pressione su sanità e mobilità in Lombardia. Cosa è più efficace?",
+        options:[
+          {t:"Trasporto pubblico e sanità territoriale",v:2},
+          {t:"Tagli alla spesa",v:0},
+          {t:"Aumento costi servizi",v:1}
+        ]
+      }
+    ],
+    "Campania":[
+      {
+        q:"Problemi infrastrutturali in Campania. Qual è la scelta migliore?",
+        options:[
+          {t:"Investimenti mirati e controllo spesa",v:2},
+          {t:"Riduzione investimenti",v:0},
+          {t:"Privatizzazione immediata",v:1}
+        ]
+      }
+    ]
+  },
+
+  comunale:[
+    {
+      q:"Traffico urbano elevato. Cosa funziona meglio?",
+      options:[
+        {t:"Trasporto pubblico potenziato",v:2},
+        {t:"Più parcheggi",v:0},
+        {t:"Riduzione controlli",v:1}
+      ]
+    }
+  ]
+};
+
+/* =========================
+   START
+========================= */
+
 function avvia(){
   nome = document.getElementById("nomeUtente").value || "Utente";
 
@@ -10,7 +88,6 @@ function avvia(){
   document.getElementById("dashboard").style.display = "block";
 }
 
-/* LIVELLO */
 function selezionaLivello(l){
   livello = l;
 
@@ -23,7 +100,10 @@ function selezionaLivello(l){
   }
 }
 
-/* REGIONI */
+/* =========================
+   REGIONI
+========================= */
+
 function mostraRegioni(){
   document.getElementById("selector").style.display = "block";
 
@@ -31,7 +111,7 @@ function mostraRegioni(){
   sel.innerHTML = "";
 
   REGIONI.forEach(r=>{
-    const opt = document.createElement("option");
+    let opt = document.createElement("option");
     opt.value = r;
     opt.textContent = r;
     sel.appendChild(opt);
@@ -46,59 +126,31 @@ function confermaRegione(){
     return;
   }
 
+  livello = "regionale";
   startQuiz();
 }
 
-/* QUIZ BASE */
-const DOMANDE = {
-  nazionale:[
-    {
-      q:"Inflazione in crescita: cosa è più equilibrato?",
-      options:[
-        {t:"Sostegni + salari",v:2},
-        {t:"Controllo prezzi",v:1},
-        {t:"Nessun intervento",v:0},
-        {t:"Tagli spesa pubblica",v:1}
-      ]
-    }
-  ],
-  regionale:[
-    {
-      q:"Sanità sotto pressione nella regione: cosa fai?",
-      options:[
-        {t:"Assunzioni + investimenti",v:2},
-        {t:"Privatizzazione",v:0},
-        {t:"Riduzione servizi",v:1}
-      ]
-    }
-  ],
-  comunale:[
-    {
-      q:"Traffico urbano alto: soluzione?",
-      options:[
-        {t:"Trasporto pubblico",v:2},
-        {t:"Più parcheggi",v:0},
-        {t:"Riduzione controlli",v:1}
-      ]
-    }
-  ]
-};
-
-let index = 0;
-let current = [];
+/* =========================
+   QUIZ ENGINE
+========================= */
 
 function startQuiz(){
   document.getElementById("dashboard").style.display = "none";
+  document.getElementById("quiz").style.display = "block";
 
-  current = DOMANDE[livello];
-  index = 0;
   score = 0;
+  index = 0;
+
+  if(livello === "regionale"){
+    current = DOMANDE.regionale[regione] || [];
+  } else {
+    current = DOMANDE[livello] || [];
+  }
 
   render();
 }
 
 function render(){
-  document.getElementById("quiz").style.display = "block";
 
   let d = current[index];
 
@@ -106,34 +158,42 @@ function render(){
     return finish();
   }
 
-  let shuffled = d.options.sort(()=>Math.random()-0.5);
+  let shuffled = [...d.options].sort(()=>Math.random()-0.5);
 
   document.getElementById("quiz").innerHTML = `
     <h2>${d.q}</h2>
+
     ${shuffled.map(o=>`
       <button onclick="answer(${o.v})">${o.t}</button>
     `).join("")}
-    <p>${index+1}/${current.length}</p>
+
+    <p>${index+1} / ${current.length}</p>
   `;
 }
 
 function answer(v){
-  score += v;
+  score += Number(v);
   index++;
   render();
 }
 
+/* =========================
+   REPORT
+========================= */
+
 function finish(){
+
   document.getElementById("quiz").style.display = "none";
   document.getElementById("report").style.display = "block";
 
-  let perc = Math.round((score/(current.length*2))*100);
+  let max = current.length * 2;
+  let perc = Math.round((score / max) * 100);
 
   document.getElementById("report").innerHTML = `
     <h1>Report ${nome}</h1>
     <p>Livello: ${livello}</p>
     <p>Regione: ${regione}</p>
-    <h2>Consapevolezza: ${perc}%</h2>
+    <h2>Indice Consapevolezza: ${perc}%</h2>
 
     <button onclick="location.reload()">Ricomincia</button>
   `;
