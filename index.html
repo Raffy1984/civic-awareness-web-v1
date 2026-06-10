@@ -9,7 +9,7 @@
 
 <body>
 
-<!-- INTRO PROVOCATORIA -->
+<!-- INTRO -->
 <div id="intro" class="intro">
 
   <div class="intro-overlay">
@@ -20,18 +20,18 @@
 
       <p class="hook">
         Per guidare un’auto serve una patente.<br>
-        Per lavorare serve formazione.<br>
+        Per lavorare serve competenza.<br>
         Per votare… non serve nulla.
       </p>
 
       <p class="subhook">
-        Ma se esistesse una patente del voto…<br>
+        Se esistesse una patente del voto,<br>
         oggi tu la supereresti davvero?
       </p>
 
       <input id="nomeUtente" placeholder="Inserisci il tuo nome">
 
-      <button onclick="avvia()" class="btn-primary">
+      <button class="btn-primary" onclick="avvia()">
         Inizia il test
       </button>
 
@@ -44,32 +44,31 @@
 <!-- DASHBOARD -->
 <div id="dashboard" class="dashboard">
 
-  <h2>Scegli il livello del test</h2>
+  <h2>Scegli livello di simulazione</h2>
 
   <div class="menu">
 
-    <button onclick="selezionaLivello('nazionale')" class="btn-primary">
+    <button class="btn-primary" onclick="selezionaLivello('nazionale')">
       🇮🇹 Nazionale
     </button>
 
-    <button onclick="selezionaLivello('regionale')" class="btn-secondary">
+    <button class="btn-secondary" onclick="selezionaLivello('regionale')">
       🏛 Regionale
     </button>
 
-    <button onclick="selezionaLivello('comunale')" class="btn-secondary">
+    <button class="btn-secondary" onclick="selezionaLivello('comunale')">
       🏙 Comunale
     </button>
 
   </div>
 
-  <!-- SELETTORE TERRITORIO -->
   <div id="selector" class="selector">
 
-    <h3>Seleziona territorio</h3>
+    <h3>Selezione territorio</h3>
 
     <select id="regioneSelect"></select>
 
-    <button onclick="confermaRegione()" class="btn-primary">
+    <button class="btn-primary" onclick="confermaRegione()">
       Avvia simulazione
     </button>
 
