@@ -1,45 +1,42 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Patente Civica</title>
-
-<style>
-body{margin:0;font-family:Arial;background:#0b1020;color:#fff}
-.section{display:none;padding:20px}
-.active{display:block}
-.card{background:#111827;padding:15px;margin-top:10px;border-radius:10px}
-button{width:100%;padding:12px;margin-top:10px;border:none;border-radius:8px;font-weight:bold}
-.primary{background:#22c55e;color:#000}
-.option{background:#1f2937;color:#fff}
-input,select{width:100%;padding:10px;margin-top:10px}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patente Civica - Simulatore di Consapevolezza</title>
+    <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
 
-<div id="intro" class="section active">
-  <h1>Patente Civica</h1>
-  <p>Test di consapevolezza del voto</p>
-  <input id="nome" placeholder="Nome">
-  <button class="primary" onclick="start()">Inizia</button>
-</div>
+<div class="container">
+  
+    <div id="intro" class="section active">
+        <h1>Patente Civica</h1>
+        <div class="subtitle">Per guidare serve la patente. Per votare no. Tu la supereresti?</div>
+        <input id="nome" type="text" placeholder="Inserisci il tuo nome o alias" autocomplete="off">
+        <button class="btn-primary" onclick="start()">Inizia il Test</button>
+    </div>
 
-<div id="menu" class="section">
-  <h2>Livello</h2>
-  <button onclick="setLevel('nazionale')">Nazionale</button>
-  <button onclick="setLevel('regionale')">Regionale</button>
-  <button onclick="setLevel('comunale')">Comunale</button>
-</div>
+    <div id="menu" class="section">
+        <h2>Seleziona il Livello</h2>
+        <div class="subtitle">Su quale scala vuoi testare la tua lungimiranza politica?</div>
+        <button class="btn-level" onclick="setLevel('nazionale')">🇮🇹 Livello Nazionale</button>
+        <button class="btn-level" onclick="setLevel('regionale')">🗺️ Livello Regionale</button>
+        <button class="btn-level" onclick="setLevel('comunale')">🏙️ Livello Comunale</button>
+    </div>
 
-<div id="territorio" class="section">
-  <select id="select"></select>
-  <button class="primary" onclick="confirmTerritory()">Conferma</button>
-</div>
+    <div id="territorio" class="section">
+        <h2>Seleziona Territorio</h2>
+        <div class="subtitle">Personalizza lo scenario locale:</div>
+        <select id="selectTerritorio"></select>
+        <button class="btn-primary" onclick="confirmTerritory()">Conferma e Continua</button>
+    </div>
 
-<div id="quiz" class="section"></div>
-<div id="result" class="section"></div>
+    <div id="quiz" class="section"></div>
+
+    <div id="result" class="section"></div>
+
+</div>
 
 <script src="app.js"></script>
 </body>
