@@ -1,159 +1,101 @@
-body{
-  margin:0;
-  font-family:Arial, Helvetica, sans-serif;
-  background:#05070f;
-  color:white;
+:root {
+    --bg-main: #0f172a;
+    --bg-card: #1e293b;
+    --primary: #22c55e;
+    --primary-hover: #16a34a;
+    --text-main: #f8fafc;
+    --text-muted: #94a3b8;
+    --accent: #3b82f6;
 }
 
-/* =========================
-   INTRO
-========================= */
-
-.intro{
-  height:100vh;
-  background:url("https://upload.wikimedia.org/wikipedia/commons/0/03/Italy_satellite_map.jpg") center/cover no-repeat;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  position:relative;
+* { 
+    box-sizing: border-box; 
+    transition: all 0.2s ease; 
 }
 
-.intro-overlay{
-  position:absolute;
-  inset:0;
-  background:rgba(0,0,0,0.78);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  text-align:center;
-  padding:20px;
+body {
+    margin: 0;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: var(--bg-main);
+    color: var(--text-main);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 20px;
 }
 
-.intro-box{
-  max-width:720px;
+.container {
+    width: 100%;
+    max-width: 500px;
+    background: var(--bg-card);
+    padding: 30px;
+    border-radius: 16px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+    border: 1px solid #334155;
 }
 
-h1{
-  font-size:44px;
-  margin-bottom:20px;
+.section { display: none; }
+.active { display: block; animation: fadeIn 0.4s ease; }
+
+h1, h2, h3 { margin-top: 0; font-weight: 700; }
+h1 { color: var(--primary); font-size: 2.2rem; margin-bottom: 5px; }
+
+.subtitle { color: var(--text-muted); font-size: 1rem; margin-bottom: 25px; }
+.tag { background: var(--accent); padding: 4px 10px; border-radius: 20px; font-size: 0.8rem; font-weight: bold; display: inline-block; margin-bottom: 10px; }
+
+input, select {
+    width: 100%;
+    padding: 14px;
+    margin-bottom: 15px;
+    border: 2px solid #334155;
+    border-radius: 8px;
+    background: #0f172a;
+    color: white;
+    font-size: 1rem;
+}
+input:focus, select:focus { border-color: var(--primary); outline: none; }
+
+button {
+    width: 100%;
+    padding: 14px;
+    margin-top: 10px;
+    border: none;
+    border-radius: 8px;
+    font-weight: bold;
+    font-size: 1rem;
+    cursor: pointer;
 }
 
-.hook{
-  font-size:18px;
-  line-height:1.5;
-  opacity:0.9;
+.btn-primary { background: var(--primary); color: #0f172a; }
+.btn-primary:hover { background: var(--primary-hover); }
+
+.btn-level { background: #334155; color: white; margin-bottom: 12px; text-align: left; padding-left: 20px; }
+.btn-level:hover { background: #475569; border-left: 5px solid var(--accent); }
+
+.option-btn {
+    background: #1e293b;
+    border: 2px solid #334155;
+    color: var(--text-main);
+    text-align: left;
+    padding: 15px;
+    margin-bottom: 12px;
 }
+.option-btn:hover { background: #334155; border-color: var(--text-muted); }
 
-.subhook{
-  margin-top:10px;
-  opacity:0.7;
+.result-badge {
+    padding: 15px;
+    border-radius: 8px;
+    text-align: center;
+    font-size: 1.3rem;
+    font-weight: bold;
+    margin: 20px 0;
 }
+.high { background: rgba(34, 197, 94, 0.2); color: #4ade80; border: 1px solid #22c55e; }
+.medium { background: rgba(234, 179, 8, 0.2); color: #facc15; border: 1px solid #eab308; }
+.low { background: rgba(239, 68, 68, 0.2); color: #fca5a5; border: 1px solid #ef4444; }
 
-/* =========================
-   INPUT
-========================= */
-
-input{
-  margin-top:20px;
-  padding:12px;
-  width:80%;
-  border:none;
-  border-radius:10px;
-  outline:none;
-}
-
-/* =========================
-   BUTTONS
-========================= */
-
-button{
-  margin-top:15px;
-  padding:12px;
-  border:none;
-  border-radius:10px;
-  cursor:pointer;
-  font-weight:bold;
-  width:100%;
-  transition:0.2s ease;
-}
-
-button:hover{
-  transform:scale(1.02);
-}
-
-.btn-primary{
-  background:#22c55e;
-  color:black;
-}
-
-.btn-secondary{
-  background:#1f2937;
-  color:white;
-}
-
-/* =========================
-   DASHBOARD
-========================= */
-
-.dashboard{
-  display:none;
-  padding:25px;
-  text-align:center;
-}
-
-.menu{
-  margin-top:20px;
-  display:flex;
-  flex-direction:column;
-  gap:10px;
-}
-
-.selector{
-  display:none;
-  margin-top:25px;
-}
-
-select{
-  padding:12px;
-  width:80%;
-  border-radius:8px;
-  border:none;
-  margin-top:10px;
-}
-
-/* =========================
-   QUIZ
-========================= */
-
-.quiz{
-  display:none;
-  padding:20px;
-}
-
-.card{
-  background:#111827;
-  padding:18px;
-  border-radius:14px;
-  margin-top:12px;
-}
-
-.card h2{
-  margin:0 0 10px 0;
-}
-
-/* =========================
-   REPORT
-========================= */
-
-.report{
-  display:none;
-  padding:25px;
-}
-
-.report h1{
-  font-size:32px;
-}
-
-.report h2{
-  color:#22c55e;
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
 }
