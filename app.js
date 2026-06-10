@@ -1,4 +1,4 @@
-Ilet nome = "";
+let nome = "";
 let livello = "";
 let index = 0;
 
@@ -9,13 +9,13 @@ let current = [];
 let score = { s:0, e:0, c:0 };
 
 /* =========================
-   DB NAZIONALE
+   DATASET NAZIONALE
 ========================= */
 
 const NAZIONALE = [
 {
   t:"Economia",
-  s:"Inflazione in crescita e potere d’acquisto in calo",
+  s:"Inflazione e costo della vita in aumento",
   o:[
     {t:"Aumento salari minimi",v:[1,0,2]},
     {t:"Controllo prezzi",v:[1,1,1]},
@@ -46,7 +46,7 @@ const NAZIONALE = [
 ];
 
 /* =========================
-   REGIONI
+   TERRITORI
 ========================= */
 
 const REGIONI = [
@@ -57,17 +57,13 @@ const REGIONI = [
 "Trentino-Alto Adige","Friuli-Venezia Giulia"
 ];
 
-/* =========================
-   COMUNI (demo iniziale)
-========================= */
-
 const COMUNI = [
 "Roma","Milano","Napoli","Torino","Bologna",
 "Firenze","Bari","Palermo","Genova","Verona"
 ];
 
 /* =========================
-   START
+   AVVIO
 ========================= */
 
 function avvia(){
@@ -86,19 +82,28 @@ function avvia(){
 }
 
 /* =========================
-   LIVELLO
+   SELEZIONE LIVELLO
 ========================= */
 
 function selezionaLivello(l){
 
   livello = l;
 
+  document.getElementById("dashboard").style.display = "none";
+
   if(l === "nazionale"){
     startQuiz();
     return;
   }
 
-  document.getElementById("selector").style.display = "block";
+  const selector = document.getElementById("selector");
+
+  if(!selector){
+    alert("Selector mancante in HTML");
+    return;
+  }
+
+  selector.style.display = "block";
 
   if(l === "regionale") loadRegioni();
   if(l === "comunale") loadComuni();
@@ -149,7 +154,11 @@ function loadComuni(){
 function confermaRegione(){
 
   const sel = document.getElementById("regioneSelect");
-  if(!sel) return;
+
+  if(!sel){
+    alert("Select mancante");
+    return;
+  }
 
   const val = sel.value;
 
@@ -170,13 +179,9 @@ function confermaRegione(){
 
 function startQuiz(){
 
-  const quiz = document.getElementById("quiz");
-  const dashboard = document.getElementById("dashboard");
-  const selector = document.getElementById("selector");
-
-  if(quiz) quiz.style.display = "block";
-  if(dashboard) dashboard.style.display = "none";
-  if(selector) selector.style.display = "none";
+  document.getElementById("selector").style.display = "none";
+  document.getElementById("dashboard").style.display = "none";
+  document.getElementById("quiz").style.display = "block";
 
   index = 0;
   score = { s:0, e:0, c:0 };
@@ -184,21 +189,19 @@ function startQuiz(){
   if(livello === "nazionale"){
     current = NAZIONALE;
   }
-  else if(livello === "regionale"){
+
+  if(livello === "regionale"){
     current = NAZIONALE.map(q => ({
       ...q,
-      s: (regione || "") + " - " + q.s
+      s: regione + " - " + q.s
     }));
   }
-  else if(livello === "comunale"){
+
+  if(livello === "comunale"){
     current = NAZIONALE.map(q => ({
       ...q,
-      s: (comune || "") + " - " + q.s
+      s: comune + " - " + q.s
     }));
-  }
-  else{
-    alert("Livello non selezionato");
-    return;
   }
 
   render();
@@ -219,6 +222,11 @@ function render(){
 
   const el = document.getElementById("quiz");
 
+  if(!el){
+    alert("Quiz mancante in HTML");
+    return;
+  }
+
   el.innerHTML =
     "<div class='card'>" +
     "<h2>" + q.t + "</h2>" +
@@ -226,16 +234,16 @@ function render(){
     "</div>" +
 
     "<div class='card'>" +
-    q.o.map(o=>
-      "<button class='option' onclick='answer(" + o.v[0] + "," + o.v[1] + "," + o.v[2] + ")'>" +
-      o.t +
-      "</button>"
+    q.o.map(o =>
+      "<button class='option' onclick='answer(" +
+      o.v[0] + "," + o.v[1] + "," + o.v[2] +
+      ")'>" + o.t + "</button>"
     ).join("") +
     "</div>";
 }
 
 /* =========================
-   ANSWER
+   RISPOSTA
 ========================= */
 
 function answer(a,b,c){
@@ -250,7 +258,7 @@ function answer(a,b,c){
 }
 
 /* =========================
-   FINE
+   FINALE
 ========================= */
 
 function finish(){
@@ -267,24 +275,24 @@ function finish(){
   if(tot >= 7){
     livelloFinale = "CONSAPEVOLEZZA ALTA";
     colore = "#22c55e";
-    messaggio = "Probabilmente conosci davvero l’impatto delle scelte politiche.";
+    messaggio = "Buona comprensione delle dinamiche politiche.";
   }
   else if(tot >= 3){
     livelloFinale = "CONSAPEVOLEZZA MEDIA";
     colore = "#f59e0b";
-    messaggio = "Hai una base, ma molte decisioni sono ancora intuitive più che consapevoli.";
+    messaggio = "Comprensione parziale delle dinamiche.";
   }
   else{
     livelloFinale = "CONSAPEVOLEZZA BASSA";
     colore = "#ef4444";
-    messaggio = "Molte risposte sono scollegate dagli effetti reali delle politiche.";
+    messaggio = "Bassa correlazione tra scelte e impatti reali.";
   }
 
   document.getElementById("report").innerHTML =
     "<div class='card' style='border:2px solid "+colore+"'>" +
     "<h1>ESITO SIMULAZIONE</h1>" +
     "<h2 style='color:"+colore+"'>" + livelloFinale + "</h2>" +
-    "<p><b>Utente:</b> " + nome + "</p>" +
+    "<p><b>" + nome + "</b></p>" +
     "<p>" + messaggio + "</p>" +
     "<hr>" +
     "<p>Sociale: " + score.s + "</p>" +
