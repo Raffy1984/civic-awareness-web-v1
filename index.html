@@ -1,158 +1,90 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Patente di Consapevolezza Civica</title>
-
-<style>
-body{
-  margin:0;
-  font-family:Arial, sans-serif;
-  background:#050914;
-  color:white;
-}
-
-/* INTRO */
-.intro{
-  height:100vh;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  background:url("https://upload.wikimedia.org/wikipedia/commons/0/03/Italy_satellite_map.jpg") center/cover no-repeat;
-  position:relative;
-}
-
-.overlay{
-  position:absolute;
-  inset:0;
-  background:rgba(0,0,0,0.75);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  text-align:center;
-  padding:20px;
-}
-
-.box{
-  max-width:700px;
-}
-
-h1{
-  font-size:38px;
-}
-
-input{
-  padding:12px;
-  width:80%;
-  margin-top:10px;
-  border-radius:8px;
-  border:none;
-}
-
-button{
-  padding:12px;
-  margin-top:10px;
-  border:none;
-  border-radius:10px;
-  cursor:pointer;
-  font-weight:bold;
-}
-
-.primary{background:#22c55e;color:black;}
-.secondary{background:#1f2937;color:white;}
-
-/* DASHBOARD */
-.dashboard{
-  display:none;
-  padding:20px;
-  text-align:center;
-}
-
-/* SELECTOR */
-.selector{
-  display:none;
-  margin-top:20px;
-}
-
-select{
-  padding:12px;
-  border-radius:8px;
-  width:60%;
-}
-
-/* QUIZ */
-#quiz{
-  display:none;
-  padding:20px;
-}
-
-.card{
-  background:#0f172a;
-  padding:15px;
-  border-radius:12px;
-  margin-top:10px;
-}
-
-.optionBtn{
-  width:100%;
-  margin-top:10px;
-  background:#111827;
-  color:white;
-}
-
-/* REPORT */
-#report{
-  display:none;
-  padding:20px;
-}
-</style>
-
+<link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-<!-- INTRO -->
-<div class="intro" id="intro">
-  <div class="overlay">
-    <div class="box">
+<!-- INTRO PROVOCATORIA -->
+<div id="intro" class="intro">
+
+  <div class="intro-overlay">
+
+    <div class="intro-box">
+
       <h1>Patente di Consapevolezza Civica</h1>
-      <p>Simulatore di decisioni pubbliche reali. Ogni scelta ha conseguenze.</p>
 
-      <input id="nomeUtente" placeholder="Inserisci il tuo nome" />
+      <p class="hook">
+        Per guidare un’auto serve una patente.<br>
+        Per lavorare serve formazione.<br>
+        Per votare… non serve nulla.
+      </p>
 
-      <button class="primary" onclick="avvia()">Inizia</button>
+      <p class="subhook">
+        Ma se esistesse una patente del voto…<br>
+        oggi tu la supereresti davvero?
+      </p>
+
+      <input id="nomeUtente" placeholder="Inserisci il tuo nome">
+
+      <button onclick="avvia()" class="btn-primary">
+        Inizia il test
+      </button>
+
     </div>
+
   </div>
+
 </div>
 
 <!-- DASHBOARD -->
-<div class="dashboard" id="dashboard">
+<div id="dashboard" class="dashboard">
 
-  <h2>Seleziona livello</h2>
+  <h2>Scegli il livello del test</h2>
 
-  <button class="primary" onclick="selezionaLivello('nazionale')">🇮🇹 Nazionale</button>
-  <button class="secondary" onclick="selezionaLivello('regionale')">🏛 Regionale</button>
-  <button class="secondary" onclick="selezionaLivello('comunale')">🏙 Comunale</button>
+  <div class="menu">
 
-  <!-- SELECTOR REGIONI / COMUNI -->
-  <div class="selector" id="selector">
+    <button onclick="selezionaLivello('nazionale')" class="btn-primary">
+      🇮🇹 Nazionale
+    </button>
+
+    <button onclick="selezionaLivello('regionale')" class="btn-secondary">
+      🏛 Regionale
+    </button>
+
+    <button onclick="selezionaLivello('comunale')" class="btn-secondary">
+      🏙 Comunale
+    </button>
+
+  </div>
+
+  <!-- SELETTORE TERRITORIO -->
+  <div id="selector" class="selector">
 
     <h3>Seleziona territorio</h3>
 
     <select id="regioneSelect"></select>
 
-    <button class="primary" onclick="confermaRegione()">Conferma</button>
+    <button onclick="confermaRegione()" class="btn-primary">
+      Avvia simulazione
+    </button>
 
   </div>
+
 </div>
 
 <!-- QUIZ -->
-<div id="quiz"></div>
+<div id="quiz" class="quiz"></div>
 
 <!-- REPORT -->
-<div id="report"></div>
+<div id="report" class="report"></div>
 
+<script src="territori.js"></script>
+<script src="comuni.js"></script>
 <script src="app.js"></script>
 
 </body>
