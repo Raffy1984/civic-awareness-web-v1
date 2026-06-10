@@ -1,60 +1,21 @@
-(function(){
-
 let nome = "";
 let livello = "";
 let index = 0;
+
+let regione = "";
+let comune = "";
+
 let current = [];
 let score = { s:0, e:0, c:0 };
 
-function showError(msg){
-  const el = document.getElementById("report");
-  if(el){
-    el.style.display = "block";
-    el.innerHTML = "<div class='card'><h2>ERRORE</h2><p>" + msg + "</p></div>";
-  } else {
-    alert(msg);
-  }
-}
-
 /* =========================
-   START
+   DB NAZIONALE
 ========================= */
 
-window.avvia = function(){
-
-  const input = document.getElementById("nomeUtente");
-  const intro = document.getElementById("intro");
-  const dash = document.getElementById("dashboard");
-
-  if(!input || !intro || !dash){
-    return showError("HTML mancante (intro/dashboard/nomeUtente)");
-  }
-
-  nome = input.value || "Utente";
-
-  intro.style.display = "none";
-  dash.style.display = "block";
-};
-
-/* =========================
-   LIVELLO
-========================= */
-
-window.selezionaLivello = function(l){
-
-  livello = l;
-
-  startQuiz();
-};
-
-/* =========================
-   DB MINIMO STABILE
-========================= */
-
-const DB = [
+const NAZIONALE = [
 {
   t:"Economia",
-  s:"Inflazione e costo della vita in aumento",
+  s:"Inflazione in crescita e potere d’acquisto in calo",
   o:[
     {t:"Aumento salari minimi",v:[1,0,2]},
     {t:"Controllo prezzi",v:[1,1,1]},
@@ -68,7 +29,7 @@ const DB = [
   o:[
     {t:"Assunzioni medici",v:[2,-1,1]},
     {t:"Privatizzazione",v:[0,2,1]},
-    {t:"Digitalizzazione totale",v:[2,1,2]},
+    {t:"Digitalizzazione",v:[2,1,2]},
     {t:"Tagli spesa",v:[-2,1,-2]}
   ]
 },
@@ -81,48 +42,158 @@ const DB = [
     {t:"Taglio contributi",v:[1,2,0]},
     {t:"Nessuna misura",v:[-2,0,-2]}
   ]
-},
-{
-  t:"Ambiente",
-  s:"Inquinamento urbano crescente",
-  o:[
-    {t:"Zone verdi e ZTL",v:[2,1,2]},
-    {t:"Più auto elettriche",v:[1,2,1]},
-    {t:"Riduzione controlli",v:[-2,2,-2]},
-    {t:"Nessun intervento",v:[-3,0,-3]}
-  ]
-},
-{
-  t:"Trasporti",
-  s:"Trasporto pubblico inefficiente",
-  o:[
-    {t:"Investimenti mezzi pubblici",v:[2,1,2]},
-    {t:"Privatizzazione servizi",v:[0,2,1]},
-    {t:"Riduzione linee",v:[-2,1,-2]},
-    {t:"Status quo",v:[-1,0,-1]}
-  ]
 }
 ];
 
 /* =========================
-   QUIZ
+   REGIONI
+========================= */
+
+const REGIONI = [
+"Lazio","Lombardia","Campania","Sicilia","Veneto",
+"Emilia-Romagna","Piemonte","Toscana","Puglia",
+"Calabria","Sardegna","Liguria","Marche","Abruzzo",
+"Umbria","Basilicata","Molise","Valle d'Aosta",
+"Trentino-Alto Adige","Friuli-Venezia Giulia"
+];
+
+/* =========================
+   COMUNI (demo iniziale)
+========================= */
+
+const COMUNI = [
+"Roma","Milano","Napoli","Torino","Bologna",
+"Firenze","Bari","Palermo","Genova","Verona"
+];
+
+/* =========================
+   START
+========================= */
+
+function avvia(){
+
+  const input = document.getElementById("nomeUtente");
+
+  if(!input){
+    alert("Input nome mancante");
+    return;
+  }
+
+  nome = input.value || "Utente";
+
+  document.getElementById("intro").style.display = "none";
+  document.getElementById("dashboard").style.display = "block";
+}
+
+/* =========================
+   LIVELLO
+========================= */
+
+function selezionaLivello(l){
+
+  livello = l;
+
+  if(l === "nazionale"){
+    startQuiz();
+    return;
+  }
+
+  document.getElementById("selector").style.display = "block";
+
+  if(l === "regionale") loadRegioni();
+  if(l === "comunale") loadComuni();
+}
+
+/* =========================
+   LOAD REGIONI
+========================= */
+
+function loadRegioni(){
+
+  const sel = document.getElementById("regioneSelect");
+  if(!sel) return;
+
+  sel.innerHTML = "";
+
+  REGIONI.forEach(r=>{
+    const opt = document.createElement("option");
+    opt.value = r;
+    opt.textContent = r;
+    sel.appendChild(opt);
+  });
+}
+
+/* =========================
+   LOAD COMUNI
+========================= */
+
+function loadComuni(){
+
+  const sel = document.getElementById("regioneSelect");
+  if(!sel) return;
+
+  sel.innerHTML = "";
+
+  COMUNI.forEach(c=>{
+    const opt = document.createElement("option");
+    opt.value = c;
+    opt.textContent = c;
+    sel.appendChild(opt);
+  });
+}
+
+/* =========================
+   CONFERMA TERRITORIO
+========================= */
+
+function confermaRegione(){
+
+  const sel = document.getElementById("regioneSelect");
+  if(!sel) return;
+
+  const val = sel.value;
+
+  if(livello === "regionale"){
+    regione = val;
+  }
+
+  if(livello === "comunale"){
+    comune = val;
+  }
+
+  startQuiz();
+}
+
+/* =========================
+   START QUIZ
 ========================= */
 
 function startQuiz(){
 
-  const quiz = document.getElementById("quiz");
-  const dash = document.getElementById("dashboard");
-
-  if(!quiz || !dash){
-    return showError("Manca quiz/dashboard HTML");
-  }
-
-  dash.style.display = "none";
-  quiz.style.display = "block";
+  document.getElementById("dashboard").style.display = "none";
+  document.getElementById("selector").style.display = "none";
+  document.getElementById("quiz").style.display = "block";
 
   index = 0;
   score = { s:0, e:0, c:0 };
-  current = DB;
+
+  if(livello === "nazionale"){
+    current = NAZIONALE;
+  }
+
+  if(livello === "regionale"){
+    current = NAZIONALE.map(q=>({
+      ...q,
+      s: regione + " - " + q.s
+    }));
+  }
+
+  if(livello === "comunale"){
+    current = NAZIONALE.map(q=>({
+      ...q,
+      s: comune + " - " + q.s
+    }));
+  }
 
   render();
 }
@@ -136,14 +207,11 @@ function render(){
   const q = current[index];
 
   if(!q){
-    return finish();
+    finish();
+    return;
   }
 
   const el = document.getElementById("quiz");
-
-  if(!el){
-    return showError("Elemento quiz mancante");
-  }
 
   el.innerHTML =
     "<div class='card'>" +
@@ -152,9 +220,11 @@ function render(){
     "</div>" +
 
     "<div class='card'>" +
-    q.o.map(function(o,i){
-      return "<button onclick='answer(" + o.v[0] + "," + o.v[1] + "," + o.v[2] + ")'>" + o.t + "</button>";
-    }).join("") +
+    q.o.map(o=>
+      "<button class='option' onclick='answer(" + o.v[0] + "," + o.v[1] + "," + o.v[2] + ")'>" +
+      o.t +
+      "</button>"
+    ).join("") +
     "</div>";
 }
 
@@ -162,7 +232,7 @@ function render(){
    ANSWER
 ========================= */
 
-window.answer = function(a,b,c){
+function answer(a,b,c){
 
   score.s += a;
   score.e += b;
@@ -171,7 +241,7 @@ window.answer = function(a,b,c){
   index++;
 
   render();
-};
+}
 
 /* =========================
    FINE
@@ -179,22 +249,23 @@ window.answer = function(a,b,c){
 
 function finish(){
 
-  const el = document.getElementById("report");
-
-  if(!el){
-    return alert("Report mancante");
-  }
-
-  el.style.display = "block";
+  document.getElementById("quiz").style.display = "none";
+  document.getElementById("report").style.display = "block";
 
   const tot = score.s + score.e + score.c;
 
-  el.innerHTML =
-    "<div class='card'>" +
-    "<h1>RISULTATO</h1>" +
-    "<p>Utente: " + nome + "</p>" +
-    "<p>Score: " + tot + "</p>" +
-    "</div>";
-}
+  let livelloFinale =
+    tot > 6 ? "Consapevolezza Alta" :
+    tot > 2 ? "Consapevolezza Media" :
+    "Consapevolezza Bassa";
 
-})();
+  document.getElementById("report").innerHTML =
+    "<div class='card'>" +
+    "<h1>" + nome + "</h1>" +
+    "<h2>" + livelloFinale + "</h2>" +
+    "<p>Sociale: " + score.s + "</p>" +
+    "<p>Economico: " + score.e + "</p>" +
+    "<p>Consenso: " + score.c + "</p>" +
+    "</div>" +
+    "<button onclick='location.reload()'>Ricomincia</button>";
+}
