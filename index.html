@@ -1,309 +1,91 @@
-let nome = "";
-let livello = "";
-let index = 0;
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Patente Civica</title>
 
-let regione = "";
-let comune = "";
-
-let current = [];
-let score = { s:0, e:0, c:0 };
-
-/* =========================
-   DATASET NAZIONALE
-========================= */
-
-const NAZIONALE = [
-{
-  t:"Economia",
-  s:"Inflazione e costo della vita in aumento",
-  o:[
-    {t:"Aumento salari minimi",v:[1,0,2]},
-    {t:"Controllo prezzi",v:[1,1,1]},
-    {t:"Taglio tasse imprese",v:[0,2,1]},
-    {t:"Nessun intervento",v:[-2,0,-1]}
-  ]
-},
-{
-  t:"Sanità",
-  s:"Liste d’attesa troppo lunghe",
-  o:[
-    {t:"Assunzioni medici",v:[2,-1,1]},
-    {t:"Privatizzazione",v:[0,2,1]},
-    {t:"Digitalizzazione",v:[2,1,2]},
-    {t:"Tagli spesa",v:[-2,1,-2]}
-  ]
-},
-{
-  t:"Lavoro",
-  s:"Disoccupazione giovanile alta",
-  o:[
-    {t:"Incentivi assunzioni",v:[2,1,2]},
-    {t:"Stage obbligatori",v:[0,0,1]},
-    {t:"Taglio contributi",v:[1,2,0]},
-    {t:"Nessuna misura",v:[-2,0,-2]}
-  ]
-}
-];
-
-/* =========================
-   TERRITORI
-========================= */
-
-const REGIONI = [
-"Lazio","Lombardia","Campania","Sicilia","Veneto",
-"Emilia-Romagna","Piemonte","Toscana","Puglia",
-"Calabria","Sardegna","Liguria","Marche","Abruzzo",
-"Umbria","Basilicata","Molise","Valle d'Aosta",
-"Trentino-Alto Adige","Friuli-Venezia Giulia"
-];
-
-const COMUNI = [
-"Roma","Milano","Napoli","Torino","Bologna",
-"Firenze","Bari","Palermo","Genova","Verona"
-];
-
-/* =========================
-   AVVIO
-========================= */
-
-function avvia(){
-
-  const input = document.getElementById("nomeUtente");
-
-  if(!input){
-    alert("Input nome mancante");
-    return;
-  }
-
-  nome = input.value || "Utente";
-
-  document.getElementById("intro").style.display = "none";
-  document.getElementById("dashboard").style.display = "block";
+<style>
+body{
+  margin:0;
+  font-family:Arial;
+  background:#0b1020;
+  color:white;
 }
 
-/* =========================
-   LIVELLO
-========================= */
-
-function selezionaLivello(l){
-
-  livello = l;
-
-  document.getElementById("dashboard").style.display = "none";
-
-  if(l === "nazionale"){
-    startQuiz();
-    return;
-  }
-
-  const selector = document.getElementById("selector");
-
-  if(!selector){
-    alert("Selector mancante in HTML");
-    return;
-  }
-
-  selector.style.display = "block";
-
-  if(l === "regionale") loadRegioni();
-  if(l === "comunale") loadComuni();
+.section{
+  display:none;
+  padding:20px;
 }
 
-/* =========================
-   REGIONI
-========================= */
-
-function loadRegioni(){
-
-  const sel = document.getElementById("regioneSelect");
-  if(!sel) return;
-
-  sel.innerHTML = "";
-
-  REGIONI.forEach(r=>{
-    const opt = document.createElement("option");
-    opt.value = r;
-    opt.textContent = r;
-    sel.appendChild(opt);
-  });
+.active{
+  display:block;
 }
 
-/* =========================
-   COMUNI
-========================= */
-
-function loadComuni(){
-
-  const sel = document.getElementById("regioneSelect");
-  if(!sel) return;
-
-  sel.innerHTML = "";
-
-  COMUNI.forEach(c=>{
-    const opt = document.createElement("option");
-    opt.value = c;
-    opt.textContent = c;
-    sel.appendChild(opt);
-  });
+.card{
+  background:#111827;
+  padding:15px;
+  margin-top:10px;
+  border-radius:10px;
 }
 
-/* =========================
-   CONFERMA TERRITORIO
-========================= */
-
-function confermaRegione(){
-
-  const sel = document.getElementById("regioneSelect");
-
-  if(!sel){
-    alert("Select mancante");
-    return;
-  }
-
-  const val = sel.value;
-
-  if(livello === "regionale") regione = val;
-  if(livello === "comunale") comune = val;
-
-  startQuiz();
+button{
+  width:100%;
+  padding:12px;
+  margin-top:10px;
+  border:none;
+  border-radius:8px;
+  font-weight:bold;
+  cursor:pointer;
 }
 
-/* =========================
-   START QUIZ
-========================= */
+.primary{background:#22c55e;color:black;}
+.option{background:#1f2937;color:white;}
 
-function startQuiz(){
-
-  document.getElementById("selector").style.display = "none";
-  document.getElementById("quiz").style.display = "block";
-
-  index = 0;
-  score = { s:0, e:0, c:0 };
-
-  if(livello === "nazionale"){
-    current = NAZIONALE;
-  }
-  else if(livello === "regionale"){
-    current = NAZIONALE.map(q => ({
-      ...q,
-      s: regione + " - " + q.s
-    }));
-  }
-  else if(livello === "comunale"){
-    current = NAZIONALE.map(q => ({
-      ...q,
-      s: comune + " - " + q.s
-    }));
-  }
-
-  render();
+input,select{
+  width:100%;
+  padding:10px;
+  margin-top:10px;
 }
+</style>
+</head>
 
-/* =========================
-   RENDER QUIZ
-========================= */
+<body>
 
-function render(){
+<!-- INTRO -->
+<div id="intro" class="section active">
+  <h1>Patente Civica</h1>
+  <p>Per votare non serve una patente. Questo test misura la tua consapevolezza.</p>
 
-  const q = current[index];
+  <input id="nome" placeholder="Nome">
 
-  if(!q){
-    finish();
-    return;
-  }
+  <button class="primary" onclick="start()">Inizia</button>
+</div>
 
-  const el = document.getElementById("quiz");
+<!-- MENU -->
+<div id="menu" class="section">
+  <h2>Seleziona livello</h2>
 
-  if(!el){
-    alert("Quiz mancante");
-    return;
-  }
+  <button onclick="setLevel('nazionale')">Nazionale</button>
+  <button onclick="setLevel('regionale')">Regionale</button>
+  <button onclick="setLevel('comunale')">Comunale</button>
+</div>
 
-  el.innerHTML =
-    "<div class='card'>" +
-    "<h2>" + q.t + "</h2>" +
-    "<p>" + q.s + "</p>" +
-    "</div>" +
+<!-- TERRITORIO -->
+<div id="territorio" class="section">
+  <h2>Seleziona</h2>
 
-    "<div class='card'>" +
-    q.o.map(o =>
-      "<button class='option' onclick='answer(" +
-      o.v[0] + "," + o.v[1] + "," + o.v[2] +
-      ")'>" + o.t + "</button>"
-    ).join("") +
-    "</div>";
-}
+  <select id="select"></select>
 
-/* =========================
-   RISPOSTA
-========================= */
+  <button class="primary" onclick="confirmTerritory()">Conferma</button>
+</div>
 
-function answer(a,b,c){
+<!-- QUIZ -->
+<div id="quiz" class="section"></div>
 
-  score.s += a;
-  score.e += b;
-  score.c += c;
+<!-- RESULT -->
+<div id="result" class="section"></div>
 
-  index++;
-
-  render();
-}
-
-/* =========================
-   FINALE (VERSIONE PRO)
-========================= */
-
-function finish(){
-
-  document.getElementById("quiz").style.display = "none";
-  document.getElementById("report").style.display = "block";
-
-  const tot = score.s + score.e + score.c;
-
-  let livelloFinale = "";
-  let colore = "";
-  let badge = "";
-  let messaggio = "";
-
-  if(tot >= 7){
-    livelloFinale = "CONSAPEVOLEZZA ALTA";
-    colore = "#22c55e";
-    badge = "🟢 IDONEO ALLA PARTECIPAZIONE CONSAPEVOLE";
-    messaggio = "Buona comprensione dell’impatto delle decisioni politiche.";
-  }
-  else if(tot >= 3){
-    livelloFinale = "CONSAPEVOLEZZA MEDIA";
-    colore = "#f59e0b";
-    badge = "🟡 CONSAPEVOLEZZA INTERMEDIA";
-    messaggio = "Comprensione parziale dei meccanismi decisionali.";
-  }
-  else{
-    livelloFinale = "CONSAPEVOLEZZA BASSA";
-    colore = "#ef4444";
-    badge = "🔴 BASSA CONSAPEVOLEZZA CIVICA";
-    messaggio = "Le risposte mostrano scarsa correlazione tra scelte e impatti reali.";
-  }
-
-  document.getElementById("report").innerHTML =
-    "<div class='card' style='border:2px solid "+colore+"'>" +
-
-    "<h1>ESITO PATENTE CIVICA</h1>" +
-
-    "<h2 style='color:"+colore+"'>" + livelloFinale + "</h2>" +
-
-    "<h3>" + badge + "</h3>" +
-
-    "<p><b>Utente:</b> " + nome + "</p>" +
-
-    "<p>" + messaggio + "</p>" +
-
-    "<hr>" +
-
-    "<p>Sociale: " + score.s + "</p>" +
-    "<p>Economico: " + score.e + "</p>" +
-    "<p>Consenso: " + score.c + "</p>" +
-
-    "</div>" +
-
-    "<button onclick='location.reload()' class='primary'>Ripeti simulazione</button>";
-}
+<script src="app.js"></script>
+</body>
+</html>
