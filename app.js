@@ -54,12 +54,52 @@ window.selezionaLivello = function(l){
 const DB = [
 {
   t:"Economia",
-  s:"Inflazione in crescita",
+  s:"Inflazione e costo della vita in aumento",
   o:[
-    {t:"A",v:[1,0,1]},
-    {t:"B",v:[0,1,0]},
-    {t:"C",v:[2,1,2]},
-    {t:"D",v:[-1,0,-1]}
+    {t:"Aumento salari minimi",v:[1,0,2]},
+    {t:"Controllo prezzi",v:[1,1,1]},
+    {t:"Taglio tasse imprese",v:[0,2,1]},
+    {t:"Nessun intervento",v:[-2,0,-1]}
+  ]
+},
+{
+  t:"Sanità",
+  s:"Liste d’attesa troppo lunghe",
+  o:[
+    {t:"Assunzioni medici",v:[2,-1,1]},
+    {t:"Privatizzazione",v:[0,2,1]},
+    {t:"Digitalizzazione totale",v:[2,1,2]},
+    {t:"Tagli spesa",v:[-2,1,-2]}
+  ]
+},
+{
+  t:"Lavoro",
+  s:"Disoccupazione giovanile alta",
+  o:[
+    {t:"Incentivi assunzioni",v:[2,1,2]},
+    {t:"Stage obbligatori",v:[0,0,1]},
+    {t:"Taglio contributi",v:[1,2,0]},
+    {t:"Nessuna misura",v:[-2,0,-2]}
+  ]
+},
+{
+  t:"Ambiente",
+  s:"Inquinamento urbano crescente",
+  o:[
+    {t:"Zone verdi e ZTL",v:[2,1,2]},
+    {t:"Più auto elettriche",v:[1,2,1]},
+    {t:"Riduzione controlli",v:[-2,2,-2]},
+    {t:"Nessun intervento",v:[-3,0,-3]}
+  ]
+},
+{
+  t:"Trasporti",
+  s:"Trasporto pubblico inefficiente",
+  o:[
+    {t:"Investimenti mezzi pubblici",v:[2,1,2]},
+    {t:"Privatizzazione servizi",v:[0,2,1]},
+    {t:"Riduzione linee",v:[-2,1,-2]},
+    {t:"Status quo",v:[-1,0,-1]}
   ]
 }
 ];
