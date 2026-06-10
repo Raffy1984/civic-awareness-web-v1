@@ -1,11 +1,6 @@
-/* =========================
-   STATE
-========================= */
-
 let nome = "";
 let livello = "";
 let regione = "";
-
 let index = 0;
 
 let score = {
@@ -17,7 +12,7 @@ let score = {
 let current = [];
 
 /* =========================
-   TERRITORI (FALLBACK SICURO)
+   TERRITORI BASE
 ========================= */
 
 const REGIONI = [
@@ -29,80 +24,64 @@ const REGIONI = [
 ];
 
 const COMUNI = {
-  default: [
-    "Roma","Milano","Napoli","Torino","Bologna","Firenze","Bari","Palermo"
-  ]
+  default: ["Roma","Milano","Napoli","Torino","Bologna","Firenze","Bari","Palermo"]
 };
 
 /* =========================
-   DATABASE NAZIONALE (25+ SCENARI)
+   DATABASE MINIMO FUNZIONANTE
 ========================= */
 
 const NAZIONALE_DB = [
   {
-    t:"Inflazione",
-    s:"Aumento del costo della vita",
-    o:[
-      {t:"Aumento salari minimi",v:[2,-1,2]},
-      {t:"Taglio tasse imprese",v:[-1,2,1]},
-      {t:"Controllo prezzi",v:[1,0,1]},
-      {t:"Nessun intervento",v:[-2,0,-1]}
+    t: "Economia",
+    s: "Inflazione e costo della vita",
+    o: [
+      { t: "Aumento salari minimi", v: [2, -1, 2] },
+      { t: "Taglio tasse imprese", v: [-1, 2, 1] },
+      { t: "Controllo prezzi", v: [1, 0, 1] },
+      { t: "Nessun intervento", v: [-2, 0, -1] }
     ]
   },
   {
-    t:"Sanità",
-    s:"Liste d’attesa in crescita",
-    o:[
-      {t:"Assunzioni medici",v:[2,-1,1]},
-      {t:"Privatizzazione",v:[0,2,1]},
-      {t:"Tagli spesa",v:[-2,1,-2]},
-      {t:"Digitalizzazione",v:[2,1,2]}
-    ]
-  },
-  {
-    t:"Sicurezza",
-    s:"Aumento percezione criminalità",
-    o:[
-      {t:"Più forze dell’ordine",v:[2,-1,1]},
-      {t:"Prevenzione sociale",v:[2,1,2]},
-      {t:"Riduzione controlli",v:[-2,2,0]},
-      {t:"Status quo",v:[-1,0,-1]}
+    t: "Sanità",
+    s: "Liste d’attesa in crescita",
+    o: [
+      { t: "Assunzioni medici", v: [2, -1, 1] },
+      { t: "Privatizzazione", v: [0, 2, 1] },
+      { t: "Tagli spesa", v: [-2, 1, -2] },
+      { t: "Riforma digitale", v: [2, 1, 2] }
     ]
   }
 ];
 
-/* =========================
-   DB REGIONALE / COMUNALE (BASE STABILE)
-========================= */
-
 const REGIONAL_DB = [
   {
-    t:"Sanità regionale",
-    s:"Gestione ospedali e liste d’attesa",
-    o:[
-      {t:"Investimenti pubblici",v:[2,1,1]},
-      {t:"Privatizzazione",v:[0,2,1]},
-      {t:"Tagli",v:[-2,1,-2]},
-      {t:"Inazione",v:[-1,0,-1]}
+    t: "Sanità regionale",
+    s: "Gestione ospedali",
+    o: [
+      { t: "Investimenti pubblici", v: [2, 1, 1] },
+      { t: "Privatizzazione", v: [0, 2, 1] },
+      { t: "Tagli", v: [-2, 1, -2] },
+      { t: "Inazione", v: [-1, 0, -1] }
     ]
   }
 ];
 
 const COMUNALE_DB = [
   {
-    t:"Mobilità urbana",
-    s:"Traffico e trasporti locali",
-    o:[
-      {t:"Trasporto pubblico",v:[2,1,2]},
-      {t:"Più parcheggi",v:[-1,1,0]},
-      {t:"ZTL",v:[1,-1,-1]},
-      {t:"Nessuna azione",v:[-2,0,-2]}
+    t: "Mobilità urbana",
+    s: "Traffico cittadino",
+    o: [
+      { t: "Trasporto pubblico", v: [2, 1, 2] },
+      { t: "Più parcheggi", v: [-1, 1, 0] },
+      { t: "ZTL", v: [1, -1, -1] },
+      { t: "Nessuna azione", v: [-2, 0, -2] }
     ]
   }
 ];
 
 /* =========================
-   START
+   START APP
 ========================= */
 
 function avvia(){
@@ -117,6 +96,7 @@ function avvia(){
 ========================= */
 
 function selezionaLivello(l){
+
   livello = l;
 
   if(l === "nazionale"){
@@ -133,6 +113,7 @@ function selezionaLivello(l){
 ========================= */
 
 function loadRegioni(){
+
   let sel = document.getElementById("regioneSelect");
   sel.innerHTML = "";
 
@@ -145,10 +126,11 @@ function loadRegioni(){
 }
 
 /* =========================
-   COMUNI (FIX BUG PRINCIPALE)
+   COMUNI
 ========================= */
 
 function loadComuni(){
+
   let sel = document.getElementById("regioneSelect");
   sel.innerHTML = "";
 
@@ -180,7 +162,11 @@ function startQuiz(){
 
   index = 0;
 
-  score = {sociale:0,economico:0,consenso:0};
+  score = {
+    sociale: 0,
+    economico: 0,
+    consenso: 0
+  };
 
   if(livello === "nazionale") current = NAZIONALE_DB;
   if(livello === "regionale") current = REGIONAL_DB;
@@ -243,7 +229,7 @@ function finish(){
   let tot = score.sociale + score.economico + score.consenso;
 
   let profilo =
-    tot > 5 ? "Pragmatico" :
+    tot > 3 ? "Pragmatico" :
     tot > 0 ? "Equilibrato" :
     "Critico";
 
