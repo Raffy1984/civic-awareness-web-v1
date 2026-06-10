@@ -13,6 +13,7 @@ body{
   color:white;
 }
 
+/* INTRO */
 .intro{
   height:100vh;
   display:flex;
@@ -24,7 +25,7 @@ body{
 .overlay{
   position:absolute;
   inset:0;
-  background:rgba(0,0,0,0.75);
+  background:rgba(0,0,0,0.78);
   display:flex;
   align-items:center;
   justify-content:center;
@@ -36,6 +37,7 @@ body{
   max-width:700px;
 }
 
+/* DASHBOARD / QUIZ / REPORT */
 .dashboard, .quiz, .report{
   display:none;
   padding:20px;
@@ -43,6 +45,7 @@ body{
   margin:auto;
 }
 
+/* CARD */
 .card{
   background:#0f172a;
   border:1px solid #1f2937;
@@ -51,6 +54,7 @@ body{
   border-radius:12px;
 }
 
+/* BUTTON */
 button{
   width:100%;
   padding:12px;
@@ -61,8 +65,25 @@ button{
   font-weight:bold;
 }
 
-.primary{background:#22c55e;color:#000;}
-.option{background:#111827;color:white;border:1px solid #334155;}
+.primary{
+  background:#22c55e;
+  color:#000;
+}
+
+.option{
+  background:#111827;
+  color:white;
+  border:1px solid #334155;
+}
+
+/* INPUT */
+input{
+  padding:12px;
+  width:80%;
+  border-radius:8px;
+  border:none;
+  margin-top:10px;
+}
 
 select{
   width:100%;
@@ -81,19 +102,27 @@ select{
   <div class="overlay">
     <div class="box">
 
-      <h1>Patente di Consapevolezza Civica</h1>
+      <h1>Hai davvero consapevolezza del tuo voto?</h1>
 
       <p>
         Per guidare un’auto serve una patente.<br>
-        Per lavorare serve una formazione.<br>
-        Per votare… no.
+        Per lavorare serve formazione.<br>
+        Per votare… non serve nulla.
       </p>
 
-      <p><b>Oggi la otterresti?</b></p>
+      <p style="font-weight:bold; margin-top:12px;">
+        Questa simulazione misura il tuo livello di consapevolezza civica.
+      </p>
 
-      <input id="nomeUtente" placeholder="Inserisci il tuo nome" style="padding:10px;width:80%;border-radius:8px;border:none;"/>
+      <p style="opacity:0.8;">
+        Rispondi a scenari reali e scopri il tuo profilo.
+      </p>
 
-      <button class="primary" onclick="avvia()">Inizia simulazione</button>
+      <input id="nomeUtente" placeholder="Inserisci il tuo nome" />
+
+      <button class="primary" onclick="avvia()">
+        Inizia il test
+      </button>
 
     </div>
   </div>
@@ -108,11 +137,12 @@ select{
     <button class="primary" onclick="selezionaLivello('nazionale')">Nazionale</button>
     <button onclick="selezionaLivello('regionale')">Regionale</button>
     <button onclick="selezionaLivello('comunale')">Comunale</button>
+
   </div>
 
 </div>
 
-<!-- SELECTOR REGIONI / COMUNI -->
+<!-- SELECTOR -->
 <div id="selector" style="display:none;" class="dashboard">
 
   <div class="card">
