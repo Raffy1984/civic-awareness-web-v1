@@ -7,37 +7,135 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <div class="app-container">
+        <section id="screen-home" class="screen active">
+            <header class="hero">
+                <div class="badge-brand">PROGETTO PILOTA</div>
+                <h1>Patente Civica</h1>
+                <p class="tagline">Per guidare un'auto serve un esame. Per votare no. Tu lo supereresti?</p>
+            </header>
+            <div class="card card-form">
+                <div class="form-group">
+                    <label for="input-username">Il tuo Nome o Alias</label>
+                    <input type="text" id="input-username" placeholder="Es. Cittadino Consapevole" autocomplete="off">
+                </div>
+                <button id="btn-start" class="btn btn-primary">Inizia il Test</button>
+            </div>
+        </section>
 
-<div class="container">
-  
-    <div id="intro" class="section active">
-        <h1>Patente Civica</h1>
-        <div class="subtitle">Per guidare serve la patente. Per votare no. Tu la supereresti?</div>
-        <input id="nome" type="text" placeholder="Inserisci il tuo nome o alias" autocomplete="off">
-        <button class="btn-primary" onclick="start()">Inizia il Test</button>
+        <section id="screen-level" class="screen">
+            <h2>Seleziona il Livello Istituzionale</h2>
+            <p class="screen-desc">La complessità delle decisioni pubbliche varia in base alla scala amministrativa. Scegli dove metterti alla prova:</p>
+            <div class="menu-grid">
+                <button class="btn btn-level" data-level="nazionale">
+                    <span class="icon">🇮🇹</span>
+                    <div class="btn-text">
+                        <h3>Livello Nazionale</h3>
+                        <p>Macroeconomia, politica estera, grandi riforme e debito pubblico.</p>
+                    </div>
+                </button>
+                <button class="btn btn-level" data-level="regionale">
+                    <span class="icon">🗺️</span>
+                    <div class="btn-text">
+                        <h3>Livello Regionale</h3>
+                        <p>Sanità pubblica, trasporti locali e pianificazione del territorio.</p>
+                    </div>
+                </button>
+                <button class="btn btn-level" data-level="comunale">
+                    <span class="icon">🏙️</span>
+                    <div class="btn-text">
+                        <h3>Livello Comunale</h3>
+                        <p>Servizi di prossimità, viabilità, welfare locale e gestione rifiuti.</p>
+                    </div>
+                </button>
+            </div>
+            <button class="btn btn-secondary btn-back" data-target="screen-home">← Torna alla Home</button>
+        </section>
+
+        <section id="screen-territorio" class="screen">
+            <h2 id="territorio-title">Seleziona il Territorio</h2>
+            <p class="screen-desc">I quesiti verranno adattati al contesto geografico selezionato per simulare le dinamiche reali dell'area.</p>
+            <div class="card">
+                <div class="form-group">
+                    <label id="label-select-territorio" for="select-territorio">Regione / Comune</label>
+                    <select id="select-territorio"></select>
+                </div>
+                <button id="btn-confirm-territorio" class="btn btn-primary">Conferma e Continua</button>
+            </div>
+            <button class="btn btn-secondary btn-back" data-target="screen-level">← Indietro</button>
+        </section>
+
+        <section id="screen-quiz" class="screen">
+            <header class="quiz-header">
+                <div class="quiz-meta">
+                    <span id="quiz-category" class="tag-category">ECONOMIA</span>
+                    <span id="quiz-progress" class="quiz-progress-text">Domanda 1 di 10</span>
+                </div>
+                <div class="progress-bar-container">
+                    <div id="quiz-progress-bar" class="progress-bar-fill"></div>
+                </div>
+            </header>
+            <div class="card quiz-card">
+                <h3 id="quiz-question-text">Testo della domanda civica complessa?</h3>
+            </div>
+            <div id="quiz-options" class="options-container">
+                </div>
+        </section>
+
+        <section id="screen-result" class="screen">
+            <h2>Report di Consapevolezza Civica</h2>
+            <p class="screen-desc">Analisi algoritmica delle risposte in base alla sostenibilità ed equilibrio sistemico.</p>
+            
+            <div class="card result-card">
+                <div class="result-header">
+                    <div class="user-meta">
+                        <span class="label">Candidato</span>
+                        <h3 id="result-username">Nome Utente</h3>
+                    </div>
+                    <div class="score-box">
+                        <span id="result-score">0</span>
+                        <span class="score-max">/ 100</span>
+                    </div>
+                </div>
+                
+                <div id="result-badge" class="result-badge">MEDIO</div>
+                <p id="result-message" class="result-message">Messaggio educativo strutturato.</p>
+            </div>
+
+            <div class="card vectors-card">
+                <h3>Indicatori di Impatto Decisionale</h3>
+                <p class="card-sub">Ogni tua scelta ha influenzato tre parametri fondamentali dello Stato:</p>
+                <div class="vectors-grid">
+                    <div class="vector-item">
+                        <span class="vector-icon">📊</span>
+                        <div class="vector-info">
+                            <span class="vector-label">Sostenibilità Economica</span>
+                            <div class="vector-bar"><div id="bar-eco" class="vector-fill"></div></div>
+                        </div>
+                    </div>
+                    <div class="vector-item">
+                        <span class="vector-icon">👥</span>
+                        <div class="vector-info">
+                            <span class="vector-label">Impatto Sociale & Equità</span>
+                            <div class="vector-bar"><div id="bar-soc" class="vector-fill"></div></div>
+                        </div>
+                    </div>
+                    <div class="vector-item">
+                        <span class="vector-icon">📢</span>
+                        <div class="vector-info">
+                            <span class="vector-label">Consenso Pubblico & Fattibilità</span>
+                            <div class="vector-bar"><div id="bar-con" class="vector-fill"></div></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <button id="btn-restart" class="btn btn-primary">Ricomincia il Simulatore</button>
+        </section>
     </div>
-
-    <div id="menu" class="section">
-        <h2>Seleziona il Livello</h2>
-        <div class="subtitle">Su quale scala vuoi testare la tua lungimiranza politica?</div>
-        <button class="btn-level" onclick="setLevel('nazionale')">🇮🇹 Livello Nazionale</button>
-        <button class="btn-level" onclick="setLevel('regionale')">🗺️ Livello Regionale</button>
-        <button class="btn-level" onclick="setLevel('comunale')">🏙️ Livello Comunale</button>
-    </div>
-
-    <div id="territorio" class="section">
-        <h2>Seleziona Territorio</h2>
-        <div class="subtitle">Personalizza lo scenario locale:</div>
-        <select id="selectTerritorio"></select>
-        <button class="btn-primary" onclick="confirmTerritory()">Conferma e Continua</button>
-    </div>
-
-    <div id="quiz" class="section"></div>
-
-    <div id="result" class="section"></div>
-
-</div>
-
-<script src="app.js"></script>
+    
+    <script src="territori.js"></script>
+    <script src="comuni.js"></script>
+    <script src="app.js"></script>
 </body>
 </html>
