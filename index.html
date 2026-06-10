@@ -3,283 +3,209 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Patente Civica - Piattaforma di Simulazione e Consapevolezza Istituzionale</title>
+    <title>Patente Civica - Piattaforma Avanzata di Monitoraggio e Simulazione Istituzionale</title>
     <link rel="stylesheet" href="style.css">
-    <!-- Libreria nativa client-side per la generazione dei PDF strutturati senza dipendenze server -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </head>
 <body>
-    <div class="container-platform">
+    <div class="app-wrapper">
         
-        <!-- NAVBAR DI PIATTAFORMA -->
-        <nav class="nav-platform">
-            <div class="nav-brand">
-                <span class="brand-logo">⚖️</span>
-                <div class="brand-text">
-                    <span class="brand-title">PATENTE CIVICA</span>
-                    <span class="brand-sub">Metodo Scientifico di Analisi Politico-Amministrativa</span>
+        <header class="app-header">
+            <div class="header-brand">
+                <span class="brand-icon">⚖️</span>
+                <div class="brand-titles">
+                    <h1>PATENTE CIVICA</h1>
+                    <p>Simulatore Decisionale Amministrativo a Neutralità Assoluta</p>
                 </div>
             </div>
-            <div class="nav-status-badge" id="platform-election-ticker">
-                <span class="ticker-dot"></span> MODALITÀ ELETTORALE ATTIVA: SCENARI 2026
+            <div class="header-ticker" id="platform-ticker">
+                <span class="pulse-dot"></span> SCENARI REALI VALIDATI - ANNO CORRENTE 2026
             </div>
+        </header>
+
+        <div class="disclaimer-banner">
+            <strong>Dichiarazione Fondativa di Trasparenza:</strong> Questa piattaforma non è un gioco, non esprime orientamenti ideologici, non profila le preferenze di voto e non fornisce giudizi di valore morale. Ogni scenario si basa su dati macroeconomici consolidati ed analizza i rigorosi trade-off fisici e finanziari determinati dall'allocazione delle risorse pubbliche (Art. 81 Costituzione).
+        </div>
+
+        <nav class="app-navigation" id="navigation-tabs" style="display: none;">
+            <button class="nav-btn active" data-target="panel-test">1. Esame Patente Civica</button>
+            <button class="nav-btn" data-target="panel-laboratorio">2. Laboratorio Civico (Programmi)</button>
         </nav>
 
-        <!-- HEADER CRUCIALE DI NEUTRALITÀ -->
-        <div class="disclaimer-neutrality">
-            <strong>Dichiarazione d'Intenti:</strong> Questa piattaforma è uno strumento educativo, politicamente neutrale, non ideologico e basato esclusivamente su dati empirici ed istituzionali. Non esprime giudizi di valore, non profila l'orientamento politico e non suggerisce intenzioni di voto. Obiettivo: analizzare i trade-off delle decisioni pubbliche.
-        </div>
-
-        <!-- TAB SYSTEM PRINCIPALE -->
-        <div class="tab-navigation" id="main-tabs" style="display: none;">
-            <button class="tab-btn active" data-tab="mod-patente">1. Esame Patente Civica</button>
-            <button class="tab-btn" data-tab="mod-laboratorio">2. Laboratorio Civico (Programmi)</button>
-            <button class="tab-btn" data-tab="mod-banca">3. Banca delle Idee & Social Civico</button>
-        </div>
-
-        <!-- 1. SCREEN DI BENVENUTO E CONFIGURAZIONE UTENTE -->
-        <section id="screen-auth" class="view-panel active">
-            <div class="card panel-hero">
-                <h2>Accesso alla Piattaforma Istituzionale</h2>
-                <p>Configura il tuo profilo di analisi civica. I dati inseriti verranno elaborati localmente dall'algoritmo di simulazione per calcolare la coerenza macroeconomica, l'impatto sui diritti e la sostenibilità dei bilanci pubblici.</p>
+        <section id="panel-intro" class="view-panel active">
+            <div class="card p-large text-center">
+                <h2>Certificazione della Consapevolezza Civica</h2>
+                <p class="txt-lead">Accedi ai set analitici calibrati sui livelli amministrativi della Repubblica. L'algoritmo integrato confronterà le tue decisioni con i dati statistici reali e calcolerà la sostenibilità del tuo approccio normativo.</p>
                 
-                <div class="form-grid">
-                    <div class="field-group">
-                        <label for="user-alias">Identificativo Utente / Alias</label>
-                        <input type="text" id="user-alias" placeholder="Es. Analista_Civico_2026" autocomplete="off">
+                <div class="setup-grid">
+                    <div class="control-box">
+                        <label for="input-user-alias">Identificativo Utente / Alias Analitico</label>
+                        <input type="text" id="input-user-alias" placeholder="Es. Cittadino_Consapevole_2026" autocomplete="off">
                     </div>
-                    <div class="field-group">
-                        <label for="select-livello-test">Livello del Percorso Formativo</label>
-                        <select id="select-livello-test">
-                            <option value="base">Base (Comprensione Dinamiche Lineari - 5 Scenari)</option>
-                            <option value="intermedio" selected>Intermedio (Analisi di Bilancio Integrata - 10 Scenari)</option>
-                            <option value="avanzato">Avanzato (Scenari di Crisi e Vincoli Macroeconomici - 10 Scenari + Input Aperto)</option>
+
+                    <div class="control-box">
+                        <label for="select-livello-geografico">Livello Amministrativo d'Esame</label>
+                        <select id="select-livello-geografico">
+                            <option value="" disabled selected>Seleziona l'ambito delle decisioni...</option>
+                            <option value="nazionale">Scala Nazionale (Macroeconomia, Grandi Riforme, Bilancio dello Stato)</option>
+                            <option value="regionale">Scala Regionale (Sanità, Grandi Trasporti, Fondi Europei)</option>
+                            <option value="comunale">Scala Comunale / Locale (Servizi di Prossimità, Decoro, Viabilità)</option>
                         </select>
                     </div>
-                </div>
 
-                <div class="form-grid" style="margin-top: 15px;">
-                    <div class="field-group">
-                        <label for="select-geo-regione">Regione di Riferimento</label>
-                        <select id="select-geo-regione"></select>
-                    </div>
-                    <div class="field-group">
-                        <label for="select-geo-comune">Comune di Analisi</label>
-                        <select id="select-geo-comune"></select>
+                    <div class="control-box" id="wrapper-select-territorio" style="display: none;">
+                        <label for="select-territorio-specifico" id="lbl-select-territorio">Seleziona Territorio</label>
+                        <select id="select-territorio-specifico">
+                            </select>
                     </div>
                 </div>
 
-                <button id="btn-initialize-platform" class="btn btn-action-primary">Inizializza Piattaforma Civica</button>
+                <button id="btn-start-simulation" class="btn btn-primary" style="margin-top: 24px; width: auto; padding: 16px 40px;" disabled>
+                    Inizializza Sessione Analitica
+                </button>
             </div>
         </section>
 
-        <!-- 2. MODULO A: CONFIGURAZIONE INTERNA E QUIZ CORE -->
-        <section id="mod-patente" class="view-panel">
-            <div class="quiz-layout">
-                <aside class="quiz-sidebar">
-                    <div class="card status-card">
-                        <h4>Stato Avanzamento</h4>
-                        <div class="progress-container">
-                            <div class="progress-text"><span id="quiz-current-step">1</span> di <span id="quiz-total-steps">10</span> Scenari</div>
-                            <div class="progress-track"><div id="quiz-progress-fill" class="progress-fill"></div></div>
-                        </div>
-                        <div class="scope-badge" id="quiz-scope-indicator">AMBITO NAZIONALE</div>
-                    </div>
-                    
-                    <div class="card indicator-live-card">
-                        <h4>Indicatori di Sistema (Real-Time)</h4>
-                        <p class="small-text">Variazioni simulate basate sulle risposte correnti:</p>
-                        <div class="live-metric">
-                            <span class="m-lbl">Sostenibilità Bilancio:</span>
-                            <div class="m-track"><div id="live-bar-eco" class="m-fill bg-eco"></div></div>
-                        </div>
-                        <div class="live-metric">
-                            <span class="m-lbl">Equità e Diritti Sociali:</span>
-                            <div class="m-track"><div id="live-bar-soc" class="m-fill bg-soc"></div></div>
-                        </div>
-                        <div class="live-metric">
-                            <span class="m-lbl">Consenso Elettorale:</span>
-                            <div class="m-track"><div id="live-bar-con" class="m-fill bg-con"></div></div>
-                        </div>
-                    </div>
-                </aside>
-
-                <main class="quiz-main-content">
-                    <div class="card scenario-card">
-                        <div class="scenario-meta">
-                            <span class="category-tag" id="scenario-topic">SANITA'</span>
-                            <span class="time-tag">Scenario Attivo Anno 2026</span>
-                        </div>
-                        <h3 id="scenario-title-text">Caricamento dello scenario in corso...</h3>
-                        <p id="scenario-description-text">Definizione del quadro macroeconomico e dei vincoli normativi legati al problema istituzionale.</p>
-                    </div>
-
-                    <!-- Input Aperto (Attivato solo in modalità avanzata per scenari specifici) -->
-                    <div id="wrapper-input-aperto" class="card input-aperto-card" style="display: none;">
-                        <label for="textarea-risposta-aperta"><strong>Formulazione Strategia Alternativa (Input Aperto - Livello Avanzato):</strong> Spiega in che modo copriresti finanziariamente questo intervento o quali riforme strutturali intendi attuare (Max 300 caratteri):</label>
-                        <textarea id="textarea-risposta-aperta" rows="3" placeholder="Inserisci la proposta di copertura analitica..."></textarea>
-                        <button id="btn-submit-aperta" class="btn btn-action-secondary" style="margin-top: 10px; width: auto;">Invia ed Elabora Analisi</button>
-                    </div>
-
-                    <div id="scenario-options-wrapper" class="options-vertical-list">
-                        <!-- Vettori strutturati iniettati via JS -->
-                    </div>
-                </main>
-            </div>
-        </section>
-
-        <!-- 3. MODULO B: REPORT INTELLIGENTE E DETTAGLIATO -->
-        <section id="mod-report-view" class="view-panel">
-            <div class="card report-summary-card">
-                <div class="report-header">
-                    <div>
-                        <h2>Report Analitico di Consapevolezza Civica</h2>
-                        <p>Profilo Utente: <strong id="rep-lbl-username">-</strong> | Ambito: <span id="rep-lbl-ambito">-</span></p>
-                    </div>
-                    <div class="score-badge-grand">
-                        <div class="score-num" id="rep-val-score">0</div>
-                        <div class="score-den">/100pt</div>
-                    </div>
-                </div>
-
-                <div class="badge-livello-civico" id="rep-badge-civico">LIVELLO: IN FASE DEFAUT</div>
-                <p class="report-intro-text" id="rep-text-valuation">Analisi sistemica generata dall'algoritmo di calcolo.</p>
+        <section id="panel-test" class="view-panel">
+            <div class="test-layout">
                 
-                <div class="action-bar-report">
-                    <button id="btn-export-pdf-report" class="btn btn-action-primary">📥 Esporta Certificato Finale & Report Analitico (PDF)</button>
-                </div>
-            </div>
-
-            <!-- Contenitore dei nodi di scomposizione analitica per tema -->
-            <div id="report-details-accordion" class="accordion-container"></div>
-        </section>
-
-        <!-- 4. MODULO C: LABORATORIO CIVICO (PROGETTAZIONE PROGRAMMI) -->
-        <section id="mod-laboratorio" class="view-panel">
-            <div class="card intro-lab-card">
-                <h2>Laboratorio Civico: Architettura dei Programmi Elettorali</h2>
-                <p>In questo modulo sei chiamato a redigere un programma di governo strutturato. Ogni singola proposta inserita deve obbligatoriamente indicare il problema rilevato, la soluzione tecnica, le risorse economiche di copertura (es. riallocazione spesa, tassazione, efficientamento) e l'impatto atteso nel breve e lungo periodo.</p>
-                
-                <div class="form-grid" style="margin-bottom: 15px;">
-                    <div class="field-group">
-                        <label for="select-lab-ambito">Seleziona l'Ambito Istituzionale del Programma</label>
-                        <select id="select-lab-ambito">
-                            <option value="comune">Ambito Comunale (Politiche Locali e Servizi di Prossimità)</option>
-                            <option value="regione">Ambito Regionale (Sanità, Trasporti, Sviluppo Locale)</option>
-                            <option value="nazione" selected>Ambito Nazionale (Macroeconomia, Riforme, Politiche di Sistema)</option>
-                        </select>
+                <aside class="test-sidebar">
+                    <div class="card p-medium">
+                        <h3>Avanzamento</h3>
+                        <div class="step-counter"><span id="current-step-txt">1</span> / <span id="total-steps-txt">5</span></div>
+                        <div class="progress-bar-bg">
+                            <div class="progress-bar-fill" id="test-progress-fill"></div>
+                        </div>
+                        <div class="territory-display-badge" id="badge-active-territory">-</div>
                     </div>
-                </div>
-            </div>
 
-            <div class="lab-workspace">
-                <aside class="lab-topics-aside">
-                    <div class="card">
-                        <h4>Temi da Sviluppare</h4>
-                        <ul class="topic-list-links" id="lab-topics-menu-list">
-                            <!-- Popolato dinamicamente a seconda dell'ambito selezionato -->
-                        </ul>
-                        <button id="btn-ai-validate-program" class="btn btn-action-secondary" style="margin-top: 15px;">Validazione Algoritmica AI del Programma</button>
-                        <button id="btn-export-pdf-program" class="btn btn-action-primary" style="margin-top: 10px;" disabled>📥 Scarica Programma in PDF</button>
-                    </div>
-                </aside>
-
-                <main class="lab-editor-main">
-                    <div class="card editor-card" id="editor-container-box" style="display: none;">
-                        <h3 id="editor-active-topic-title">Seleziona un tema dalla barra laterale</h3>
-                        <p class="card-sub" id="editor-active-topic-desc">Descrizione del quadro di competenza istituzionale.</p>
+                    <div class="card p-medium">
+                        <h3>Indicatori di Bilancio</h3>
+                        <p class="txt-small">Variazione teorica dei parametri derivanti dalle risposte fornite:</p>
                         
-                        <div class="editor-fields-stack">
-                            <div class="field-group-textarea">
-                                <label>1. Descrizione del Problema Rilevato (Analisi dello Status Quo)</label>
-                                <textarea id="lab-input-problema" placeholder="Quale criticità reale intendi affrontare? Inserisci dati o evidenze empiriche..."></textarea>
-                            </div>
-                            <div class="field-group-textarea">
-                                <label>2. Soluzione Proposta (Azione Normativa o Amministrativa)</label>
-                                <textarea id="lab-input-soluzione" placeholder="Delinea la riforma, il decreto o la delibera nei dettagli operativi..."></textarea>
-                            </div>
-                            <div class="field-group-textarea">
-                                <label>3. Risorse Economiche e Copertura Finanziaria (Obbligatorio)</label>
-                                <textarea id="lab-input-risorse" placeholder="Come viene finanziata l'opera? Quali capitoli di spesa vengono tagliati, o quali entrate vengono attivate? (Principio dell'art. 81 della Costituzione)..."></textarea>
-                            </div>
-                            <div class="field-group-textarea">
-                                <label>4. Impatto Previsto e Indicatori di Monitoraggio (KPI)</label>
-                                <textarea id="lab-input-impatto" placeholder="Quali sono gli effetti attesi sulla sostenibilità, sull'equità e sulla cittadinanza a lungo termine?..."></textarea>
-                            </div>
+                        <div class="metric-node">
+                            <div class="metric-meta"><span>Sostenibilità Economica</span> <strong id="val-bar-eco">50%</strong></div>
+                            <div class="metric-track"><div id="bar-fill-eco" class="metric-fill bg-danger"></div></div>
                         </div>
-                        <button id="btn-save-current-topic-data" class="btn btn-action-secondary" style="margin-top: 15px; width: auto;">Salva Modifiche del Tema</button>
-                    </div>
-                    
-                    <div id="lab-ai-feedback-response-box" class="card ai-analysis-card" style="display: none;">
-                        <div class="ai-badge-header">🤖 ESITO ANALISI DI COERENZA ALGORITMICA AI</div>
-                        <div id="lab-ai-feedback-text-content"></div>
-                    </div>
-                </main>
-            </div>
-        </section>
 
-        <!-- 5. MODULO D: BANCA DELLE IDEE CIVICHE & SOCIAL CIVICO MODERATO -->
-        <section id="mod-banca" class="view-panel">
-            <div class="card intro-banca-card">
-                <h2>Banca delle Idee Civiche & Spazio di Discussione Strutturato</h2>
-                <p>Piattaforma di democrazia deliberativa monitorata da algoritmi di moderazione automatica. In questo spazio si analizzano esclusivamente le tesi e le coperture economiche delle idee pubbliche. Ogni attacco ad personam, fallacia ideologica o violazione della neutralità viene automaticamente filtrata o mitigata dal sistema di moderazione.</p>
-            </div>
+                        <div class="metric-node">
+                            <div class="metric-meta"><span>Equità e Diritti Sociali</span> <strong id="val-bar-soc">50%</strong></div>
+                            <div class="metric-track"><div id="bar-fill-soc" class="metric-fill bg-primary"></div></div>
+                        </div>
 
-            <div class="banca-grid">
-                <main class="banca-feed-section">
-                    <div class="card filter-bar-banca">
-                        <label for="filter-banca-scope">Filtra Idee per Ambito Territoriale:</label>
-                        <select id="filter-banca-scope">
-                            <option value="all">Mostra Tutte le Idee d'Italia</option>
-                            <option value="nazione">Scala Nazionale</option>
-                            <option value="regione">Filtra per la tua Regione</option>
-                            <option value="comune">Filtra per il tuo Comune</option>
-                        </select>
-                    </div>
-
-                    <div id="banca-ideas-feed-wrapper" class="feed-container">
-                        <!-- Idee iniettate dal database locale transitorio -->
-                    </div>
-                </main>
-
-                <aside class="banca-form-aside">
-                    <div class="card creation-idea-card">
-                        <h3>Sottoponi un'Idea Civica</h3>
-                        <div class="form-grid-vertical">
-                            <div class="field-group">
-                                <label for="idea-input-title">Titolo Sintetico dell'Idea</label>
-                                <input type="text" id="idea-input-title" placeholder="Es. Ottimizzazione Logistica Trasporto Ferroviario">
-                            </div>
-                            <div class="field-group">
-                                <label for="idea-input-scope">Livello Amministrativo</label>
-                                <select id="idea-input-scope">
-                                    <option value="nazione">Nazionale</option>
-                                    <option value="regione">Regionale</option>
-                                    <option value="comune">Comunale</option>
-                                </select>
-                            </div>
-                            <div class="field-group">
-                                <label for="idea-input-body">Testo dell'Iniziativa Politica</label>
-                                <textarea id="idea-input-body" rows="4" placeholder="Fornisci i dettagli dell'idea civica..."></textarea>
-                            </div>
-                            <div class="field-group">
-                                <label for="idea-input-coverage">Copertura Economica Prevista</label>
-                                <textarea id="idea-input-coverage" rows="2" placeholder="Indica esplicitamente le coperture o i risparmi attesi..."></textarea>
-                            </div>
-                            <div class="field-group">
-                                <label for="idea-input-visibility">Regime di Condivisione</label>
-                                <select id="idea-input-visibility">
-                                    <option value="public">Condividi in Modo Pubblico sul Feed Nazionale</option>
-                                    <option value="anonymous">Pubblica in Forma Anonima Riconosciuta</option>
-                                </select>
-                            </div>
-                            <button id="btn-submit-new-idea" class="btn btn-action-primary">Inserisci nella Banca Idee</button>
+                        <div class="metric-node">
+                            <div class="metric-meta"><span>Consenso di Breve Periodo</span> <strong id="val-bar-con">50%</strong></div>
+                            <div class="metric-track"><div id="bar-fill-con" class="metric-fill bg-warning"></div></div>
                         </div>
                     </div>
                 </aside>
+
+                <main class="test-main">
+                    <div class="card p-large" id="card-question-box">
+                        <div class="scenario-meta-tags">
+                            <span class="tag-topic" id="txt-question-topic">TEMA</span>
+                            <span class="tag-year">Scenario Validato 2026</span>
+                        </div>
+                        <h3 id="txt-question-title" class="question-heading">Titolo dello scenario decisionale correntemente estratto dal motore?</h3>
+                        <p id="txt-question-desc" class="question-body-p">Descrizione approfondita dello status quo normativo, dei limiti di finanziamento e del contesto di criticità istituzionale in esame.</p>
+                        
+                        <div class="options-stack" id="container-options-buttons">
+                            </div>
+                    </div>
+                </main>
+
+            </div>
+        </section>
+
+        <section id="panel-report" class="view-panel">
+            <div class="card p-large report-hero">
+                <div class="report-hero-header">
+                    <div>
+                        <h2>Report Sistemico di Consapevolezza Civica</h2>
+                        <p>Analisi quantitativa del profilo di: <strong id="txt-rep-username">-</strong> | Ambito: <span id="txt-rep-ambito">-</span></p>
+                    </div>
+                    <div class="grand-score-box">
+                        <span id="txt-rep-final-score">0</span><small>/100 pt</small>
+                    </div>
+                </div>
+                <div class="civic-rating-badge" id="badge-civic-level">LIVELLO: CALCOLO...</div>
+                <p id="txt-rep-evaluation-narrative" class="txt-lead" style="margin-top: 12px;"></p>
+                
+                <button class="btn btn-secondary" onclick="window.print()" style="margin-top: 15px; width: auto;">🖨️ Stampa o Salva PDF del Report</button>
+            </div>
+
+            <h3 class="section-title">Scomposizione Analitica e Verifica dei Trade-Off</h3>
+            <div id="container-report-accordion" class="accordion-stack">
+                </div>
+        </section>
+
+        <section id="panel-laboratorio" class="view-panel">
+            <div class="card p-large">
+                <h2>Laboratorio Civico: Architettura delle Decisioni Pubbliche</h2>
+                <p>In questo modulo sei chiamato a comporre un programma elettorale-amministrativo simulato. Per ogni tema obbligatorio afferente al livello selezionato, è necessario strutturare la proposta definendo rigorosamente la sussistenza della criticità, la soluzione legislativa, i capitoli di copertura contabile e i KPI di impatto attesi.</p>
+                
+                <div class="control-box" style="max-width: 400px; margin-top: 15px;">
+                    <label for="select-lab-scope">Seleziona il Livello Amministrativo del Programma</label>
+                    <select id="select-lab-scope">
+                        <option value="nazione">Scala Nazionale (7 Macro-Aree Economiche)</option>
+                        <option value="regione">Scala Regionale (5 Ambiti della Programmazione)</option>
+                        <option value="comune">Scala Comunale (6 Servizi di Prossimità)</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="lab-workspace-layout" style="margin-top: 16px;">
+                <aside class="lab-sidebar-menu">
+                    <div class="card p-medium">
+                        <h4>Indice dei Temi</h4>
+                        <ul class="lab-menu-list" id="list-lab-topics-selectors">
+                            </ul>
+                        <button id="btn-lab-ai-simulate" class="btn btn-primary" style="margin-top: 16px;">
+                            Esegui Verifica Coerenza AI
+                        </button>
+                    </div>
+                </aside>
+
+                <main class="lab-editor-area">
+                    <div class="card p-large" id="box-lab-editor-fields" style="display: none;">
+                        <h3 id="txt-lab-active-title">Seleziona un tema operativo</h3>
+                        <p class="txt-small" id="txt-lab-active-desc" style="margin-bottom: 20px;"></p>
+                        
+                        <div class="stack-form-inputs">
+                            <div class="control-box">
+                                <label>1. Descrizione Clinica del Problema Rilevato (Evidenze Empiriche)</label>
+                                <textarea id="txt-area-lab-problema" rows="3" placeholder="Quali dati supportano la presenza di questa criticità sul territorio?..."></textarea>
+                            </div>
+                            <div class="control-box">
+                                <label>2. Soluzione Amministrativa Proposta (Azione di Governo)</label>
+                                <textarea id="txt-area-lab-soluzione" rows="3" placeholder="Delinea la riforma strutturale, l'atto legislativo o la delibera di giunta..."></textarea>
+                            </div>
+                            <div class="control-box">
+                                <label>3. Risorse Economiche e Copertura di Bilancio (Art. 81 della Costituzione)</label>
+                                <textarea id="txt-area-lab-risorse" rows="3" placeholder="Come finanzi l'intervento? (Es. spending review, rimodulazione detrazioni, addizionali locali)..."></textarea>
+                            </div>
+                            <div class="control-box">
+                                <label>4. Impatto Previsto e Indicatori di Performance (KPI a Lungo Termine)</label>
+                                <textarea id="txt-area-lab-impatto" rows="3" placeholder="Quali sono gli effetti attesi sulla struttura sociale, sui bilanci e sull'equità?..."></textarea>
+                            </div>
+                        </div>
+                        
+                        <button id="btn-save-lab-topic" class="btn btn-secondary" style="margin-top: 16px; width: auto;">
+                            Salva Modulo d'Intervento
+                        </button>
+                    </div>
+
+                    <div class="card p-large ai-output-box" id="box-lab-ai-result" style="display: none;">
+                        <div class="ai-header">🤖 MOTORE DI INFERENZA ALGORITMICA AI - VERIFICA DI COERENZA</div>
+                        <div id="txt-lab-ai-feedback-output" style="line-height: 1.6; font-size: 0.95rem; color: #e2e8f0;"></div>
+                    </div>
+                </main>
             </div>
         </section>
 
     </div>
+    
+    <script src="territori.js"></script>
+    <script src="comuni.js"></script>
+    <script src="app.js"></script>
 </body>
 </html>
