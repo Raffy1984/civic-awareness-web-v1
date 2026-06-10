@@ -1,94 +1,55 @@
+console.log("APP CARICATA");
+
 let nome = "";
 let livello = "";
-let regione = "";
 let index = 0;
 
-let score = {
-  sociale: 0,
-  economico: 0,
-  consenso: 0
-};
+let score = { s:0, e:0, c:0 };
 
 let current = [];
 
 /* =========================
-   TERRITORI BASE
-========================= */
-
-const REGIONI = [
-"Lazio","Lombardia","Campania","Sicilia","Veneto",
-"Emilia-Romagna","Piemonte","Toscana","Puglia",
-"Calabria","Sardegna","Liguria","Marche","Abruzzo",
-"Umbria","Basilicata","Molise","Valle d'Aosta",
-"Trentino-Alto Adige","Friuli-Venezia Giulia"
-];
-
-const COMUNI = {
-  default: ["Roma","Milano","Napoli","Torino","Bologna","Firenze","Bari","Palermo"]
-};
-
-/* =========================
-   DATABASE MINIMO FUNZIONANTE
+   DATI MINIMI GARANTITI
 ========================= */
 
 const NAZIONALE_DB = [
   {
     t: "Economia",
-    s: "Inflazione e costo della vita",
+    s: "Test inflazione",
     o: [
-      { t: "Aumento salari minimi", v: [2, -1, 2] },
-      { t: "Taglio tasse imprese", v: [-1, 2, 1] },
-      { t: "Controllo prezzi", v: [1, 0, 1] },
-      { t: "Nessun intervento", v: [-2, 0, -1] }
-    ]
-  },
-  {
-    t: "Sanità",
-    s: "Liste d’attesa in crescita",
-    o: [
-      { t: "Assunzioni medici", v: [2, -1, 1] },
-      { t: "Privatizzazione", v: [0, 2, 1] },
-      { t: "Tagli spesa", v: [-2, 1, -2] },
-      { t: "Riforma digitale", v: [2, 1, 2] }
-    ]
-  }
-];
-
-const REGIONAL_DB = [
-  {
-    t: "Sanità regionale",
-    s: "Gestione ospedali",
-    o: [
-      { t: "Investimenti pubblici", v: [2, 1, 1] },
-      { t: "Privatizzazione", v: [0, 2, 1] },
-      { t: "Tagli", v: [-2, 1, -2] },
-      { t: "Inazione", v: [-1, 0, -1] }
-    ]
-  }
-];
-
-const COMUNALE_DB = [
-  {
-    t: "Mobilità urbana",
-    s: "Traffico cittadino",
-    o: [
-      { t: "Trasporto pubblico", v: [2, 1, 2] },
-      { t: "Più parcheggi", v: [-1, 1, 0] },
-      { t: "ZTL", v: [1, -1, -1] },
-      { t: "Nessuna azione", v: [-2, 0, -2] }
+      { t: "Opzione A", v: [1,0,1] },
+      { t: "Opzione B", v: [0,1,0] },
+      { t: "Opzione C", v: [2,1,2] },
+      { t: "Opzione D", v: [-1,0,-1] }
     ]
   }
 ];
 
 /* =========================
-   START APP
+   START
 ========================= */
 
 function avvia(){
-  nome = document.getElementById("nomeUtente").value || "Utente";
 
-  document.getElementById("intro").style.display = "none";
-  document.getElementById("dashboard").style.display = "block";
+  let input = document.getElementById("nomeUtente");
+
+  if(!input){
+    alert("Manca input nomeUtente in HTML");
+    return;
+  }
+
+  nome = input.value || "Utente";
+
+  let intro = document.getElementById("intro");
+  let dash = document.getElementById("dashboard");
+
+  if(!intro || !dash){
+    alert("Mancano intro o dashboard in HTML");
+    return;
+  }
+
+  intro.style.display = "none";
+  dash.style.display = "block";
 }
 
 /* =========================
@@ -99,78 +60,31 @@ function selezionaLivello(l){
 
   livello = l;
 
-  if(l === "nazionale"){
-    startQuiz();
-    return;
-  }
-
-  document.getElementById("selector").style.display = "block";
-  loadRegioni();
-}
-
-/* =========================
-   REGIONI
-========================= */
-
-function loadRegioni(){
-
-  let sel = document.getElementById("regioneSelect");
-  sel.innerHTML = "";
-
-  REGIONI.forEach(r=>{
-    let opt = document.createElement("option");
-    opt.value = r;
-    opt.textContent = r;
-    sel.appendChild(opt);
-  });
-}
-
-/* =========================
-   COMUNI
-========================= */
-
-function loadComuni(){
-
-  let sel = document.getElementById("regioneSelect");
-  sel.innerHTML = "";
-
-  COMUNI.default.forEach(c=>{
-    let opt = document.createElement("option");
-    opt.value = c;
-    opt.textContent = c;
-    sel.appendChild(opt);
-  });
-}
-
-/* =========================
-   CONFERMA
-========================= */
-
-function confermaRegione(){
-  regione = document.getElementById("regioneSelect").value;
   startQuiz();
 }
 
 /* =========================
-   START QUIZ
+   QUIZ
 ========================= */
 
 function startQuiz(){
 
-  document.getElementById("dashboard").style.display = "none";
-  document.getElementById("quiz").style.display = "block";
+  let quiz = document.getElementById("quiz");
+  let dash = document.getElementById("dashboard");
+
+  if(!quiz || !dash){
+    alert("Manca quiz o dashboard");
+    return;
+  }
+
+  dash.style.display = "none";
+  quiz.style.display = "block";
 
   index = 0;
 
-  score = {
-    sociale: 0,
-    economico: 0,
-    consenso: 0
-  };
+  score = { s:0, e:0, c:0 };
 
-  if(livello === "nazionale") current = NAZIONALE_DB;
-  if(livello === "regionale") current = REGIONAL_DB;
-  if(livello === "comunale") current = COMUNALE_DB;
+  current = NAZIONALE_DB;
 
   render();
 }
@@ -183,7 +97,10 @@ function render(){
 
   let q = current[index];
 
-  if(!q) return finish();
+  if(!q){
+    finish();
+    return;
+  }
 
   document.getElementById("quiz").innerHTML = `
     <div class="card">
@@ -198,8 +115,6 @@ function render(){
         </button>
       `).join("")}
     </div>
-
-    <p>${index+1} / ${current.length}</p>
   `;
 }
 
@@ -209,16 +124,17 @@ function render(){
 
 function answer(a,b,c){
 
-  score.sociale += a;
-  score.economico += b;
-  score.consenso += c;
+  score.s += a;
+  score.e += b;
+  score.c += c;
 
   index++;
+
   render();
 }
 
 /* =========================
-   REPORT
+   FINE
 ========================= */
 
 function finish(){
@@ -226,21 +142,13 @@ function finish(){
   document.getElementById("quiz").style.display = "none";
   document.getElementById("report").style.display = "block";
 
-  let tot = score.sociale + score.economico + score.consenso;
-
-  let profilo =
-    tot > 3 ? "Pragmatico" :
-    tot > 0 ? "Equilibrato" :
-    "Critico";
+  let tot = score.s + score.e + score.c;
 
   document.getElementById("report").innerHTML = `
     <div class="card">
-      <h1>${nome}</h1>
-      <h2>${profilo}</h2>
-
-      <p>Sociale: ${score.sociale}</p>
-      <p>Economico: ${score.economico}</p>
-      <p>Consenso: ${score.consenso}</p>
+      <h1>Risultato</h1>
+      <p>${nome}</p>
+      <p>Score: ${tot}</p>
     </div>
 
     <button onclick="location.reload()">Ricomincia</button>
