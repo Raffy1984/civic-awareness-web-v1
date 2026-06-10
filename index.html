@@ -1,17 +1,83 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Patente di Consapevolezza Civica</title>
-<link rel="stylesheet" href="style.css">
+
+<style>
+body{
+  margin:0;
+  font-family:Arial, sans-serif;
+  background:#050914;
+  color:white;
+}
+
+.intro{
+  height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:url("https://upload.wikimedia.org/wikipedia/commons/0/03/Italy_satellite_map.jpg") center/cover no-repeat;
+}
+
+.overlay{
+  position:absolute;
+  inset:0;
+  background:rgba(0,0,0,0.75);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+  text-align:center;
+}
+
+.box{
+  max-width:700px;
+}
+
+.dashboard, .quiz, .report{
+  display:none;
+  padding:20px;
+  max-width:900px;
+  margin:auto;
+}
+
+.card{
+  background:#0f172a;
+  border:1px solid #1f2937;
+  padding:15px;
+  margin-top:12px;
+  border-radius:12px;
+}
+
+button{
+  width:100%;
+  padding:12px;
+  margin-top:10px;
+  border:none;
+  border-radius:10px;
+  cursor:pointer;
+  font-weight:bold;
+}
+
+.primary{background:#22c55e;color:#000;}
+.option{background:#111827;color:white;border:1px solid #334155;}
+
+select{
+  width:100%;
+  padding:10px;
+  margin-top:10px;
+  border-radius:8px;
+}
+</style>
+
 </head>
 
 <body>
 
 <!-- INTRO -->
 <div class="intro" id="intro">
-
   <div class="overlay">
     <div class="box">
 
@@ -19,63 +85,52 @@
 
       <p>
         Per guidare un’auto serve una patente.<br>
-        Per votare invece no.
+        Per lavorare serve una formazione.<br>
+        Per votare… no.
       </p>
 
-      <input id="nomeUtente" placeholder="Nome"/>
+      <p><b>Oggi la otterresti?</b></p>
 
-      <button onclick="avvia()" class="primary">
-        Inizia
-      </button>
+      <input id="nomeUtente" placeholder="Inserisci il tuo nome" style="padding:10px;width:80%;border-radius:8px;border:none;"/>
+
+      <button class="primary" onclick="avvia()">Inizia simulazione</button>
 
     </div>
+  </div>
+</div>
+
+<!-- DASHBOARD -->
+<div class="dashboard" id="dashboard">
+
+  <div class="card">
+    <h2>Seleziona livello</h2>
+
+    <button class="primary" onclick="selezionaLivello('nazionale')">Nazionale</button>
+    <button onclick="selezionaLivello('regionale')">Regionale</button>
+    <button onclick="selezionaLivello('comunale')">Comunale</button>
   </div>
 
 </div>
 
-<!-- DASHBOARD -->
-<div id="dashboard" class="dashboard">
+<!-- SELECTOR REGIONI / COMUNI -->
+<div id="selector" style="display:none;" class="dashboard">
 
-  <h2>Scegli livello di simulazione</h2>
-
-  <div class="menu">
-
-    <button class="btn-primary" onclick="selezionaLivello('nazionale')">
-      🇮🇹 Nazionale
-    </button>
-
-    <button class="btn-secondary" onclick="selezionaLivello('regionale')">
-      🏛 Regionale
-    </button>
-
-    <button class="btn-secondary" onclick="selezionaLivello('comunale')">
-      🏙 Comunale
-    </button>
-
-  </div>
-
-  <div id="selector" class="selector">
-
+  <div class="card">
     <h3>Selezione territorio</h3>
 
     <select id="regioneSelect"></select>
 
-    <button class="btn-primary" onclick="confermaRegione()">
-      Avvia simulazione
-    </button>
-
+    <button class="primary" onclick="confermaRegione()">Conferma</button>
   </div>
 
 </div>
 
 <!-- QUIZ -->
-<div id="quiz" class="quiz"></div>
+<div class="quiz" id="quiz"></div>
 
 <!-- REPORT -->
-<div id="report" class="report"></div>
+<div class="report" id="report"></div>
 
-<script src="territori.js"></script>
-<script src="comuni.js"></script>
 <script src="app.js"></script>
 
 </body>
