@@ -2,302 +2,120 @@ let nome = "";
 let livello = "";
 let index = 0;
 
-let regione = "";
-let comune = "";
-
+let territorio = "";
 let current = [];
-let score = { s:0, e:0, c:0 };
 
-/* =========================
-   DATASET NAZIONALE
-========================= */
+let score = {s:0,e:0,c:0};
 
-const NAZIONALE = [
+const DB = [
 {
   t:"Economia",
-  s:"Inflazione e costo della vita in aumento",
+  q:"Inflazione in aumento",
   o:[
-    {t:"Aumento salari minimi",v:[1,0,2]},
+    {t:"Aumentare salari",v:[1,0,2]},
+    {t:"Tagliare tasse",v:[0,2,1]},
     {t:"Controllo prezzi",v:[1,1,1]},
-    {t:"Taglio tasse imprese",v:[0,2,1]},
-    {t:"Nessun intervento",v:[-2,0,-1]}
+    {t:"Nessuna azione",v:[-2,0,-1]}
   ]
 },
 {
   t:"Sanità",
-  s:"Liste d’attesa troppo lunghe",
+  q:"Liste d’attesa lunghe",
   o:[
-    {t:"Assunzioni medici",v:[2,-1,1]},
-    {t:"Privatizzazione",v:[0,2,1]},
-    {t:"Digitalizzazione",v:[2,1,2]},
-    {t:"Tagli spesa",v:[-2,1,-2]}
-  ]
-},
-{
-  t:"Lavoro",
-  s:"Disoccupazione giovanile alta",
-  o:[
-    {t:"Incentivi assunzioni",v:[2,1,2]},
-    {t:"Stage obbligatori",v:[0,0,1]},
-    {t:"Taglio contributi",v:[1,2,0]},
-    {t:"Nessuna misura",v:[-2,0,-2]}
+    {t:"Più medici",v:[2,-1,1]},
+    {t:"Privatizzare",v:[0,2,1]},
+    {t:"Digitalizzare",v:[2,1,2]},
+    {t:"Tagli",v:[-2,1,-2]}
   ]
 }
 ];
 
-/* =========================
-   TERRITORI
-========================= */
+const REGIONI = ["Lazio","Lombardia","Campania"];
+const COMUNI = ["Roma","Milano","Napoli"];
 
-const REGIONI = [
-"Lazio","Lombardia","Campania","Sicilia","Veneto",
-"Emilia-Romagna","Piemonte","Toscana","Puglia",
-"Calabria","Sardegna","Liguria","Marche","Abruzzo",
-"Umbria","Basilicata","Molise","Valle d'Aosta",
-"Trentino-Alto Adige","Friuli-Venezia Giulia"
-];
+function start(){
+  nome = document.getElementById("nome").value || "Utente";
 
-const COMUNI = [
-"Roma","Milano","Napoli","Torino","Bologna",
-"Firenze","Bari","Palermo","Genova","Verona"
-];
-
-/* =========================
-   AVVIO
-========================= */
-
-function avvia(){
-
-  const input = document.getElementById("nomeUtente");
-
-  if(!input){
-    alert("Input nome mancante");
-    return;
-  }
-
-  nome = input.value || "Utente";
-
-  document.getElementById("intro").style.display = "none";
-  document.getElementById("dashboard").style.display = "block";
+  document.getElementById("intro").classList.remove("active");
+  document.getElementById("menu").classList.add("active");
 }
 
-/* =========================
-   SELEZIONE LIVELLO
-========================= */
-
-function selezionaLivello(l){
-
+function setLevel(l){
   livello = l;
 
-  document.getElementById("dashboard").style.display = "none";
+  document.getElementById("menu").classList.remove("active");
 
   if(l === "nazionale"){
     startQuiz();
     return;
   }
 
-  const selector = document.getElementById("selector");
+  document.getElementById("territorio").classList.add("active");
 
-  if(!selector){
-    alert("Selector mancante in HTML");
-    return;
-  }
-
-  selector.style.display = "block";
-
-  if(l === "regionale") loadRegioni();
-  if(l === "comunale") loadComuni();
-}
-
-/* =========================
-   LOAD REGIONI
-========================= */
-
-function loadRegioni(){
-
-  const sel = document.getElementById("regioneSelect");
-  if(!sel) return;
-
+  let sel = document.getElementById("select");
   sel.innerHTML = "";
 
-  REGIONI.forEach(r=>{
-    const opt = document.createElement("option");
-    opt.value = r;
-    opt.textContent = r;
-    sel.appendChild(opt);
+  let list = l === "regionale" ? REGIONI : COMUNI;
+
+  list.forEach(x=>{
+    let op = document.createElement("option");
+    op.value = x;
+    op.textContent = x;
+    sel.appendChild(op);
   });
 }
 
-/* =========================
-   LOAD COMUNI
-========================= */
-
-function loadComuni(){
-
-  const sel = document.getElementById("regioneSelect");
-  if(!sel) return;
-
-  sel.innerHTML = "";
-
-  COMUNI.forEach(c=>{
-    const opt = document.createElement("option");
-    opt.value = c;
-    opt.textContent = c;
-    sel.appendChild(opt);
-  });
-}
-
-/* =========================
-   CONFERMA TERRITORIO
-========================= */
-
-function confermaRegione(){
-
-  const sel = document.getElementById("regioneSelect");
-
-  if(!sel){
-    alert("Select mancante");
-    return;
-  }
-
-  const val = sel.value;
-
-  if(livello === "regionale"){
-    regione = val;
-  }
-
-  if(livello === "comunale"){
-    comune = val;
-  }
-
+function confirmTerritory(){
+  territorio = document.getElementById("select").value;
   startQuiz();
 }
 
-/* =========================
-   START QUIZ
-========================= */
-
 function startQuiz(){
-
-  document.getElementById("selector").style.display = "none";
-  document.getElementById("dashboard").style.display = "none";
-  document.getElementById("quiz").style.display = "block";
+  document.getElementById("territorio").classList.remove("active");
+  document.getElementById("quiz").classList.add("active");
 
   index = 0;
-  score = { s:0, e:0, c:0 };
+  score = {s:0,e:0,c:0};
 
-  if(livello === "nazionale"){
-    current = NAZIONALE;
-  }
-
-  if(livello === "regionale"){
-    current = NAZIONALE.map(q => ({
-      ...q,
-      s: regione + " - " + q.s
-    }));
-  }
-
-  if(livello === "comunale"){
-    current = NAZIONALE.map(q => ({
-      ...q,
-      s: comune + " - " + q.s
-    }));
-  }
-
+  current = DB;
   render();
 }
 
-/* =========================
-   RENDER
-========================= */
-
 function render(){
-
-  const q = current[index];
+  let q = current[index];
 
   if(!q){
     finish();
     return;
   }
 
-  const el = document.getElementById("quiz");
-
-  if(!el){
-    alert("Quiz mancante in HTML");
-    return;
-  }
-
-  el.innerHTML =
-    "<div class='card'>" +
-    "<h2>" + q.t + "</h2>" +
-    "<p>" + q.s + "</p>" +
-    "</div>" +
-
-    "<div class='card'>" +
-    q.o.map(o =>
-      "<button class='option' onclick='answer(" +
-      o.v[0] + "," + o.v[1] + "," + o.v[2] +
-      ")'>" + o.t + "</button>"
-    ).join("") +
-    "</div>";
+  document.getElementById("quiz").innerHTML =
+    "<div class='card'><h3>"+q.t+"</h3><p>"+q.q+"</p></div>" +
+    q.o.map(o=>
+      "<button class='option' onclick='answer("+o.v[0]+","+o.v[1]+","+o.v[2]+")'>"+o.t+"</button>"
+    ).join("");
 }
 
-/* =========================
-   RISPOSTA
-========================= */
-
 function answer(a,b,c){
-
   score.s += a;
   score.e += b;
   score.c += c;
-
   index++;
-
   render();
 }
 
-/* =========================
-   FINALE
-========================= */
-
 function finish(){
+  document.getElementById("quiz").classList.remove("active");
+  document.getElementById("result").classList.add("active");
 
-  document.getElementById("quiz").style.display = "none";
-  document.getElementById("report").style.display = "block";
+  let tot = score.s + score.e + score.c;
 
-  const tot = score.s + score.e + score.c;
+  let txt =
+    tot > 3 ? "ALTA CONSAPEVOLEZZA" :
+    tot > 0 ? "MEDIA CONSAPEVOLEZZA" :
+    "BASSA CONSAPEVOLEZZA";
 
-  let livelloFinale = "";
-  let colore = "";
-  let messaggio = "";
-
-  if(tot >= 7){
-    livelloFinale = "CONSAPEVOLEZZA ALTA";
-    colore = "#22c55e";
-    messaggio = "Buona comprensione delle dinamiche politiche.";
-  }
-  else if(tot >= 3){
-    livelloFinale = "CONSAPEVOLEZZA MEDIA";
-    colore = "#f59e0b";
-    messaggio = "Comprensione parziale delle dinamiche.";
-  }
-  else{
-    livelloFinale = "CONSAPEVOLEZZA BASSA";
-    colore = "#ef4444";
-    messaggio = "Bassa correlazione tra scelte e impatti reali.";
-  }
-
-  document.getElementById("report").innerHTML =
-    "<div class='card' style='border:2px solid "+colore+"'>" +
-    "<h1>ESITO SIMULAZIONE</h1>" +
-    "<h2 style='color:"+colore+"'>" + livelloFinale + "</h2>" +
-    "<p><b>" + nome + "</b></p>" +
-    "<p>" + messaggio + "</p>" +
-    "<hr>" +
-    "<p>Sociale: " + score.s + "</p>" +
-    "<p>Economico: " + score.e + "</p>" +
-    "<p>Consenso: " + score.c + "</p>" +
-    "</div>" +
-    "<button onclick='location.reload()' class='primary'>Riprova</button>";
+  document.getElementById("result").innerHTML =
+    "<div class='card'><h2>"+txt+"</h2><p>"+nome+"</p></div>" +
+    "<button onclick='location.reload()'>Riprova</button>";
 }
