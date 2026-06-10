@@ -1,4 +1,4 @@
-// --- DATABASE INTEGRATO (Risolve i conflitti di caricamento locali e CORS) ---
+// --- UNIFICAZIONE DEL ARCHIVIO DATI (Elimina problemi CORS / Caricamento locale asincrono) ---
 const DATA_STORE = {
     regioni: [
         "Abruzzo", "Basilicata", "Calabria", "Campania", "Emilia-Romagna", 
@@ -7,179 +7,188 @@ const DATA_STORE = {
         "Trentino-Alto Adige", "Umbria", "Valle d'Aosta", "Veneto"
     ],
     comuni: [
-        "Roma", "Milano", "Napoli", "Torino", "Palermo", 
-        "Genova", "Bologna", "Firenze", "Bari", "Catania",
-        "Venezia", "Verona", "Messina", "Padova", "Trieste"
+        "Roma", "Milano", "Napoli", "Torino", "Palermo", "Genova", "Bologna", 
+        "Firenze", "Bari", "Catania", "Venezia", "Verona", "Messina", "Padova", 
+        "Trieste", "Brescia", "Prato", "Parma", "Modena", "Reggio Calabria", 
+        "Reggio Emilia", "Perugia", "Ravenna", "Livorno", "Cagliari", "Foggia", 
+        "Rimini", "Salerno", "Ferrara", "Sassari", "Latina", "Giugliano in Campania", 
+        "Monza", "Siracusa", "Pescara", "Bergamo", "Forlì", "Trento", "Vicenza"
     ],
+    
+    // Database dei 10 Temi di pancia Nazionali (Sanità, Economia, Scuola, Ambiente, Sicurezza, Trasporti, Debito, Welfare, Immigrazione, Energia)
     domandeNazionali: [
         {
             t: "Sanità",
-            q: "Il Servizio Sanitario Nazionale soffre di carenza di organico e liste d'attesa interminabili. Come intervieni finanziariamente?",
+            q: "Liste d'attesa bloccate nei pronto soccorso e specialistica intasata. Dai talk show si invoca un cambio di rotta. Come ti muovi?",
             o: [
-                { t: "Aumento immediato del fondo sanitario nazionale in deficit per assumere medici e infermieri.", p: 2, v: [-2, 3, 2] },
-                { t: "Estensione drastica delle convenzioni con strutture private per smaltire le liste d'attesa in tempi record.", p: 2, v: [1, 1, 1] },
-                { t: "Digitalizzazione dei processi, telemedicina e razionalizzazione dei piccoli ospedali inefficienti sul territorio.", p: 3, v: [2, 1, -1] },
-                { t: "Imposizione di ticket sanitari progressivi legati al reddito ISEE per frenare l'iper-afflusso non urgente.", p: 1, v: [2, -2, -3] }
+                { t: "Finanzio in extra-deficit un piano straordinario di assunzioni stabili per medici e infermieri. (Consenso immediato alto, bilancio a rischio)", p: 2, v: [-3, 3, 3] },
+                { t: "Estendo in via strutturale i fondi e le prestazioni rimborsate alle cliniche private convenzionate. (Efficienza rapida, critiche sociali a sinistra)", p: 2, v: [1, 1, 1] },
+                { t: "Riorganizzo la rete tramite la sanità territoriale (Case della Salute) e introduco incentivi legati alle prestazioni fisiche reali. (Lungo termine)", p: 3, v: [2, 2, -1] },
+                { t: "Aumento la quota di compartecipazione (ticket) a carico del cittadino sopra i 40.000€ di reddito per disincentivare esami inutili.", p: 1, v: [3, -2, -3] }
             ]
         },
         {
             t: "Economia",
-            q: "La crescita del PIL è stagnante e la pressione fiscale sulle imprese frena gli investimenti. Quale manovra approvi?",
+            q: "Pressione fiscale record sulle imprese commerciali e stagnazione dei salari. La piazza chiede un segnale forte. Quale decreto firmi?",
             o: [
-                { t: "Introduzione di una Flat Tax per le società per attrarre capitali e stimolare l'occupazione.", p: 2, v: [1, -1, 2] },
-                { t: "Taglio mirato del cuneo fiscale interamente a beneficio dei lavoratori a basso reddito per rilanciare i consumi.", p: 3, v: [1, 2, 2] },
-                { t: "Sussidi statali diretti e incentivi a fondo perduto ai settori industriali strategici in crisi.", p: 1, v: [-2, 1, 2] },
-                { t: "Aumento della patrimoniale sui grandi patrimoni per finanziare investimenti infrastrutturali pubblici.", p: 2, v: [1, 2, -2] }
+                { t: "Introduco la Flat Tax generalizzata per autonomi e dipendenti, sperando nell'effetto emersione e stimolo consumi.", p: 1, v: [-2, -1, 3] },
+                { t: "Taglio drastico e mirato del cuneo fiscale interamente in busta paga ai redditi sotto i 35.000 euro.", p: 3, v: [1, 3, 2] },
+                { t: "Istituisco un nuovo pacchetto di sussidi a fondo perduto e crediti d'imposta per le imprese che non delocalizzano.", p: 1, v: [-3, 1, 2] },
+                { t: "Varo una patrimoniale dello 0.8% sui patrimoni mobiliari superiori a un milione per redistribuire risorse.", p: 2, v: [1, 2, -3] }
             ]
         },
         {
             t: "Scuola",
-            q: "Il sistema scolastico soffre di abbandono precoce e strutture fatiscenti. Come allochi i fondi dedicati?",
+            q: "Il precariato storico dei docenti paralizza l'avvio dell'anno scolastico, mentre crollano le competenze minime degli studenti. Come agisci?",
             o: [
-                { t: "Aumento lineare degli stipendi di tutto il personale docente per ristabilire la dignità del ruolo.", p: 2, v: [-2, 2, 3] },
-                { t: "Finanziamenti legati al merito e alle performance degli istituti basati sui test INVALSI.", p: 1, v: [1, -2, -2] },
-                { t: "Piano straordinario di edilizia scolastica per la sicurezza e cablaggio digitale di tutte le aule.", p: 3, v: [-1, 3, 2] },
-                { t: "Incentivi e bonus diretti alle famiglie meno abbienti (voucher scuola) spendibili anche in istituti privati.", p: 1, v: [0, 1, 1] }
+                { t: "Assunzione automatica per anzianità di servizio di tutti i precari con tre anni di supplenze, senza concorso selettivo.", p: 1, v: [-2, 2, 3] },
+                { t: "Blocco i sindacati, impongo concorsi nazionali stringenti sul merito e lego gli scatti di stipendio alle valutazioni INVALSI.", p: 2, v: [2, -2, -3] },
+                { t: "Aumento gli stanziamenti ordinari per ammodernare l'edilizia scolastica e rilancio gli istituti tecnici professionali legati alle aziende.", p: 3, v: [0, 3, 2] },
+                { t: "Istituisco il buono scuola (Voucher) per permettere alle famiglie di iscrivere i figli nelle scuole paritarie private.", p: 1, v: [1, -1, 0] }
             ]
         },
         {
             t: "Ambiente",
-            q: "Gli obiettivi europei impongono una netta riduzione delle emissioni nocive entro i primi anni. Quale politica attui?",
+            q: "Direttive UE impongono lo stop alle caldaie a gas e alle auto endotermiche. Il dibattito pubblico tra transizione e difesa dell'industria esplode. Tu che fai?",
             o: [
-                { t: "Blocco progressivo della circolazione dei veicoli endotermici diesel e benzina nelle grandi arterie.", p: 1, v: [-1, 1, -3] },
-                { t: "Erogazione di eco-incentivi statali per l'efficientamento termico degli edifici privati (Cappotti termici).", p: 2, v: [-3, 2, 2] },
-                { t: "Carbon Tax sulle grandi industrie inquinanti con redistribuzione dei proventi in sgravi fiscali green.", p: 3, v: [2, 1, -1] },
-                { t: "Nessuna forzatura normativa; si delega la transizione ai tempi di adeguamento spontaneo del mercato.", p: 0, v: [1, -2, 1] }
+                { t: "Applico tasse ecologiche immediate sui carburanti fossili per forzare il passaggio all'elettrico.", p: 1, v: [1, -2, -4] },
+                { t: "Reintroduco un super-bonus statale al 100% per l'efficientamento e il cappotto termico degli edifici privati.", p: 1, v: [-4, 2, 3] },
+                { t: "Prevedo incentivi progressivi di rottamazione solo per ceti a basso ISEE e finanzio esclusivamente le infrastrutture di ricarica pubbliche.", p: 3, v: [1, 2, 1] },
+                { t: "Mi oppongo ai vincoli europei a tutela della filiera produttiva automotive e manifatturiera nazionale.", p: 1, v: [1, -2, 2] }
             ]
         },
         {
             t: "Sicurezza",
-            q: "Si registra una forte percezione di insicurezza legata a fenomeni di microcriminalità nelle aree metropolitane.",
+            q: "Stazioni ferroviarie fuori controllo e periferie delle grandi aree urbane segnate da spaccio e microcriminalità. La cittadinanza è esasperata.",
             o: [
-                { t: "Dispiegamento permanente dell'Esercito (Operazione Strade Sicure) nei punti nevralgici e nelle stazioni.", p: 2, v: [-1, 1, 3] },
-                { t: "Inasprimento generalizzato delle pene detentive e costruzione di nuovi istituti penitenziari.", p: 1, v: [-2, 0, 2] },
-                { t: "Riqualificazione urbana, illuminazione LED diffusa e potenziamento dei servizi sociali di strada.", p: 3, v: [0, 2, 1] },
-                { t: "Investimenti massicci in sistemi di videosorveglianza predittiva gestiti da intelligenze artificiali.", p: 2, v: [1, 0, 1] }
+                { t: "Esercito permanente (Strade Sicure) in pianta stabile in tutti gli hub ferroviari e piazze critiche.", p: 2, v: [-1, 1, 3] },
+                { t: "Riforma penale per azzerare i benefici di pena per la flagranza di reati da strada (scippi, borseggi) e nuove carceri.", p: 1, v: [-2, -1, 2] },
+                { t: "Riqualificazione urbana commerciale, incremento dell'illuminazione pubblica e potenziamento dei servizi sociali di recupero.", p: 3, v: [1, 3, 1] },
+                { t: "Controllo capillare tramite telecamere a riconoscimento facciale centralizzato gestito dalle forze dell'ordine.", p: 2, v: [1, -1, 1] }
             ]
         },
         {
             t: "Trasporti",
-            q: "La rete ferroviaria ad alta velocità e i collegamenti intermodali mostrano profonde asimmetrie geografiche.",
+            q: "Le grandi tratte dell'Alta Velocità assorbono tutte le risorse operative, mentre i treni dei pendolari regionali offrono condizioni indecenti.",
             o: [
-                { t: "Concentrazione delle risorse sul completamento delle grandi opere strategiche infrastrutturali interregionali.", p: 2, v: [2, 0, 1] },
-                { t: "Priorità assoluta al rinnovo del parco mezzi dei treni pendolari e delle linee regionali secondarie.", p: 3, v: [0, 3, 2] },
-                { t: "Liberalizzazione totale del mercato ferroviario per favorire l'ingresso di competitor privati e abbassare i prezzi.", p: 2, v: [2, -1, 1] },
-                { t: "Nazionalizzazione e statalizzazione completa dei vettori di trasporto per garantire tariffe fisse minime.", p: 1, v: [-2, 2, 2] }
+                { t: "Sospendo l'avvio di nuove macro-opere ferroviarie per girare tutti i fondi PNRR sul materiale rotabile locale.", p: 3, v: [1, 3, 2] },
+                { t: "Porto a compimento i corridoi infrastrutturali strategici per rendere attrattivo il sistema industriale logistico all'estero.", p: 2, v: [2, 0, 1] },
+                { t: "Liberalizzo totalmente le tratte regionali permettendo l'ingresso di operatori privati in concorrenza commerciale.", p: 2, v: [2, -2, 0] },
+                { t: "Pongo i biglietti e gli abbonamenti a tariffa minima calmierata per legge, coprendo le perdite delle ferrovie con fondi pubblici.", p: 1, v: [-3, 2, 2] }
             ]
         },
         {
             t: "Debito Pubblico",
-            q: "Il rapporto Debito/PIL espone la nazione alla volatilità dei mercati finanziari e all'innalzamento dello Spread.",
+            q: "Lo Spread sale e i mercati azionari speculano sulla sostenibilità delle nostre emissioni di BTP. Come rassicuri gli osservatori internazionali?",
             o: [
-                { t: "Adozione di una seria spending review con tagli lineari ai ministeri e blocco totale del turnover pubblico.", p: 2, v: [3, -2, -3] },
-                { t: "Contrasto serrato all'evasione fiscale incrociando le banche dati e limitando severamente l'uso del contante.", p: 3, v: [3, 1, -1] },
-                { t: "Aumento temporaneo dell'aliquota IVA ordinaria per garantire entrate immediate e rassicurare i mercati.", p: 1, v: [2, -2, -4] },
-                { t: "Emissione di titoli di stato speciali riservati esclusivamente ai risparmiatori residenti nel territory nazionale.", p: 2, v: [-1, 1, 2] }
+                { t: "Varo una spending review lacrime e sangue con il blocco immediato delle assunzioni e indicizzazione delle pensioni.", p: 2, v: [3, -3, -4] },
+                { t: "Incrocio automatico delle banche dati di conti correnti, utenze e catasto per far emergere l'evasione fiscale di massa.", p: 3, v: [3, 2, -2] },
+                { t: "Innalzo l'aliquota IVA ordinaria dal 22% al 24% per fare cassa immediata e blindare i conti.", p: 1, v: [2, -3, -4] },
+                { t: "Emetto titoli di stato speciali esentasse dedicati ai soli risparmiatori interni facendo leva sul patriottismo finanziario.", p: 1, v: [-1, 1, 2] }
             ]
         },
         {
             t: "Welfare",
-            q: "L'invecchiamento demografico mette a rischio la tenuta del sistema previdenziale e assistenziale. Come ti muovi?",
+            q: "Il crollo delle nascite mina la previdenza ordinaria. C'è chi chiede di anticipare l'uscita pensionistica e chi teme il default dell'INPS.",
             o: [
-                { t: "Innalzamento progressivo dell'età pensionabile agganciata rigorosamente alle aspettative di vita reali.", p: 3, v: [3, -1, -3] },
-                { t: "Creazione di schemi di flessibilità in uscita (es. Quota 100/103) finanziati tramite ricalcolo contributivo.", p: 2, v: [-1, 1, 2] },
-                { t: "Potenziamento esclusivo degli assegni sociali minimi per prevenire la povertà assoluta degli anziani.", p: 2, v: [-2, 2, 2] },
-                { t: "Istituzione di un fondo pensionistico complementare obbligatorio privato gestito per via aziendale.", p: 1, v: [2, -2, -2] }
+                { t: "Innalzamento rigido dell'età pensionabile minima a 68 anni senza deroghe, agganciata all'aspettativa biologica.", p: 3, v: [3, -2, -4] },
+                { t: "Varo scivoli pensionistici generalizzati (es. Quota 41) senza ricalcolo contributivo per liberare posti per i giovani.", p: 1, v: [-3, 1, 3] },
+                { t: "Prevedo la pensione anticipata flessibile ma solo accettando il calcolo puramente contributivo dell'assegno calato.", p: 2, v: [2, -1, 1] },
+                { t: "Sostituisco i bonus una-tantum con un assegno unico familiare strutturale raddoppiato per ogni figlio nato dal secondo in poi.", p: 2, v: [-2, 3, 2] }
             ]
         },
         {
             t: "Immigrazione",
-            q: "La gestione dei flussi migratori irregolari mette sotto pressione le strutture di prima accoglienza e i bilanci.",
+            q: "Sbarchi costanti sulle coste e centri di prima accoglienza al collasso. La gestione dei flussi spacca l'opinione pubblica. Come intervieni?",
             o: [
-                { t: "Finanziamento di hotspot internazionali nei paesi di transito per esaminare le domande d'asilo prima degli sbarchi.", p: 3, v: [1, 1, 2] },
-                { t: "Chiusura dei porti e blocco navale in coordinamento o autonomia rispetto alle agenzie internazionali.", p: 1, v: [-1, -2, 3] },
-                { t: "Distribuzione obbligatoria e inclusione nei piccoli comuni tramite micro-accoglienza diffusa e corsi di lingua.", p: 2, v: [-2, 2, -2] },
-                { t: "Regolarizzazione di massa legata a contratti di lavoro preesistenti nei settori agricolo e assistenziale.", p: 2, v: [2, 1, -1] }
+                { t: "Accordi economici e finanziamenti ai governi di transito del Nord Africa per bloccare le partenze via terra.", p: 3, v: [1, 0, 2] },
+                { t: "Blocco navale militare e respingimento immediato in mare aperto senza identificazione.", p: 1, v: [-1, -3, 3] },
+                { t: "Distribuzione vincolante e obbligatoria in tutti i piccoli comuni italiani con percorsi di inserimento lavorativo.", p: 2, v: [-2, 3, -2] },
+                { t: "Sanatoria ampia per regolarizzare chi è già inserito nel circuito economico sommerso (agricoltura, assistenza anziani).", p: 2, v: [2, 2, -1] }
             ]
         },
         {
             t: "Energia",
-            q: "La dipendenza energetica dall'estero espone il sistema produttivo a shock dei prezzi e instabilità geopolitiche.",
+            q: "I costi delle bollette mettono a rischio le aziende manifatturiere. Il dibattito energetico si accende sulle fonti strategiche. Su cosa punti?",
             o: [
-                { t: "Riapertura immediata del dossier sul nucleare pulito di ultima generazione con un piano di siti nazionali.", p: 2, v: [2, -1, -1] },
-                { t: "Semplificazione burocratica radicale per autorizzare mega-impianti solari ed eolici commerciali.", p: 3, v: [2, 2, 1] },
-                { t: "Sussidi e defiscalizzazione per l'estrazione di gas naturale dai giacimenti nazionali già esistenti.", p: 1, v: [1, -1, 1] },
-                { t: "Calmiere statale sulle bollette elettriche di famiglie e imprese coperto mediante scostamento di bilancio.", p: 0, v: [-3, 2, 3] }
+                { t: "Inserisco nel piano energetico nazionale la costruzione di centrali nucleari di ultima generazione sul territorio.", p: 2, v: [2, -1, -2] },
+                { t: "Deregulation burocratica per installazioni massive di pannelli fotovoltaici a terra e parchi eolici offshore.", p: 3, v: [2, 2, 1] },
+                { t: "Autorizzo nuove trivellazioni nei mari italiani per estrarre gas nazionale abbattendo i costi di importazione.", p: 1, v: [1, -2, 1] },
+                { t: "Istituisco un tetto massimo ai prezzi energetici al consumo coprendo la differenza con debito pubblico a carico dello Stato.", p: 0, v: [-4, 2, 3] }
             ]
         }
     ],
+    
+    // Database Regionale (Sanità territoriale, Trasporti, Ambiente)
     domandeRegionaliGeneriche: [
         {
-            t: "Sanità Regionale",
-            q: "Il bilancio della regione {TERRITORIO} è assorbitò per l'80% dalla sanità. La Corte dei Conti rileva buchi strutturali.",
+            t: "Sanità Territoriale",
+            q: "Le opposizioni e i sindacati nella regione {TERRITORIO} denunciano liste d'attesa di oltre un anno per esami diagnostici salvavita nelle ASL.",
             o: [
-                { t: "Commissariamento delle ASL inefficienti e accorpamento dei distretti sanitari per tagliare i costi amministrativi.", p: 3, v: [3, -1, -2] },
-                { t: "Aumento delle addizionali IRPEF regionali al massimo consentito per non tagliare le prestazioni.", p: 2, v: [1, 2, -3] },
-                { t: "Riduzione dei posti letto nei presidi ospedalieri minori, convertendoli in case della comunità per malati cronici.", p: 2, v: [2, 1, -1] },
-                { t: "Privatizzazione della gestione dei servizi non sanitari (mense, pulizie, lavanderie) tramite appalti al ribasso.", p: 1, v: [2, -2, -1] }
+                { t: "Attivo un piano straordinario imponendo turni straordinari notturni e festivi ai medici dipendenti.", p: 2, v: [-2, 2, 2] },
+                { t: "Compro pacchetti di prestazioni dalle strutture private accreditate della regione per azzerare le liste in 60 giorni.", p: 2, v: [1, 1, 2] },
+                { t: "Riorganizzo i Cup e sanziono i direttori generali delle ASL che non ottimizzano i macchinari fermi nei fine settimana.", p: 3, v: [2, 1, -1] },
+                { t: "Sospendo l'erogazione di esami non urgenti per i codici bianchi per alleggerire la pressione sui laboratori.", p: 1, v: [1, -3, -3] }
             ]
         },
         {
             t: "Trasporti Locali",
-            q: "I pendolari della regione {TERRITORIO} lamentano continui disservizi e sovraffollamento sulle linee di competenza regionale.",
+            q: "I treni regionali e le linee di trasporto pubblico locale di {TERRITORIO} sono quotidianamente oggetto di proteste per ritardi e scarsa pulizia.",
             o: [
-                { t: "Risoluzione del contratto con l'attuale gestore unico e indizione di una gara d'appalto europea aperta.", p: 3, v: [1, 1, -1] },
-                { t: "Stanziamento straordinario di fondi regionali per l'acquisto immediato di nuovi treni e vagoni.", p: 2, v: [-2, 2, 3] },
-                { t: "Aumento controllato del costo del biglietto singolo per finanziare la manutenzione straordinaria dei binari.", p: 1, v: [2, -1, -2] },
-                { t: "Riduzione delle corse nelle fasce orarie di morbida per concentrare il personale nei momenti di punta.", p: 1, v: [1, -2, -2] }
+                { t: "Emetto sanzioni miliardarie contro la società di gestione e apro il mercato regionale a una gara d'appalto internazionale.", p: 3, v: [1, 1, 0] },
+                { t: "Stanzio fondi dal bilancio regionale per acquistare treni di ultima generazione aumentando i canoni di leasing.", p: 2, v: [-2, 2, 3] },
+                { t: "Aumento il prezzo dei biglietti per i non residenti in regione in modo da finanziare le manutenzioni interne.", p: 1, v: [1, 0, -1] },
+                { t: "Riduco le frequenze delle corse nei fine settimana e nelle ore serali per recuperare risorse sul personale.", p: 1, v: [1, -2, -2] }
             ]
         },
         {
-            t: "Ambiente & Territorio",
-            q: "Il rischio idrogeologico minaccia ampie zone di {TERRITORIO}. Dissesti e alluvioni si ripetono ciclicamente.",
+            t: "Ambiente & Dissesto",
+            q: "I report scientifici indicano che la regione {TERRITORIO} è una delle aree a più alto rischio idrogeologico ed edilizio del Paese.",
             o: [
-                { t: "Moratoria totale sul consumo di suolo: divieto assoluto di nuove edificazioni commerciali in tutta la regione.", p: 3, v: [1, 2, -1] },
-                { t: "Istituzione di un piano di sfoltimento vegetazione e pulizia straordinaria dei letti dei fiumi tramite consorzi di bonifica.", p: 2, v: [-1, 2, 2] },
-                { t: "Finanziamenti di grandi opere di ingegneria idraulica (vasche di laminazione) tramite emissione di bond regionali.", p: 2, v: [-2, 1, 1] },
-                { t: "Delocalizzazione forzata e indennizzata delle abitazioni private costruite in aree classificate a rischio R4.", p: 1, v: [-3, 2, -3] }
+                { t: "Blocco immediato di qualsiasi variante urbanistica che preveda nuovo consumo di suolo, congelando i cantieri.", p: 3, v: [1, 2, -1] },
+                { t: "Assegno fondi ai consorzi di bonifica regionali per la pulizia meccanica sistematica di alvei e sponde fluviali.", p: 2, v: [-1, 2, 2] },
+                { t: "Emetto bond regionali per costruire vasche di laminazione e dighe di contenimento nelle valli instabili.", p: 2, v: [-2, 1, 1] },
+                { t: "Ordino lo sgombero e la demolizione delle strutture residenziali edificate abusivamente nelle aree a rischio R4.", p: 1, v: [-1, 1, -3] }
             ]
         }
     ],
+    
+    // Database Comunale (Rifiuti, Viabilità, Tasse e Bilancio)
     domandeComunaliGeneriche: [
         {
-            t: "Rifiuti Urbani",
-            q: "La gestione della raccolta rifiuti a {TERRITORIO} mostra forti criticità: la raccolta differenziata è bassa e i costi della TARI aumentano.",
+            t: "Rifiuti & Decoro",
+            q: "I quartieri del comune di {TERRITORIO} mostrano cumuli di immondizia stradale e la percentuale di raccolta differenziata è ferma.",
             o: [
-                { t: "Passaggio alla tariffazione puntuale (paghi solo per l'indifferenziata che produci) e sanzioni severe con fototrappole.", p: 3, v: [2, 1, -1] },
-                { t: "Estensione del porta a porta spinto in tutti i quartieri, eliminando definitivamente i cassonetti stradali.", p: 2, v: [-1, 2, 0] },
-                { t: "Costruzione rapida di un impianto di termovalorizzazione comunale per azzerare i costi di trasferimento all'estero.", p: 2, v: [3, -1, 1] },
-                { t: "Aumento temporaneo del personale della municipalizzata tramite contratti stagionali per pulizie straordinarie.", p: 1, v: [-2, 1, 2] }
+                { t: "Riformulo la TARI applicando la tariffa puntuale (chi più indifferenziata produce, più paga) e installo fototrappole.", p: 3, v: [2, 1, -1] },
+                { t: "Rimuovo tutti i cassonetti stradali e introduco la raccolta porta a porta spinta, modificando i calendari di ritiro.", p: 2, v: [-1, 2, 0] },
+                { t: "Punto sulla pianificazione di un moderno termovalorizzatore comunale per azzerare i costi di export del pattume.", p: 2, v: [3, -1, 1] },
+                { t: "Eseguo un'ordinanza per assumere addetti alla pulizia interinali attingendo a fondi straordinari di riserva.", p: 1, v: [-2, 1, 2] }
             ]
         },
         {
-            t: "Viabilità Urbana",
-            q: "Il centro storico e le direttrici commerciali di {TERRITORIO} sono costantemente intasati dal traffico privato e dalla sosta selvaggia.",
+            t: "Viabilità & Commercio",
+            q: "A {TERRITORIO} infuria la polemica tra associazioni di ciclisti che chiedono aree pedonali e negozianti che difendono l'accesso alle auto.",
             o: [
-                { t: "Ampliamento drastico della ZTL h24 e trasformazione di intere vie in isole pedonali permanenti.", p: 2, v: [1, 1, -2] },
-                { t: "Istituzione di zone con limite di velocità a 30 km/h estese a tutti i quartieri residenziali non arteriosi.", p: 2, v: [0, 2, -1] },
-                { t: "Costruzione di parcheggi sotterranei scambiatori alle porte della città e potenziamento delle corsie preferenziali bus.", p: 3, v: [-2, 2, 2] },
-                { t: "Sanatoria e pedonalizzazione parziale consentendo ai commercianti l'occupazione di suolo pubblico gratuita per i tavolini.", p: 1, v: [1, 1, 3] }
+                { t: "Varo il piano 'Città 30' riducendo i limiti di velocità urbani e pedonalizzo l'intero centro storico commerciale.", p: 2, v: [0, 2, -2] },
+                { t: "Cancello i progetti di piste ciclabili sulle arterie stradali principali per salvaguardare i parcheggi a spina di pesce.", p: 1, v: [0, -1, 3] },
+                { t: "Realizzo parcheggi di interscambio sotterranei esterni connessi al centro tramite navette elettriche ad alta frequenza.", p: 3, v: [-2, 2, 2] },
+                { t: "Concedo l'uso gratuito e permanente del suolo pubblico per i dehors di bar e ristoranti sacrificando i posti auto.", p: 1, v: [1, 1, 2] }
             ]
         },
         {
-            t: "Welfare di Prossimità",
-            q: "Il bilancio del comune di {TERRITORIO} presenta margini ridotti, ma aumentano le richieste di assistenza e alloggi popolari.",
+            t: "Bilancio & Welfare",
+            q: "Il bilancio del comune di {TERRITORIO} rischia il pre-dissesto finanziario. Devi tagliare la spesa o recuperare entrate d'urgenza.",
             o: [
-                { t: "Assegnazione degli alloggi e dei sussidi comunali basata rigorosamente sulla storicità di residenza nel comune.", p: 1, v: [0, -1, 3] },
-                { t: "Partenariato con il terzo settore e fondazioni bancarie per creare empori solidali e co-housing assistito.", p: 3, v: [2, 2, 2] },
-                { t: "Esternalizzazione totale degli asili nido e dei centri diurni per anziani a cooperative private per abbattere i costi storici.", p: 1, v: [2, -3, -2] },
-                { t: "Rimodulazione ed elevazione dell'addizionale comunale IRPEF per non tagliare l'assistenza domiciliare ai disabili.", p: 2, v: [1, 2, -2] }
+                { t: "Innalzo l'addizionale comunale IRPEF e applico aliquote IMU massime sulle seconde case sfitte per salvare i servizi.", p: 2, v: [2, 1, -3] },
+                { t: "Riduco i contributi economici comunali alle associazioni del terzo settore, asili nido assistiti e mense sociali.", p: 1, v: [2, -3, -2] },
+                { t: "Affido la gestione della riscossione coattiva delle multe stradali arretrate a una agenzia esterna spietata.", p: 3, v: [3, 0, -2] },
+                { t: "Piazzo autovelox fissi e varchi elettronici per incrementare le entrate del codice della strada in modo massivo.", p: 1, v: [2, -1, 1] }
             ]
         }
     ]
 };
 
-// --- CONFIGURAZIONE E STATO APPLICAZIONE ---
+// --- CONFIGURAZIONE E ENGINE INTERNO ---
 const CONFIG = {
     SCORE_MAX_RAW: 30, 
     VECT_MAX_RAW: 20   
@@ -195,7 +204,6 @@ let appState = {
     sessionQuestions: []
 };
 
-// --- INIZIALIZZAZIONE ---
 document.addEventListener("DOMContentLoaded", () => {
     initEventHandlers();
 });
@@ -247,11 +255,11 @@ function handleLevelSelection(selectedLevel) {
         const labelEl = document.getElementById("label-select-territorio");
         
         if (selectedLevel === "regionale") {
-            titleEl.textContent = "Seleziona la Regione";
-            labelEl.textContent = "Scegli l'ente regionale di riferimento";
+            titleEl.textContent = "Seleziona la tua Regione";
+            labelEl.textContent = "Scegli l'ente regionale su cui applicare le riforme:";
         } else {
-            titleEl.textContent = "Seleziona il Comune";
-            labelEl.textContent = "Scegli l'amministrazione locale di riferimento";
+            titleEl.textContent = "Seleziona il tuo Comune";
+            labelEl.textContent = "Scegli l'amministrazione locale da governare:";
         }
         switchScreen("screen-territorio");
     }
@@ -297,7 +305,6 @@ function generateQuizSession() {
         q.q = q.q.replace(/{TERRITORIO}/g, appState.territory);
     });
     
-    // Aggiorna il calcolo del punteggio massimo in base al numero di domande del livello caricato
     CONFIG.SCORE_MAX_RAW = appState.sessionQuestions.length * 3;
     
     switchScreen("screen-quiz");
@@ -312,7 +319,7 @@ function renderCurrentQuestion() {
     }
     
     document.getElementById("quiz-category").textContent = q.t;
-    document.getElementById("quiz-progress").textContent = `Domanda ${appState.currentQuestionIndex + 1} di ${appState.sessionQuestions.length}`;
+    document.getElementById("quiz-progress").textContent = `Scenario ${appState.currentQuestionIndex + 1} di ${appState.sessionQuestions.length}`;
     
     const progressPercent = (appState.currentQuestionIndex / appState.sessionQuestions.length) * 100;
     document.getElementById("quiz-progress-bar").style.width = `${progressPercent}%`;
@@ -358,15 +365,15 @@ function evaluateAndFinish() {
     if (finalScoreNormalized >= 75) {
         levelBadge = "ALTO (PROMOSSO)";
         cssClass = "alto";
-        message = `Egregio ${appState.username}, le tue decisioni denotano una solida comprensione delle complesse interconnessioni istituzionali, economiche e sociali. Dimostri di ponderare gli effetti a lungo termine di ogni riforma e di comprendere che la spesa pubblica necessita di coperture reali, rifiutando facili soluzioni demagogiche o populiste.`;
+        message = `Egregio ${appState.username}, le tue decisioni indicano una profonda refrattarietà alla demagogia da bar. Dimostri di comprendere l'interconnessione strutturale tra entrate e uscite dello Stato o dell'amministrazione locale di ${appState.territory}, anteponendo la sostenibilità e la logica sistemica al mero opportunismo elettorale temporaneo.`;
     } else if (finalScoreNormalized >= 40) {
         levelBadge = "MEDIO (RIVEDIBILE)";
         cssClass = "medio";
-        message = `Gentile ${appState.username}, il tuo profilo decisionale mostra sprazzi di razionalità e senso civico, alternati tuttavia a scelte emotive o sbilanciate. In alcuni scenari hai teso a massimizzare il consenso immediato a spese della sostenibilità di bilancio, oppure hai applicato riforme rigide ignorandone gli impatti sociali sui ceti deboli. Trova un maggior equilibrio sistemico.`;
+        message = `Gentile ${appState.username}, le tue risposte riflettono l'andamento tipico del dibattito nei talk show televisivi. Hai alternato decisioni tecnicamente razionali a concessioni emotive finalizzate ad assecondare la 'pancia della piazza'. Per ottenere la massima promozione amministrativa devi evitare di finanziare riforme strutturali ricorrendo a disavanzi o deficit insostenibili.`;
     } else {
         levelBadge = "BASSO (BOCCIATO)";
         cssClass = "basso";
-        message = `Attenzione ${appState.username}. Il simulatore ha rilevato una forte scomposizione logica nelle scelte operate. Le opzioni da te selezionate tendono ad assecondare la pancia del paese o a implementare risposte drastiche non supportate da analisi di sostenibilità economica reale. Ricorda che ogni diritto erogato possiede un costo di copertura e ogni tassa tagliata impatta i servizi essenziali.`;
+        message = `Attenzione ${appState.username}. Le scelte operate presentano forti scomposizioni logiche. Hai sistematicamente optato per soluzioni iper-populiste, mirate a massimizzare il consenso immediato della platea o ad applicare interventi drastici privi di coperture reali di bilancio. Ricorda che ogni servizio pubblico erogato possiede costi vivi che qualcuno deve finanziare.`;
     }
     
     document.getElementById("result-username").textContent = appState.username;
