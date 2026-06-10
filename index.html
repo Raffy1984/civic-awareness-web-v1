@@ -6,84 +6,39 @@
 <title>Patente Civica</title>
 
 <style>
-body{
-  margin:0;
-  font-family:Arial;
-  background:#0b1020;
-  color:white;
-}
-
-.section{
-  display:none;
-  padding:20px;
-}
-
-.active{
-  display:block;
-}
-
-.card{
-  background:#111827;
-  padding:15px;
-  margin-top:10px;
-  border-radius:10px;
-}
-
-button{
-  width:100%;
-  padding:12px;
-  margin-top:10px;
-  border:none;
-  border-radius:8px;
-  font-weight:bold;
-  cursor:pointer;
-}
-
-.primary{background:#22c55e;color:black;}
-.option{background:#1f2937;color:white;}
-
-input,select{
-  width:100%;
-  padding:10px;
-  margin-top:10px;
-}
+body{margin:0;font-family:Arial;background:#0b1020;color:#fff}
+.section{display:none;padding:20px}
+.active{display:block}
+.card{background:#111827;padding:15px;margin-top:10px;border-radius:10px}
+button{width:100%;padding:12px;margin-top:10px;border:none;border-radius:8px;font-weight:bold}
+.primary{background:#22c55e;color:#000}
+.option{background:#1f2937;color:#fff}
+input,select{width:100%;padding:10px;margin-top:10px}
 </style>
 </head>
 
 <body>
 
-<!-- INTRO -->
 <div id="intro" class="section active">
   <h1>Patente Civica</h1>
-  <p>Per votare non serve una patente. Questo test misura la tua consapevolezza.</p>
-
+  <p>Test di consapevolezza del voto</p>
   <input id="nome" placeholder="Nome">
-
   <button class="primary" onclick="start()">Inizia</button>
 </div>
 
-<!-- MENU -->
 <div id="menu" class="section">
-  <h2>Seleziona livello</h2>
-
+  <h2>Livello</h2>
   <button onclick="setLevel('nazionale')">Nazionale</button>
   <button onclick="setLevel('regionale')">Regionale</button>
   <button onclick="setLevel('comunale')">Comunale</button>
 </div>
 
-<!-- TERRITORIO -->
 <div id="territorio" class="section">
-  <h2>Seleziona</h2>
-
   <select id="select"></select>
-
   <button class="primary" onclick="confirmTerritory()">Conferma</button>
 </div>
 
-<!-- QUIZ -->
 <div id="quiz" class="section"></div>
-
-<!-- RESULT -->
 <div id="result" class="section"></div>
 
 <script src="app.js"></script>
