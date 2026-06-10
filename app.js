@@ -1,4 +1,4 @@
-let nome = "";
+Ilet nome = "";
 let livello = "";
 let index = 0;
 
@@ -254,18 +254,36 @@ function finish(){
 
   const tot = score.s + score.e + score.c;
 
-  let livelloFinale =
-    tot > 6 ? "Consapevolezza Alta" :
-    tot > 2 ? "Consapevolezza Media" :
-    "Consapevolezza Bassa";
+  let livelloFinale = "";
+  let colore = "";
+  let messaggio = "";
+
+  if(tot >= 7){
+    livelloFinale = "CONSAPEVOLEZZA ALTA";
+    colore = "#22c55e";
+    messaggio = "Probabilmente conosci davvero l’impatto delle scelte politiche.";
+  }
+  else if(tot >= 3){
+    livelloFinale = "CONSAPEVOLEZZA MEDIA";
+    colore = "#f59e0b";
+    messaggio = "Hai una base, ma molte decisioni sono ancora intuitive più che consapevoli.";
+  }
+  else{
+    livelloFinale = "CONSAPEVOLEZZA BASSA";
+    colore = "#ef4444";
+    messaggio = "Molte risposte sono scollegate dagli effetti reali delle politiche.";
+  }
 
   document.getElementById("report").innerHTML =
-    "<div class='card'>" +
-    "<h1>" + nome + "</h1>" +
-    "<h2>" + livelloFinale + "</h2>" +
+    "<div class='card' style='border:2px solid "+colore+"'>" +
+    "<h1>ESITO SIMULAZIONE</h1>" +
+    "<h2 style='color:"+colore+"'>" + livelloFinale + "</h2>" +
+    "<p><b>Utente:</b> " + nome + "</p>" +
+    "<p>" + messaggio + "</p>" +
+    "<hr>" +
     "<p>Sociale: " + score.s + "</p>" +
     "<p>Economico: " + score.e + "</p>" +
     "<p>Consenso: " + score.c + "</p>" +
     "</div>" +
-    "<button onclick='location.reload()'>Ricomincia</button>";
+    "<button onclick='location.reload()' class='primary'>Riprova</button>";
 }
