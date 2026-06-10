@@ -170,9 +170,13 @@ function confermaRegione(){
 
 function startQuiz(){
 
-  document.getElementById("dashboard").style.display = "none";
-  document.getElementById("selector").style.display = "none";
-  document.getElementById("quiz").style.display = "block";
+  const quiz = document.getElementById("quiz");
+  const dashboard = document.getElementById("dashboard");
+  const selector = document.getElementById("selector");
+
+  if(quiz) quiz.style.display = "block";
+  if(dashboard) dashboard.style.display = "none";
+  if(selector) selector.style.display = "none";
 
   index = 0;
   score = { s:0, e:0, c:0 };
@@ -180,19 +184,21 @@ function startQuiz(){
   if(livello === "nazionale"){
     current = NAZIONALE;
   }
-
-  if(livello === "regionale"){
-    current = NAZIONALE.map(q=>({
+  else if(livello === "regionale"){
+    current = NAZIONALE.map(q => ({
       ...q,
-      s: regione + " - " + q.s
+      s: (regione || "") + " - " + q.s
     }));
   }
-
-  if(livello === "comunale"){
-    current = NAZIONALE.map(q=>({
+  else if(livello === "comunale"){
+    current = NAZIONALE.map(q => ({
       ...q,
-      s: comune + " - " + q.s
+      s: (comune || "") + " - " + q.s
     }));
+  }
+  else{
+    alert("Livello non selezionato");
+    return;
   }
 
   render();
