@@ -6,29 +6,23 @@
     <title>Patente Civica</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@300;400;500;600;700&family=SF+Pro+Text:wght@400;500;600&display=swap)" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@400;600;700&family=SF+Pro+Text:wght@400;500;600&display=swap" rel="stylesheet">
     <style>
         :root {
-            /* Color System */
             --color-bg-primary: #FAFAFA;
             --color-bg-secondary: #FFFFFF;
             --color-bg-tertiary: #F5F5F7;
             --color-bg-elevated: #FFFFFF;
-            
             --color-text-primary: #1D1D1F;
             --color-text-secondary: #86868B;
             --color-text-tertiary: #AEAEB2;
-            
             --color-accent: #0071E3;
             --color-accent-hover: #0077ED;
             --color-success: #34C759;
             --color-warning: #FF9500;
             --color-error: #FF3B30;
-            
             --color-border: rgba(0, 0, 0, 0.08);
             --color-border-strong: rgba(0, 0, 0, 0.12);
-            
-            /* Spacing */
             --space-xs: 4px;
             --space-sm: 8px;
             --space-md: 16px;
@@ -36,13 +30,8 @@
             --space-xl: 32px;
             --space-2xl: 48px;
             --space-3xl: 64px;
-            --space-4xl: 96px;
-            
-            /* Typography */
-            --font-display: 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            --font-text: 'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            
-            --text-xs: 12px;
+            --font-display: 'SF Pro Display', -apple-system, sans-serif;
+            --font-text: 'SF Pro Text', -apple-system, sans-serif;
             --text-sm: 14px;
             --text-base: 16px;
             --text-lg: 18px;
@@ -50,60 +39,37 @@
             --text-2xl: 24px;
             --text-3xl: 32px;
             --text-4xl: 40px;
-            --text-5xl: 48px;
-            
-            /* Radius */
             --radius-sm: 8px;
             --radius-md: 12px;
             --radius-lg: 16px;
             --radius-xl: 20px;
             --radius-full: 9999px;
-            
-            /* Shadows */
             --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.04);
             --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.08);
-            --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.12);
-            --shadow-xl: 0 16px 48px rgba(0, 0, 0, 0.16);
-            
-            /* Transitions */
-            --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
-            --transition-base: 250ms cubic-bezier(0.4, 0, 0.2, 1);
-            --transition-slow: 400ms cubic-bezier(0.4, 0, 0.2, 1);
-            
-            /* Layout */
+            --transition-fast: 150ms ease;
+            --transition-base: 250ms ease;
             --max-width: 1200px;
             --content-width: 680px;
         }
         
-        /* Dark Mode */
         @media (prefers-color-scheme: dark) {
             :root {
                 --color-bg-primary: #000000;
                 --color-bg-secondary: #1C1C1E;
                 --color-bg-tertiary: #2C2C2E;
                 --color-bg-elevated: #1C1C1E;
-                
                 --color-text-primary: #F5F5F7;
                 --color-text-secondary: #A1A1A6;
                 --color-text-tertiary: #636366;
-                
                 --color-border: rgba(255, 255, 255, 0.08);
                 --color-border-strong: rgba(255, 255, 255, 0.12);
             }
         }
         
-        /* Reset & Base */
         *, *::before, *::after {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-        }
-        
-        html {
-            font-size: 16px;
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
-            scroll-behavior: smooth;
         }
         
         body {
@@ -113,12 +79,9 @@
             color: var(--color-text-primary);
             background-color: var(--color-bg-primary);
             min-height: 100vh;
-            min-height: 100dvh;
-            overflow-x: hidden;
         }
         
-        /* Typography */
-        h1, h2, h3, h4, h5, h6 {
+        h1, h2, h3, h4 {
             font-family: var(--font-display);
             font-weight: 600;
             letter-spacing: -0.02em;
@@ -128,20 +91,14 @@
         h1 { font-size: var(--text-4xl); }
         h2 { font-size: var(--text-3xl); }
         h3 { font-size: var(--text-2xl); }
-        h4 { font-size: var(--text-xl); }
         
         @media (max-width: 640px) {
             h1 { font-size: var(--text-3xl); }
             h2 { font-size: var(--text-2xl); }
-            h3 { font-size: var(--text-xl); }
         }
         
-        p {
-            color: var(--color-text-secondary);
-            line-height: 1.6;
-        }
+        p { color: var(--color-text-secondary); line-height: 1.6; }
         
-        /* Layout */
         .container {
             width: 100%;
             max-width: var(--max-width);
@@ -149,29 +106,17 @@
             padding: 0 var(--space-lg);
         }
         
-        .content-container {
-            max-width: var(--content-width);
-            margin: 0 auto;
-        }
+        .content-container { max-width: var(--content-width); margin: 0 auto; }
         
-        /* Screen Management */
+        /* Gestione Schermate Visibili/Invisibili */
         .screen {
             display: none;
             min-height: 100vh;
-            min-height: 100dvh;
-            opacity: 0;
-            transform: translateY(20px);
-            transition: opacity var(--transition-slow), transform var(--transition-slow);
-        }
-        
-        .screen.active {
-            display: flex;
             flex-direction: column;
-            opacity: 1;
-            transform: translateY(0);
         }
         
-        /* Buttons */
+        .screen.active { display: flex; }
+        
         .btn {
             display: inline-flex;
             align-items: center;
@@ -186,172 +131,611 @@
             border-radius: var(--radius-full);
             cursor: pointer;
             transition: all var(--transition-fast);
-            white-space: nowrap;
         }
         
-        .btn-primary {
-            background: var(--color-accent);
-            color: white;
-        }
+        .btn-primary { background: var(--color-accent); color: white; }
+        .btn-primary:hover { background: var(--color-accent-hover); }
+        .btn-secondary { background: var(--color-bg-tertiary); color: var(--color-text-primary); }
+        .btn-secondary:hover { background: var(--color-border-strong); }
+        .btn-ghost { background: transparent; color: var(--color-accent); }
+        .btn-ghost:hover { background: rgba(0, 113, 227, 0.08); }
+        .btn-large { padding: var(--space-lg) var(--space-2xl); font-size: var(--text-lg); }
+        .btn-full { width: 100%; }
+        .btn:disabled { opacity: 0.5; cursor: not-allowed; }
         
-        .btn-primary:hover {
-            background: var(--color-accent-hover);
-            transform: scale(1.02);
-        }
-        
-        .btn-primary:active {
-            transform: scale(0.98);
-        }
-        
-        .btn-secondary {
-            background: var(--color-bg-tertiary);
-            color: var(--color-text-primary);
-        }
-        
-        .btn-secondary:hover {
-            background: var(--color-border-strong);
-        }
-        
-        .btn-ghost {
-            background: transparent;
-            color: var(--color-accent);
-        }
-        
-        .btn-ghost:hover {
-            background: rgba(0, 113, 227, 0.08);
-        }
-        
-        .btn-large {
-            padding: var(--space-lg) var(--space-2xl);
-            font-size: var(--text-lg);
-        }
-        
-        .btn-full {
-            width: 100%;
-        }
-        
-        .btn:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-            transform: none;
-        }
-        
-        /* Cards */
         .card {
             background: var(--color-bg-elevated);
             border-radius: var(--radius-xl);
             padding: var(--space-xl);
             box-shadow: var(--shadow-sm);
             border: 1px solid var(--color-border);
-            transition: all var(--transition-base);
         }
         
-        .card-interactive {
-            cursor: pointer;
-        }
+        .card-interactive { cursor: pointer; transition: all var(--transition-fast); }
+        .card-interactive:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); border-color: var(--color-accent); }
         
-        .card-interactive:hover {
-            transform: translateY(-2px);
-            box-shadow: var(--shadow-md);
-            border-color: var(--color-accent);
-        }
-        
-        .card-interactive.selected {
-            border-color: var(--color-accent);
-            background: rgba(0, 113, 227, 0.04);
-        }
-        
-        /* Progress Bar */
         .progress-container {
             position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 3px;
-            background: var(--color-border);
-            z-index: 1000;
+            top: 0; left: 0; right: 0;
+            height: 4px; background: var(--color-border); z-index: 1000;
         }
+        .progress-bar { height: 100%; background: var(--color-accent); width: 0%; transition: width var(--transition-base); }
         
-        .progress-bar {
-            height: 100%;
-            background: var(--color-accent);
-            width: 0%;
-            transition: width var(--transition-base);
-        }
-        
-        /* Navigation */
         .nav {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 64px;
-            background: rgba(250, 250, 250, 0.8);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border-bottom: 1px solid var(--color-border);
-            z-index: 100;
-            display: none;
+            position: fixed; top: 0; left: 0; right: 0; height: 64px;
+            background: rgba(250, 250, 250, 0.8); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--color-border); z-index: 100; display: none;
         }
+        @media (prefers-color-scheme: dark) { .nav { background: rgba(0, 0, 0, 0.8); } }
+        .nav.visible { display: block; }
+        .nav-content { display: flex; align-items: center; justify-content: space-between; height: 100%; }
+        .nav-logo { font-family: var(--font-display); font-size: var(--text-lg); font-weight: 600; color: var(--color-text-primary); text-decoration: none; }
+        .nav-actions { display: flex; gap: var(--space-sm); }
         
-        @media (prefers-color-scheme: dark) {
-            .nav {
-                background: rgba(0, 0, 0, 0.8);
-            }
-        }
-        
-        .nav.visible {
-            display: block;
-        }
-        
-        .nav-content {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            height: 100%;
-        }
-        
-        .nav-logo {
-            font-family: var(--font-display);
-            font-size: var(--text-lg);
-            font-weight: 600;
-            color: var(--color-text-primary);
-            text-decoration: none;
-        }
-        
-        .nav-actions {
-            display: flex;
-            gap: var(--space-sm);
-        }
-        
-        /* Hero Section */
         .hero {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
-            min-height: 100dvh;
-            text-align: center;
-            padding: var(--space-3xl) var(--space-lg);
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            min-height: 100vh; text-align: center; padding: var(--space-3xl) var(--space-lg);
         }
-        
         .hero-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: var(--space-sm);
-            padding: var(--space-sm) var(--space-md);
-            background: var(--color-bg-tertiary);
-            border-radius: var(--radius-full);
-            font-size: var(--text-sm);
-            color: var(--color-text-secondary);
-            margin-bottom: var(--space-xl);
+            display: inline-flex; align-items: center; gap: var(--space-sm); padding: var(--space-sm) var(--space-md);
+            background: var(--color-bg-tertiary); border-radius: var(--radius-full); font-size: var(--text-sm); color: var(--color-text-secondary); margin-bottom: var(--space-xl);
         }
+        .hero-title { max-width: 800px; margin-bottom: var(--space-lg); }
+        .hero-subtitle { max-width: 600px; font-size: var(--text-xl); margin-bottom: var(--space-2xl); }
+        .hero-actions { display: flex; flex-direction: column; gap: var(--space-md); width: 100%; max-width: 320px; }
+        @media (min-width: 640px) { .hero-actions { flex-direction: row; max-width: none; } }
         
-        .hero-title {
-            max-width: 800px;
-            margin-bottom: var(--space-lg);
-        }
+        .level-grid { display: grid; gap: var(--space-lg); }
+        @media (min-width: 768px) { .level-grid { grid-template-columns: repeat(3, 1fr); } }
+        .level-card { text-align: left; position: relative; }
+        .level-icon { width: 48px; height: 48px; border-radius: var(--radius-md); display: flex; align-items: center; justify-content: center; font-size: 24px; margin-bottom: var(--space-md); }
+        .level-base .level-icon { background: linear-gradient(135deg, #34C759 0%, #30B350 100%); }
+        .level-intermediate .level-icon { background: linear-gradient(135deg, #FF9500 0%, #FF8000 100%); }
+        .level-advanced .level-icon { background: linear-gradient(135deg, #FF3B30 0%, #E62F24 100%); }
+        .level-title { font-size: var(--text-xl); margin-bottom: var(--space-sm); }
+        .level-description { font-size: var(--text-sm); margin-bottom: var(--space-md); }
+        .level-features { list-style: none; }
+        .level-features li { display: flex; align-items: center; gap: var(--space-sm); font-size: var(--text-sm); color: var(--color-text-secondary); padding: var(--space-xs) 0; }
+        .level-features li::before { content: "✓"; color: var(--color-success); font-weight: 600; }
+        .level-locked { opacity: 0.5; cursor: not-allowed; }
+        .level-locked::after { content: "🔒"; position: absolute; top: var(--space-md); right: var(--space-md); font-size: 20px; }
         
-        .hero-subtitle {
-            max-width
+        .territory-grid { display: grid; gap: var(--space-md); }
+        .territory-card { display: flex; align-items: center; gap: var(--space-lg); padding: var(--space-lg); }
+        .territory-icon { width: 56px; height: 56px; border-radius: var(--radius-lg); background: var(--color-bg-tertiary); display: flex; align-items: center; justify-content: center; font-size: 28px; flex-shrink: 0; }
+        .territory-info { flex: 1; }
+        .territory-name { font-size: var(--text-lg); font-weight: 600; margin-bottom: var(--space-xs); }
+        .territory-description { font-size: var(--text-sm); color: var(--color-text-secondary); }
+        
+        .search-container { position: relative; margin-bottom: var(--space-lg); }
+        .search-input { width: 100%; padding: var(--space-md) var(--space-lg) var(--space-md) 48px; font-family: var(--font-text); font-size: var(--text-base); background: var(--color-bg-elevated); border: 1px solid var(--color-border); border-radius: var(--radius-lg); color: var(--color-text-primary); }
+        .search-input:focus { outline: none; border-color: var(--color-accent); }
+        .search-icon { position: absolute; left: var(--space-md); top: 50%; transform: translateY(-50%); color: var(--color-text-tertiary); }
+        
+        .question-container { flex: 1; display: flex; flex-direction: column; padding-top: 80px; }
+        .question-header { padding: var(--space-xl) var(--space-lg); border-bottom: 1px solid var(--color-border); }
+        .question-meta { display: flex; align-items: center; gap: var(--space-md); margin-bottom: var(--space-md); }
+        .question-category { display: inline-flex; align-items: center; gap: var(--space-xs); padding: var(--space-xs) var(--space-sm); background: var(--color-bg-tertiary); border-radius: var(--radius-full); font-size: var(--text-sm); color: var(--color-text-secondary); }
+        .question-number { font-size: var(--text-sm); color: var(--color-text-tertiary); }
+        .question-text { font-family: var(--font-display); font-size: var(--text-2xl); font-weight: 500; }
+        .question-body { flex: 1; padding: var(--space-xl) var(--space-lg); }
+        .answers-list { display: flex; flex-direction: column; gap: var(--space-md); }
+        
+        .answer-option { display: flex; align-items: flex-start; gap: var(--space-md); padding: var(--space-lg); background: var(--color-bg-elevated); border: 2px solid var(--color-border); border-radius: var(--radius-lg); cursor: pointer; text-align: left; width: 100%; font-family: var(--font-text); }
+        .answer-option:hover { border-color: var(--color-accent); }
+        .answer-option.selected { border-color: var(--color-accent); background: rgba(0, 113, 227, 0.04); }
+        .answer-radio { width: 20px; height: 20px; border: 2px solid var(--color-border-strong); border-radius: 50%; flex-shrink: 0; margin-top: 2px; }
+        .answer-option.selected .answer-radio { border-color: var(--color-accent); background: var(--color-accent); }
+        .answer-content { flex: 1; }
+        .answer-text { font-size: var(--text-base); font-weight: 500; color: var(--color-text-primary); }
+        .answer-hint { font-size: var(--text-sm); color: var(--color-text-tertiary); margin-top: var(--space-xs); }
+        
+        .question-footer { padding: var(--space-lg); border-top: 1px solid var(--color-border); background: var(--color-bg-secondary); }
+        .question-actions { display: flex; gap: var(--space-md); justify-content: space-between; }
+        
+        .analysis-card { margin-top: var(--space-xl); padding: var(--space-xl); background: var(--color-bg-tertiary); border-radius: var(--radius-xl); }
+        .analysis-header { display: flex; align-items: center; gap: var(--space-md); margin-bottom: var(--space-lg); }
+        .analysis-icon { width: 40px; height: 40px; border-radius: var(--radius-md); display: flex; align-items: center; justify-content: center; color: white; font-size: 20px; }
+        .analysis-title { font-size: var(--text-lg); font-weight: 600; }
+        .analysis-grid { display: grid; gap: var(--space-md); margin-top: var(--space-md); }
+        @media (min-width: 640px) { .analysis-grid { grid-template-columns: repeat(2, 1fr); } }
+        .analysis-item { background: var(--color-bg-elevated); padding: var(--space-lg); border-radius: var(--radius-lg); }
+        .analysis-item-label { font-size: var(--text-sm); font-weight: 600; color: var(--color-text-secondary); margin-bottom: var(--space-xs); }
+        .analysis-item-content { font-size: var(--text-sm); color: var(--color-text-primary); }
+        .analysis-source { margin-top: var(--space-lg); font-size: var(--text-sm); color: var(--color-text-tertiary); }
+        
+        .comparison-bar { display: flex; align-items: center; gap: var(--space-md); margin-bottom: var(--space-md); }
+        .comparison-label { width: 110px; font-size: var(--text-sm); font-weight: 500; }
+        .comparison-track { flex: 1; height: 8px; background: var(--color-border); border-radius: var(--radius-full); overflow: hidden; }
+        .comparison-fill { height: 100%; border-radius: var(--radius-full); }
+        .comparison-fill.perception { background: var(--color-warning); }
+        .comparison-fill.reality { background: var(--color-accent); }
+        .comparison-value { width: 50px; text-align: right; font-size: var(--text-sm); font-weight: 600; }
+        
+        .report-container { padding-top: 80px; }
+        .report-hero { text-align: center; padding: var(--space-3xl) var(--space-lg); background: var(--color-bg-tertiary); }
+        .report-score { width: 140px; height: 140px; margin: 0 auto var(--space-xl); border: 8px solid var(--color-accent); border-radius: 50%; display: flex; flex-direction: column; align-items: center; justify-content: center; background: var(--color-bg-primary); }
+        .report-score-value { font-size: var(--text-4xl); font-weight: 700; }
+        .report-score-label { font-size: var(--text-sm); color: var(--color-text-secondary); }
+        .report-level { display: inline-flex; padding: var(--space-sm) var(--space-lg); background: var(--color-accent); color: white; border-radius: var(--radius-full); font-weight: 500; margin-bottom: var(--space-lg); }
+        .report-summary { max-width: 600px; margin: 0 auto; }
+        .report-section { padding: var(--space-2xl) var(--space-lg); border-bottom: 1px solid var(--color-border); }
+        .report-categories { display: grid; gap: var(--space-md); }
+        @media (min-width: 768px) { .report-categories { grid-template-columns: repeat(2, 1fr); } }
+        .report-category { padding: var(--space-lg); background: var(--color-bg-elevated); border-radius: var(--radius-lg); border: 1px solid var(--color-border); }
+        .report-category-header { display: flex; justify-content: space-between; margin-bottom: var(--space-sm); font-weight: 600; }
+        .report-category-bar { height: 6px; background: var(--color-border); border-radius: var(--radius-full); overflow: hidden; }
+        .report-category-fill { height: 100%; background: var(--color-accent); }
+        .report-actions { display: flex; flex-wrap: wrap; gap: var(--space-md); justify-content: center; padding: var(--space-2xl) var(--space-lg); }
+        
+        .lab-container, .social-container, .about-container { padding-top: 80px; }
+        .lab-header, .social-header, .about-hero { padding: var(--space-2xl) var(--space-lg); text-align: center; }
+        .form-group { margin-bottom: var(--space-xl); text-align: left; }
+        .form-label { display: block; font-weight: 500; margin-bottom: var(--space-sm); }
+        .form-hint { font-size: var(--text-sm); color: var(--color-text-tertiary); margin-bottom: var(--space-sm); }
+        .form-input, .form-textarea, .form-select { width: 100%; padding: var(--space-md); font-family: var(--font-text); font-size: var(--text-base); background: var(--color-bg-elevated); border: 1px solid var(--color-border); border-radius: var(--radius-md); color: var(--color-text-primary); }
+        .form-textarea { min-height: 100px; resize: vertical; }
+        .coherence-feedback { margin-top: var(--space-xl); padding: var(--space-lg); background: var(--color-bg-tertiary); border-radius: var(--radius-lg); border-left: 4px solid var(--color-accent); text-align: left; }
+        
+        .discussion-card { padding: var(--space-xl); margin-bottom: var(--space-md); text-align: left; }
+        .discussion-header { display: flex; align-items: center; gap: var(--space-md); margin-bottom: var(--space-sm); font-size: var(--text-sm); }
+        .discussion-avatar { width: 36px; height: 36px; background: var(--color-bg-tertiary); border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+        .discussion-meta { flex: 1; }
+        .discussion-category { padding: var(--space-xs) var(--space-sm); background: var(--color-bg-tertiary); border-radius: var(--radius-full); }
+        .discussion-title { margin-bottom: var(--space-xs); }
+        .discussion-stats { display: flex; gap: var(--space-lg); margin-top: var(--space-md); font-size: var(--text-sm); color: var(--color-text-tertiary); }
+        
+        .footer { padding: var(--space-2xl) var(--space-lg); background: var(--color-bg-secondary); border-top: 1px solid var(--color-border); text-align: center; font-size: var(--text-sm); }
+        .footer-links { display: flex; justify-content: center; gap: var(--space-lg); margin-bottom: var(--space-md); }
+        .footer-links a { color: var(--color-text-secondary); text-decoration: none; }
+        
+        .text-center { text-align: center; }
+        .mb-sm { margin-bottom: var(--space-sm); }
+        .mb-md { margin-bottom: var(--space-md); }
+        .mb-lg { margin-bottom: var(--space-lg); }
+        .mb-xl { margin-bottom: var(--space-xl); }
+        .mt-lg { margin-top: var(--space-lg); }
+        .mt-xl { margin-top: var(--space-xl); }
+        .hidden { display: none !important; }
+    </style>
+</head>
+<body>
+
+    <!-- Progress Bar -->
+    <div class="progress-container">
+        <div class="progress-bar" id="progressBar"></div>
+    </div>
+    
+    <!-- Navigation -->
+    <nav class="nav" id="mainNav">
+        <div class="container nav-content">
+            <a href="#" class="nav-logo" onclick="app.goToScreen('home')">Patente Civica</a>
+            <div class="nav-actions">
+                <button class="btn btn-ghost" onclick="app.goToScreen('lab')">Laboratorio</button>
+                <button class="btn btn-ghost" onclick="app.goToScreen('social')">Community</button>
+            </div>
+        </div>
+    </nav>
+    
+    <!-- Screen: Home -->
+    <section class="screen active" id="screen-home">
+        <div class="hero">
+            <div class="hero-badge">✨ Educazione civica interattiva</div>
+            <h1 class="hero-title">Ti lamenti della politica al bar o sui social?</h1>
+            <p class="hero-subtitle">Se esistesse una patente per votare, pensi che la otterresti? Scopri quanto conosci davvero il funzionamento della cosa pubblica.</p>
+            <div class="hero-actions">
+                <button class="btn btn-primary btn-large" onclick="app.goToScreen('level')">Inizia il percorso</button>
+                <button class="btn btn-secondary btn-large" onclick="app.goToScreen('about')">Scopri il progetto</button>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Screen: Level Selection -->
+    <section class="screen" id="screen-level">
+        <div class="container text-center" style="padding-top: 100px;">
+            <h2 class="mb-md">Scegli il tuo livello</h2>
+            <p class="mb-xl">Inizia dal livello base. Sbloccherai i successivi completando il percorso.</p>
+            <div class="level-grid">
+                <div class="card card-interactive level-card level-base" onclick="app.selectLevel('base')">
+                    <div class="level-icon">🌱</div>
+                    <h3 class="level-title">Livello Base</h3>
+                    <p class="level-description">10 domande a risposta multipla con dati ufficiali e feedback istantaneo.</p>
+                </div>
+                <div class="card card-interactive level-card level-intermediate level-locked" id="levelIntermediate" onclick="app.selectLevel('intermediate')">
+                    <div class="level-icon">🌿</div>
+                    <h3 class="level-title">Livello Intermedio</h3>
+                    <p class="level-description">Scenari complessi e analisi causa-effetto delle riforme amministrative.</p>
+                </div>
+                <div class="card card-interactive level-card level-advanced level-locked" id="levelAdvanced" onclick="app.selectLevel('advanced')">
+                    <div class="level-icon">🌳</div>
+                    <h3 class="level-title">Livello Avanzato</h3>
+                    <p class="level-description">Simulazioni di bilancio reale e risposte aperte valutate dal sistema.</p>
+                </div>
+            </div>
+            <button class="btn btn-ghost mt-xl" onclick="app.goToScreen('home')">← Torna indietro</button>
+        </div>
+    </section>
+    
+    <!-- Screen: Territory Selection -->
+    <section class="screen" id="screen-territory">
+        <div class="container content-container text-center" style="padding-top: 100px;">
+            <h2 class="mb-md">Scegli il territorio</h2>
+            <p class="mb-xl">Le domande e i dati storici verranno calibrati sull'area geografica scelta.</p>
+            <div class="search-container">
+                <span class="search-icon">🔍</span>
+                <input type="text" class="search-input" placeholder="Cerca comune o regione..." id="territorySearch" oninput="app.filterTerritories()">
+            </div>
+            <div class="territory-grid" id="territoryList"></div>
+            <button class="btn btn-ghost mt-xl" onclick="app.goToScreen('level')">← Torna indietro</button>
+        </div>
+    </section>
+    
+    <!-- Screen: Question -->
+    <section class="screen" id="screen-question">
+        <div class="question-container">
+            <div class="question-header container">
+                <div class="question-meta">
+                    <span class="question-category" id="questionCategory">💰 Economia</span>
+                    <span class="question-number" id="questionNumber">Domanda 1 di 10</span>
+                </div>
+                <h2 class="question-text" id="questionText">Caricamento domanda...</h2>
+            </div>
+            <div class="question-body container">
+                <div class="content-container">
+                    <div class="answers-list" id="answersList"></div>
+                    <div class="analysis-card hidden" id="analysisCard"></div>
+                </div>
+            </div>
+            <div class="question-footer">
+                <div class="container">
+                    <div class="question-actions">
+                        <button class="btn btn-secondary" onclick="app.previousQuestion()" id="btnPrevious">← Precedente</button>
+                        <button class="btn btn-primary" onclick="app.nextQuestion()" id="btnNext" disabled>Conferma →</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Screen: Report -->
+    <section class="screen" id="screen-report">
+        <div class="report-container">
+            <div class="report-hero">
+                <div class="report-score">
+                    <span class="report-score-value" id="reportScoreValue">0</span>
+                    <span class="report-score-label">su 100</span>
+                </div>
+                <div class="report-level" id="reportLevel">Calcolo profilo...</div>
+                <h2 class="mb-md">Percorso Completato!</h2>
+                <p class="report-summary" id="reportSummary">Analisi delle risposte.</p>
+            </div>
+            
+            <div class="report-section container">
+                <h3 class="text-center mb-lg">Risultati per ambito civico</h3>
+                <div class="report-categories" id="reportCategories"></div>
+            </div>
+            
+            <div class="report-section container">
+                <h3 class="text-center mb-md">Realtà dei Fatti vs Percezione</h3>
+                <div class="content-container" id="comparisonContainer"></div>
+            </div>
+            
+            <div class="report-actions">
+                <button class="btn btn-primary" onclick="alert('PDF in generazione...')">📄 Scarica Report</button>
+                <button class="btn btn-secondary" onclick="alert('Link copiato!')">📤 Condividi</button>
+                <button class="btn btn-ghost" onclick="app.goToScreen('home')">Torna alla Home</button>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Screen: Laboratory -->
+    <section class="screen" id="screen-lab">
+        <div class="container content-container text-center" style="padding-top: 100px;">
+            <h2 class="mb-sm">Laboratorio Civico</h2>
+            <p class="mb-xl">Costruisci una proposta di legge o di delibera verificando la fattibilità istituzionale.</p>
+            <div class="card form-group">
+                <div class="mb-md">
+                    <label class="form-label">Livello Amministrativo</label>
+                    <select class="form-select" id="proposalLevel">
+                        <option value="comune">Comune</option>
+                        <option value="regione">Regione</option>
+                        <option value="nazione">Stato Nazionale</option>
+                    </select>
+                </div>
+                <div class="mb-md">
+                    <label class="form-label">Materia di Intervento</label>
+                    <select class="form-select" id="proposalArea">
+                        <option value="sanita">Sanità Pubblica</option>
+                        <option value="sicurezza">Sicurezza e Ordine Pubblico</option>
+                        <option value="scuola">Istruzione</option>
+                    </select>
+                </div>
+                <div class="mb-md">
+                    <label class="form-label">Descrizione Sintetica</label>
+                    <textarea class="form-textarea" id="proposalText" placeholder="Cosa vorresti realizzare e con quali fondi..."></textarea>
+                </div>
+                <button class="btn btn-primary btn-full" onclick="app.analyzeProposal()">Invia e Verifica Coerenza</button>
+                
+                <div class="coherence-feedback hidden" id="coherenceFeedback"></div>
+            </div>
+            <button class="btn btn-ghost mt-lg" onclick="app.goToScreen('home')">← Home</button>
+        </div>
+    </section>
+    
+    <!-- Screen: Social -->
+    <section class="screen" id="screen-social">
+        <div class="container content-container text-center" style="padding-top: 100px;">
+            <h2 class="mb-md">Community Civica</h2>
+            <p class="mb-xl">Spazio di discussione moderato basato su dati oggettivi.</p>
+            <div class="card discussion-card">
+                <div class="discussion-header">
+                    <div class="discussion-avatar">⚖️</div>
+                    <div class="discussion-meta"><strong>Utente_4812</strong> • Economia</div>
+                    <span class="discussion-category">Riforme</span>
+                </div>
+                <h4 class="discussion-title">Come impatta il Patto di Stabilità sui bilanci dei piccoli comuni?</h4>
+                <p style="font-size: var(--text-sm);">Discussione aperta sui vincoli di cassa e la spesa corrente dei piccoli borghi.</p>
+                <div class="discussion-stats"><span>💬 14 risposte</span> <span>⭐ 8 voti</span></div>
+            </div>
+            <button class="btn btn-ghost mt-lg" onclick="app.goToScreen('home')">← Home</button>
+        </div>
+    </section>
+    
+    <!-- Screen: About -->
+    <section class="screen" id="screen-about">
+        <div class="container content-container text-center" style="padding-top: 100px;">
+            <h2 class="mb-md">Il Progetto Patente Civica</h2>
+            <p class="mb-lg">Un'applicazione no-profit e apartitica creata per azzerare il divario tra percezione mediatica e realtà empirica dei dati di bilancio dello Stato.</p>
+            <h3 class="mb-sm">Fonti utilizzate</h3>
+            <p class="mb-xl">Tutti i dati integrati nei quiz derivano direttamente dai dataset aperti di ISTAT, Ministero dell'Economia e delle Finanze, Ragioneria Generale dello Stato ed Eurostat.</p>
+            <button class="btn btn-primary" onclick="app.goToScreen('level')">Prova il Quiz</button>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-links">
+            <a href="#" onclick="app.goToScreen('about')">Informazioni</a>
+            <a href="#">Privacy</a>
+            <a href="#">Contatti</a>
+        </div>
+        <p>© 2026 Patente Civica. Dati pubblici e trasparenti.</p>
+    </footer>
+
+    <script>
+        const app = {
+            state: {
+                currentScreen: 'home',
+                selectedLevel: null,
+                selectedTerritory: null,
+                currentQuestion: 0,
+                answers: [],
+                completedLevels: []
+            },
+            
+            territories: [
+                { id: 'italia', name: 'Italia', icon: '🇮🇹', desc: 'Focus nazionale: Macroeconomia e Welfare' },
+                { id: 'lombardia', name: 'Lombardia', icon: '🏔️', desc: 'Sanità regionale e trasporti locali' },
+                { id: 'lazio', name: 'Lazio', icon: '🏛️', desc: 'Focus bilanci regionali ed enti locali' },
+                { id: 'campania', name: 'Campania', icon: '🌋', desc: 'Fondi europei e sviluppo territoriale' }
+            ],
+            
+            questions: [
+                { id: 1, categoryIcon: '💰', categoryLabel: 'Economia', text: 'Quale percentuale del PIL italiano è rappresentata dal debito pubblico?', options: [{id:'a', text:'Circa 80%', hint:'Simile alla Germania'}, {id:'b', text:'Circa 140%', hint:'Tra i più alti d\'Europa'}, {id:'c', text:'Circa 100%', hint:'Media UE'}], correct: 'b', reality: 'Il debito pubblico italiano si attesta intorno al 140% del PIL.', commonPerception: 70, realData: 140 },
+                { id: 2, categoryIcon: '🏥', categoryLabel: 'Sanità', text: 'Quanto spende l\'Italia pro capite per la sanità pubblica rispetto alla media europea?', options: [{id:'a', text:'Il 20% in più', hint:'Sistema sovra-finanziato'}, {id:'b', text:'In linea con la media', hint:'Copertura standard'}, {id:'c', text:'Il 15% in meno', hint:'Sotto la media UE'}], correct: 'c', reality: 'L\'Italia spende circa il 15% in meno pro capite rispetto alla media UE.', commonPerception: 110, realData: 85 },
+                { id: 3, categoryIcon: '📚', categoryLabel: 'Istruzione', text: 'Qual è la percentuale di giovani italiani (25-34 anni) laureati?', options: [{id:'a', text:'Circa il 30%', hint:'Tra i tassi più bassi in UE'}, {id:'b', text:'Circa il 45%', hint:'In linea con la Francia'}, {id:'c', text:'Circa il 55%', hint:'Standard europeo alto'}], correct: 'a', reality: 'Solo il 30% dei giovani adulti italiani possiede un titolo universitario.', commonPerception: 50, realData: 30 },
+                { id: 4, categoryIcon: '🛡️', categoryLabel: 'Sicurezza', text: 'Come è cambiato il tasso di criminalità generale in Italia negli ultimi 10 anni?', options: [{id:'a', text:'Aumentato esponenzialmente', hint:'Percezione mediatica diffusa'}, {id:'b', text:'Rimasto invariato', hint:'Stabilità piatta'}, {id:'c', text:'Diminuito di circa il 25%', hint:'Trend calante dei reati denunciati'}], correct: 'c', reality: 'I reati totali denunciati mostrano una contrazione complessiva del 25% su base decennale.', commonPerception: 130, realData: 75 }
+            ],
+            
+            init() {
+                this.filterTerritories();
+                this.goToScreen('home');
+            },
+            
+            goToScreen(screenId) {
+                document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+                const target = document.getElementById(`screen-${screenId}`);
+                if (target) {
+                    target.classList.add('active');
+                    this.state.currentScreen = screenId;
+                }
+                
+                const nav = document.getElementById('mainNav');
+                if(nav) {
+                    if (screenId === 'home') nav.classList.remove('visible');
+                    else nav.classList.add('visible');
+                }
+                this.updateProgressBar();
+                window.scrollTo(0,0);
+            },
+            
+            updateProgressBar() {
+                const bar = document.getElementById('progressBar');
+                if (!bar) return;
+                if (this.state.currentScreen === 'question') {
+                    bar.style.width = `${((this.state.currentQuestion) / this.questions.length) * 100}%`;
+                } else if (this.state.currentScreen === 'report') {
+                    bar.style.width = '100%';
+                } else {
+                    bar.style.width = '0%';
+                }
+            },
+            
+            selectLevel(levelId) {
+                if (levelId !== 'base') {
+                    alert("Completa prima il Livello Base per sbloccare i successivi!");
+                    return;
+                }
+                this.state.selectedLevel = levelId;
+                this.goToScreen('territory');
+            },
+            
+            filterTerritories() {
+                const grid = document.getElementById('territoryList');
+                if (!grid) return;
+                grid.innerHTML = '';
+                this.territories.forEach(t => {
+                    grid.innerHTML += `
+                        <div class="card card-interactive territory-card" onclick="app.selectTerritory('${t.id}')">
+                            <div class="territory-icon">${t.icon}</div>
+                            <div class="territory-info">
+                                <div class="territory-name">${t.name}</div>
+                                <div class="territory-description">${t.desc}</div>
+                            </div>
+                        </div>`;
+                });
+            },
+            
+            selectTerritory(id) {
+                this.state.selectedTerritory = id;
+                this.state.currentQuestion = 0;
+                this.state.answers = [];
+                this.renderQuestion();
+                this.goToScreen('question');
+            },
+            
+            renderQuestion() {
+                const q = this.questions[this.state.currentQuestion];
+                if (!q) return;
+                
+                document.getElementById('questionCategory').innerHTML = `${q.categoryIcon} ${q.categoryLabel}`;
+                document.getElementById('questionNumber').innerText = `Domanda ${this.state.currentQuestion + 1} di ${this.questions.length}`;
+                document.getElementById('questionText').innerText = q.text;
+                
+                const list = document.getElementById('answersList');
+                list.innerHTML = '';
+                
+                const saved = this.state.answers[this.state.currentQuestion];
+                
+                q.options.forEach(opt => {
+                    const sel = saved && saved.selectedId === opt.id;
+                    list.innerHTML += `
+                        <button class="answer-option ${sel ? 'selected' : ''}" onclick="app.selectAnswer('${opt.id}')" ${saved ? 'disabled' : ''}>
+                            <div class="answer-radio"></div>
+                            <div class="answer-content">
+                                <div class="answer-text">${opt.text}</div>
+                                <div class="answer-hint">${opt.hint}</div>
+                            </div>
+                        </button>`;
+                });
+                
+                const analysis = document.getElementById('analysisCard');
+                const btnNext = document.getElementById('btnNext');
+                const btnPrev = document.getElementById('btnPrevious');
+                
+                if (saved) {
+                    const correct = saved.selectedId === q.correct;
+                    analysis.innerHTML = `
+                        <div class="analysis-header">
+                            <div class="analysis-icon" style="background:${correct ? 'var(--color-success)' : 'var(--color-error)'}">${correct ? '✓' : '✕'}</div>
+                            <div class="analysis-title">${correct ? 'Esatto!' : 'Non corretto'}</div>
+                        </div>
+                        <p style="font-size:14px; color:var(--color-text-primary);"><strong>Dato empirico:</strong> ${q.reality}</p>`;
+                    analysis.classList.remove('hidden');
+                    btnNext.removeAttribute('disabled');
+                    btnNext.innerText = this.state.currentQuestion === this.questions.length - 1 ? "Vedi Report" : "Successiva →";
+                } else {
+                    analysis.classList.add('hidden');
+                    btnNext.setAttribute('disabled', 'true');
+                    btnNext.innerText = "Conferma →";
+                }
+                btnPrev.style.visibility = this.state.currentQuestion === 0 ? 'hidden' : 'visible';
+            },
+            
+            selectAnswer(id) {
+                if (this.state.answers[this.state.currentQuestion]) return;
+                this.state.answers[this.state.currentQuestion] = {
+                    selectedId: id,
+                    isCorrect: id === this.questions[this.state.currentQuestion].correct
+                };
+                this.renderQuestion();
+            },
+            
+            nextQuestion() {
+                if (this.state.currentQuestion < this.questions.length - 1) {
+                    this.state.currentQuestion++;
+                    this.renderQuestion();
+                } else {
+                    this.generateReport();
+                }
+            },
+            
+            previousQuestion() {
+                if (this.state.currentQuestion > 0) {
+                    this.state.currentQuestion--;
+                    this.renderQuestion();
+                }
+            },
+            
+            generateReport() {
+                const correct = this.state.answers.filter(a => a.isCorrect).length;
+                const finalScore = Math.round((correct / this.questions.length) * 100);
+                
+                document.getElementById('reportScoreValue').innerText = finalScore;
+                
+                let lvl = '🌱 Cittadino Disattento';
+                let sum = 'C\'è un forte scollamento tra ciò che percepisci dai media e i bilanci statali reali.';
+                if(finalScore >= 75) {
+                    lvl = '🎓 Elettore Consapevole';
+                    sum = 'Ottima conoscenza empirica dei conti pubblici e dell\'assetto istituzionale.';
+                }
+                
+                document.getElementById('reportLevel').innerText = lvl;
+                document.getElementById('reportSummary').innerText = sum;
+                
+                // Categorie
+                const cats = document.getElementById('reportCategories');
+                cats.innerHTML = `
+                    <div class="report-category">
+                        <div class="report-category-header"><span>Competenza Generale</span><span>${correct}/${this.questions.length}</span></div>
+                        <div class="report-category-bar"><div class="report-category-fill" style="width:${finalScore}%"></div></div>
+                    </div>`;
+                
+                // Confronto Percezione/Realtà
+                const comp = document.getElementById('comparisonContainer');
+                comp.innerHTML = '';
+                this.questions.forEach((q, i) => {
+                    const ans = this.state.answers[i];
+                    const userVal = ans && ans.isCorrect ? q.realData : q.commonPerception;
+                    comp.innerHTML += `
+                        <div class="card mb-sm">
+                            <p style="font-size:14px; font-weight:600; margin-bottom:8px;">${q.text}</p>
+                            <div class="comparison-bar">
+                                <div class="comparison-label">Percezione media</div>
+                                <div class="comparison-track"><div class="comparison-fill perception" style="width:${(userVal/140)*100}%"></div></div>
+                                <div class="comparison-value">${userVal}</div>
+                            </div>
+                            <div class="comparison-bar">
+                                <div class="comparison-label">Dato Reale</div>
+                                <div class="comparison-track"><div class="comparison-fill reality" style="width:${(q.realData/140)*100}%"></div></div>
+                                <div class="comparison-value">${q.realData}</div>
+                            </div>
+                        </div>`;
+                });
+                
+                this.goToScreen('report');
+            },
+            
+            analyzeProposal() {
+                const lvl = document.getElementById('proposalLevel').value;
+                const area = document.getElementById('proposalArea').value;
+                const fb = document.getElementById('coherenceFeedback');
+                
+                fb.classList.remove('hidden');
+                if (lvl === 'comune' && area === 'sanita') {
+                    fb.innerHTML = `<strong>⚠️ Errore di Competenza:</strong> La sanità è una materia di competenza concorrente, gestita e finanziata su base <em>Regionale</em>. Un comune non ha potere di spesa su questo budget.`;
+                    fb.style.borderLeftColor = 'var(--color-error)';
+                } else if (lvl === 'regione' && area === 'sicurezza') {
+                    fb.innerHTML = `<strong>⚠️ Errore di Competenza:</strong> L'ordine pubblico e la sicurezza nazionale sono ad appannaggio esclusivo dello <em>Stato Centrale</em> (Ministero dell'Interno).`;
+                    fb.style.borderLeftColor = 'var(--color-error)';
+                } else {
+                    fb.innerHTML = `<strong>✅ Struttura Valida:</strong> Il livello amministrativo selezionato ha effettivo potere legislativo e di spesa sulla materia indicata.`;
+                    fb.style.borderLeftColor = 'var(--color-success)';
+                }
+            }
+        };
+        
+        document.addEventListener('DOMContentLoaded', () => app.init());
+    </script>
+</body>
+</html>
