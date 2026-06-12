@@ -3,116 +3,139 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vetting Istituzionale - Simulazione di Idoneità Civica</title>
+    <title>Stato o Comune? Il Test delle Competenze Civiche</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
+    <!-- Barra di Navigazione Superiore -->
+    <nav id="mainNav">
+        <button class="nav-btn" onclick="app.goToScreen('home')">🏠 Home</button>
+        <div id="progressBarContainer">
+            <div id="progressBar"></div>
+        </div>
+    </nav>
+
     <div class="container">
-        <div id="mainNav" class="nav-header">
-            <button class="btn btn-outline" style="padding: 6px 12px; font-size: 13px;" onclick="app.goToScreen('home')">← Esci dal Test</button>
-            <span id="navInfo" style="font-size: 13px; font-weight: 600; color: var(--color-text-secondary);">Simulazione Costituzionale</span>
-        </div>
 
-        <div class="progress-container">
-            <div id="progressBar" class="progress-bar"></div>
-        </div>
-
+        <!-- SCHERMO 1: HOME -->
         <div id="screen-home" class="screen active">
-            <div class="alert-banner">
-                ⚠️ COMMISSIONE ELETTORALE: IL SUFFRAGIO UNIVERSALE AUTOMATICO È SOSPESO.
+            <div class="card header-card">
+                <h1>🗳️ Stato o Comune?</h1>
+                <p>Scopri se sai davvero chi comanda in Italia o se sei vittima degli slogan elettorali.</p>
             </div>
-            <h1>Sei davvero in grado di votare?</h1>
-            <p>La Costituzione oggi protegge il tuo diritto di voto rendendolo gratuito, incondizionato e automatico. Ma se da domani dovessi <strong>meritare la tua scheda elettorale</strong> sul campo, saresti ancora un cittadino o perderesti i tuoi diritti?</p>
-            <p style="font-weight: 600;">Seleziona il tuo profilo di partenza per iniziare l'esame di idoneità civica:</p>
             
-            <div class="card card-interactive" onclick="app.selectLevel('base')">
-                <h3>📢 Livello Base: "La Pancia del Paese"</h3>
-                <p>Domande dirette basate su slogan politici, dibattiti da bar, paure e percezioni della strada.</p>
-            </div>
-            <div class="card card-interactive" onclick="app.selectLevel('intermediate')">
-                <h3>🛠️ Livello Intermedio: "Il Cittadino Attento"</h3>
-                <p>Focus sulla gestione dei servizi, tasse locali e l'impatto reale dell'amministrazione sulla vita quotidiana.</p>
-            </div>
-            <div class="card card-interactive" onclick="app.selectLevel('advanced')">
-                <h3>📊 Livello Avanzato: "Il Tavolo dei Titolati"</h3>
-                <p>Macroeconomia, vincoli di bilancio europei, spending review e riforme strutturali.</p>
+            <div class="card info-card">
+                <h3>Seleziona il Livello di Difficoltà:</h3>
+                <div class="level-buttons" style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-top: 15px;">
+                    <button class="btn btn-primary" onclick="app.selectLevel('base')">🟢 Base</button>
+                    <button class="btn btn-primary" onclick="app.selectLevel('intermediate')">🟡 Intermedio</button>
+                    <button class="btn btn-primary" onclick="app.selectLevel('advanced')">🔴 Avanzato</button>
+                </div>
             </div>
         </div>
 
+        <!-- SCHERMO 2: SELEZIONE TERRITORIO -->
         <div id="screen-territory" class="screen">
-            <h2>Dove vuoi candidarti o votare?</h2>
-            <p>Il quiz e il laboratorio cambieranno radicalmente per sottoporti solo a temi legati alle reali competenze del territorio scelto.</p>
+            <div class="card header-card">
+                <h2>📍 Scegli l'Ambito Territoriale</h2>
+                <p>Seleziona l'istituzione su cui vuoi metterti alla prova.</p>
+            </div>
             
-            <input type="text" id="territorySearch" class="search-input hidden" placeholder="Cerca il tuo territorio (es. Umbria, Milano...)" oninput="app.filterTerritories()">
+            <input type="text" id="territorySearch" placeholder="🔍 Digita il nome del comune (es. Milano, Amatrice)..." oninput="app.filterTerritories()" class="hidden">
             
-            <div id="territoryList">
-                </div>
+            <div id="territoryList" class="grid-container">
+                <!-- Popolato da JS -->
+            </div>
         </div>
 
+        <!-- SCHERMO 3: DOMANDE (QUESTION) -->
         <div id="screen-question" class="screen">
-            <div style="display: flex; justify-content: space-between; margin-bottom: 12px; font-size: 13px; font-weight: bold;">
-                <span id="questionCategory" style="color: var(--color-accent);">💰 Economia</span>
-                <span id="questionNumber" style="color: var(--color-text-secondary);">Domanda 1 di 5</span>
+            <div class="card question-card">
+                <div class="question-header">
+                    <span id="questionCategory" class="badge">📂 Categoria</span>
+                    <span id="questionNumber">Verifica 0 di 0</span>
+                </div>
+                <h2 id="questionText" style="margin-top:15px; margin-bottom:20px;">Testo della domanda...</h2>
+                <div id="answersList" class="answers-stack">
+                    <!-- Bottoni di risposta generati da JS -->
+                </div>
             </div>
-            <h2 id="questionText" style="margin-bottom: 24px;">Testo della domanda...</h2>
-            
-            <div id="answersList">
-                </div>
 
-            <div id="analysisCard" class="card hidden" style="background: #f8fafc; border-left: 4px solid var(--color-accent);">
-                </div>
+            <!-- Feedback empirico immediato -->
+            <div id="analysisCard" class="card info-card hidden">
+                <!-- Contenuto dinamico -->
+            </div>
 
-            <div style="display: flex; justify-content: space-between; margin-top: 24px;">
-                <button id="btnPrevious" class="btn btn-outline" onclick="app.previousQuestion()">← Precedente</button>
-                <button id="btnNext" class="btn" onclick="app.nextQuestion()" disabled>Conferma Risposta</button>
+            <div class="action-buttons">
+                <button id="btnPrevious" class="btn btn-secondary" onclick="app.previousQuestion()">← Precedente</button>
+                <button id="btnNext" class="btn btn-primary" onclick="app.nextQuestion()">Conferma Risposta</button>
             </div>
         </div>
 
+        <!-- SCHERMO 4: REPORT FINALE / SENTENZA -->
         <div id="screen-report" class="screen">
-            <h1>Verdetto di Idoneità Civica</h1>
-            <div class="card" style="text-align: center; background: #0f172a; color: white;">
-                <div style="font-size: 14px; text-transform: uppercase; letter-spacing: 1px; color: #94a3b8;">Indice di Consapevolezza Reale</div>
-                <div id="reportScoreValue" style="font-size: 64px; font-weight: 800; color: #2dd4bf; margin: 10px 0;">0%</div>
-                <h2 id="reportLevel" style="color: white; margin-bottom: 8px;">Calcolo in corso...</h2>
-                <p id="reportSummary" style="color: #94a3b8; font-size: 14px; margin-bottom: 0;"></p>
+            <div class="card header-card text-center">
+                <h2>⚖️ Sentenza di Idoneità Civica</h2>
+                <div id="reportScoreValue" style="font-size: 48px; font-weight: 800; color: var(--color-primary); margin: 15px 0;">0%</div>
+                <h3 id="reportLevel" style="margin-bottom: 10px;">Valutazione...</h3>
+                <p id="reportSummary">Riassunto delle risposte dell'utente...</p>
             </div>
 
-            <h2>Le tue scelte e le conseguenze reali</h2>
-            <div id="comparisonContainer">
-                </div>
-
-            <div class="card" style="background: #f0fdfa; border: 1px solid #99f6e4;">
-                <h3>🧪 Ora mettiti alla prova nel Laboratorio Politico</h3>
-                <p>Sei pronto a metterci la faccia? Prova a comporre un vero programma elettorale.</p>
-                <button class="btn" onclick="app.goToLaboratorioScreen()">Accedi al Laboratorio "Candidato per un Giorno" →</button>
+            <h3 style="margin-top: 25px; margin-bottom: 15px;">📊 Grafico Scostamento Percezione vs Bilancio Reale</h3>
+            <div id="comparisonContainer" class="stack-container">
+                <!-- Barre di confronto inserite da JS -->
             </div>
 
-            <button class="btn btn-outline" style="width: 100%; margin-top: 10px;" onclick="app.stampaPdfRisposte()">📥 Scarica Report Scelte, Pro & Contro (PDF)</button>
+            <div class="action-buttons" style="margin-top:30px;">
+                <button class="btn btn-secondary" onclick="app.stampaPdfRisposte()">🖨️ Stampa Atto di Sentenza</button>
+                <button class="btn btn-primary" onclick="app.goToLaboratorioScreen()">🛠️ Entra nel Laboratorio Elettorale</button>
+            </div>
         </div>
 
+        <!-- SCHERMO 5: LABORATORIO ELETTORALE EVOLUTO -->
         <div id="screen-laboratorio" class="screen">
-            <h1>Laboratorio: Candidato per un Giorno</h1>
-            <p>Componi il tuo manifesto politico per farti eleggere. Scegli le promesse che ritieni più efficaci.</p>
-            
-            <div id="promisesSelectorContainer">
-                </div>
+            <div class="card header-card">
+                <h2>🛠️ Laboratorio Elettorale: Candidato per un Giorno</h2>
+                <p>Costruisci un programma politico sostenibile. L'Intelligenza Civica correggerà gli slogan in tempo reale.</p>
+            </div>
 
-            <div id="coherenceFeedback" class="card hidden" style="border-left: 4px solid var(--color-error); background: #fafafa;">
+            <!-- SEZIONE 1: SCELTA DELL'AMBITO -->
+            <div class="card info-card">
+                <h3>1. Seleziona l'Ambito del tuo Mandato</h3>
+                <div class="filter-buttons" style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-top: 10px;">
+                    <button class="btn btn-secondary" onclick="app.cambiaAmbitoLaboratorio('nazione')">🇮🇹 Stato Nazionale</button>
+                    <button class="btn btn-secondary" onclick="app.cambiaAmbitoLaboratorio('regioni')">🏔️ Amm. Regionale</button>
+                    <button class="btn btn-secondary" onclick="app.cambiaAmbitoLaboratorio('comuni')">🏢 Ente Comunale</button>
                 </div>
+                <div id="infoFasciaDemografica" class="badge hidden" style="margin-top: 12px; display: inline-block; background: var(--color-primary-light); color: var(--color-primary);"></div>
+            </div>
 
-            <div style="display: flex; flex-direction: column; gap: 12px; margin-top: 24px;">
-                <button class="btn" style="background: var(--color-primary);" onclick="app.stampaPdfProgramma()">📝 Genera il Programma Certificato dall'AI (PDF)</button>
-                <button class="btn btn-outline" onclick="app.goToScreen('report')">← Torna al Report</button>
+            <!-- SEZIONE 2: COMPILAZIONE ARGOMENTI PERTINENTI -->
+            <div class="card">
+                <h3>2. Scegli le Linee Programmatiche</h3>
+                <p style="font-size: 13px; color: var(--color-text-secondary); margin-bottom: 12px;">Seleziona le proposte. L'AI convertirà le promesse elettorali in obiettivi tecnici finanziabili.</p>
+                <div id="promisesSelectorContainer">
+                    <!-- Popolato dinamicamente in base all'ambito e alla demografia -->
+                </div>
+            </div>
+
+            <!-- SEZIONE 3: LIVE FEEDBACK E PUBBLICAZIONE -->
+            <div id="coherenceFeedback" class="card hidden" style="border-left: 5px solid var(--color-warning); background: #fffdf5;">
+                <!-- Correzioni AI live -->
+            </div>
+
+            <div class="action-buttons">
+                <button class="btn btn-secondary" onclick="app.goToScreen('report')">← Torna alla Sentenza</button>
+                <button class="btn btn-primary" onclick="app.stampaPdfProgramma()">👑 Genera Diploma del Programma</button>
             </div>
         </div>
 
     </div>
 
-    <footer>
-        ⚠️ INFORMAZIONE ESSENZIALE ALL'UTENTE: Questa applicazione costituisce una provocazione intellettuale, un gioco di ruolo istituzionale e un esperimento di sensibilizzazione civica. In conformità assoluta con l'Articolo 48 della Costituzione Italiana, il diritto di voto nel nostro ordinamento è universale, personale, eguale, libero e segreto. Non può essere in nessun caso limitato o subordinato al superamento di test.
-    </footer>
-
+    <!-- Script database comuni remoti -->
+    <script src="comuni.js"></script>
+    <!-- Logica di controllo applicazione -->
     <script src="app.js"></script>
 </body>
 </html>
