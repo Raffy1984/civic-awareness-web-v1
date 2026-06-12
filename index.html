@@ -2,14 +2,14 @@
 <html lang="it">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Patente Civica - Misura il Valore del tuo Voto</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Patente Civica</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
     <nav id="mainNav">
-        <button class="nav-btn" onclick="app.goToScreen('home')">🦅 Reset Piattaforma</button>
+        <button class="nav-btn" onclick="app.goToScreen('home')">🦅 Menu Principale</button>
         <div id="progressBarContainer">
             <div id="progressBar"></div>
         </div>
@@ -17,143 +17,123 @@
 
     <div class="container">
 
-        <!-- SCHERMO 1: INTRODUZIONE PROVOCATORIA -->
         <div id="screen-home" class="screen active">
             <div class="card header-card">
                 <h1>⚖️ PATENTE CIVICA</h1>
-                <p>Per guidare un’utilitaria serve un esame di Stato. Per decidere il destino del Paese basta una croce su un foglio, spesso mossa dal nulla.</p>
+                <p>Per guidare uno scooter serve una patente statale. Per decidere le leggi economiche del Paese o del tuo Comune basta una croce d'impulso.</p>
             </div>
             
             <div class="card info-card text-center">
-                <p style="font-size: 16px; line-height: 1.6; color: var(--color-text-primary); font-weight: 500;">
-                    La politica ti parla alla pancia, premia chi urla più forte e trasforma il voto in un favore o in un tifo calcistico. Ti informi davvero prima di giudicare o ti lasci trascinare dallo slogan del momento? 
+                <p style="font-size: 15px; line-height: 1.6; color: var(--color-text-primary); font-weight: 500;">
+                    La politica urla alla tua pancia, promettendo fondi che i bilanci non hanno o cavalcando emergenze inesistenti nei dati reali. Ti informi davvero prima di votare o voti per tifoseria o simpatia estemporanea?
                 </p>
-                <p style="font-size: 15px; line-height: 1.6; color: var(--color-text-secondary); margin-top: 12px;">
-                    Mettiti alla prova nei tre livelli di profondità civica. Smaschera i tuoi preconcetti, misura la tua aderenza alla realtà e dimostra se hai la maturità per governare lo Stato, la tua Regione o il tuo Comune.
+                <p style="font-size: 14px; line-height: 1.5; color: var(--color-text-secondary); margin-top: 10px;">
+                    Seleziona un livello di maturità, trova la tua città o la nazione, affronta i quiz basati sui bilanci consolidati veri e scopri se possiedi l'abilitazione di voto o se il tuo parere danneggia i conti dell'ente locale.
                 </p>
             </div>
 
             <div class="card">
-                <h3 class="text-center" style="margin-bottom: 15px; color: var(--color-primary);">Seleziona il Grado di Profondità Civica:</h3>
-                <div class="level-buttons" style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px;">
-                    <button class="btn btn-primary" onclick="app.selectLevel('pancia')">🔴 1. Pancia e Percezione</button>
-                    <button class="btn btn-primary" onclick="app.selectLevel('realta')">🟡 2. Consapevolezza e Realtà</button>
-                    <button class="btn btn-primary" onclick="app.selectLevel('visione')">🔵 3. Deliberazione e Visione</button>
+                <h3 class="text-center" style="margin-bottom: 15px; color: var(--color-primary); font-size:15px;">Seleziona il Grado di Profondità dell'Esame:</h3>
+                <div class="level-buttons" style="display: flex; flex-direction: column; gap: 10px;">
+                    <button class="btn btn-primary" style="background:#dc2626;" onclick="app.selectLevel('pancia')">🔴 1. Pancia e Percezione Emozionale</button>
+                    <button class="btn btn-primary" style="background:#d97706;" onclick="app.selectLevel('realta')">🟡 2. Consapevolezza dei Dati di Bilancio</button>
+                    <button class="btn btn-primary" style="background:#2563eb;" onclick="app.selectLevel('visione')">🔵 3. Deliberazione Politica Avanzata</button>
                 </div>
             </div>
         </div>
 
-        <!-- SCHERMO 2: SELEZIONE TERRITORIO -->
         <div id="screen-territory" class="screen">
             <div class="card header-card">
-                <h2>📍 Seleziona l'Ambito del tuo Mandato</h2>
-                <p>L'educazione civica passa per la conoscenza dei confini amministrativi. Chi ha la responsabilità di ciò che vuoi cambiare?</p>
+                <h2>📍 Ambito della Responsabilità Amministrativa</h2>
+                <p>Chi gestisce i soldi di ciò di cui ti lamenti? Evita l'errore comune di confondere le competenze statali, regionali e municipali.</p>
             </div>
             
-            <input type="text" id="territorySearch" placeholder="🔍 Digita il nome del tuo Comune per avviare il tracciamento demografico..." oninput="app.filterTerritories()" class="hidden">
+            <input type="text" id="territorySearch" placeholder="🔍 Scrivi qui il nome del tuo Comune (es. Roma, Barolo...)" oninput="app.filterTerritories()" class="hidden">
             
             <div id="territoryList" class="grid-container">
-                <!-- Popolato dinamicamente da JS -->
-            </div>
+                </div>
         </div>
 
-        <!-- SCHERMO 3: FLUSSO DOMANDE -->
         <div id="screen-question" class="screen">
             <div class="card question-card">
                 <div class="question-header">
-                    <span id="questionCategory" class="badge">📂 Categoria</span>
-                    <span id="questionNumber">Verifica 0 di 0</span>
+                    <span id="questionCategory" class="badge">Categoria</span>
+                    <span id="questionNumber">0 di 0</span>
                 </div>
-                <h2 id="questionText" style="margin-top:15px; margin-bottom:20px; font-size: 20px;">Testo...</h2>
+                <h2 id="questionText" style="margin-top:15px; margin-bottom:20px; font-size: 18px; line-height:1.4;">Caricamento...</h2>
                 
-                <!-- Opzioni a risposta chiusa -->
                 <div id="answersList" class="answers-stack">
-                    <!-- Bottoni di risposta generati da JS -->
-                </div>
+                    </div>
 
-                <!-- Input a risposta aperta per il Livello 3 (Visione) -->
-                <div id="openAnswerContainer" class="hidden" style="margin-top: 20px;">
-                    <label style="font-weight: 700; font-size: 14px; color: var(--color-primary); display: block; margin-bottom: 8px;">🖋️ Esprimi la tua visione estesa (La tua opinione conta per il report finale):</label>
-                    <textarea id="openAnswerText" rows="4" placeholder="Argomenta la tua risposta in modo autonomo libresco... Cos'ha omesso la politica su questo tema?" style="width:100%; border:1px solid var(--color-border); border-radius:8px; padding:12px; font-size:14px; outline:none; resize:none;"></textarea>
+                <div id="openAnswerContainer" class="hidden" style="margin-top: 15px;">
+                    <label style="font-weight: 700; font-size: 13px; color: var(--color-primary); display: block; margin-bottom: 6px;">🖋️ Esprimi qui la tua argomentazione o controproposta autonoma:</label>
+                    <textarea id="openAnswerText" rows="3" placeholder="Quali fattori economici o sociali ritieni siano stati trascurati dalle attuali amministrazioni su questo tema?" style="width:100%; border:1px solid var(--color-border); border-radius:8px; padding:10px; font-size:14px; outline:none; resize:none; font-family:sans-serif;"></textarea>
                 </div>
             </div>
 
-            <!-- Analisi empirica istantanea post-risposta -->
             <div id="analysisCard" class="card info-card hidden">
-                <!-- Contenuto dinamico -->
-            </div>
+                </div>
 
             <div class="action-buttons">
-                <button id="btnPrevious" class="btn btn-secondary" onclick="app.previousQuestion()">← Precedente</button>
-                <button id="btnNext" class="btn btn-primary" onclick="app.nextQuestion()">Conferma Risposta</button>
+                <button id="btnPrevious" class="btn btn-secondary" onclick="app.previousQuestion()">← Retrocedi</button>
+                <button id="btnNext" class="btn btn-primary" onclick="app.nextQuestion()">Valuta Scelta</button>
             </div>
         </div>
 
-        <!-- SCHERMO 4: ATTO DI SENTENZA -->
         <div id="screen-report" class="screen">
             <div class="card header-card text-center">
-                <h2>⚖️ Bilancio di Maturità Civica</h2>
-                <div id="reportScoreValue" style="font-size: 52px; font-weight: 900; color: #ffffff; margin: 15px 0;">0%</div>
-                <h3 id="reportLevel" style="margin-bottom: 10px; background: rgba(255,255,255,0.2); padding: 8px; border-radius: 6px;">Valutazione...</h3>
-                <p id="reportSummary">Analisi d'impatto...</p>
+                <h2>⚖️ Bilancio Finale della Tua Maturità Civica</h2>
+                <div id="reportScoreValue" style="font-size: 48px; font-weight: 900; color: #ffffff; margin: 10px 0;">0%</div>
+                <h3 id="reportLevel" style="margin-bottom: 10px; font-size:15px; background: rgba(255,255,255,0.15); padding: 6px; border-radius: 4px;">Valutazione...</h3>
+                <p id="reportSummary" style="font-size:13px; color:#cbd5e1;">Analisi d'impatto...</p>
             </div>
 
-            <h3 style="margin-top: 25px; margin-bottom: 15px; color: var(--color-primary);">📊 Mappa di Scostamento: La tua Mente vs Il Bilancio Reale</h3>
+            <h3 style="margin-top: 20px; margin-bottom: 12px; color: var(--color-primary); font-size:15px;">📊 Grafico Distorsione: La tua mente vs I Bilanci Reali</h3>
             <div id="comparisonContainer" class="stack-container">
-                <!-- Inserito da JS -->
-            </div>
+                </div>
 
-            <div class="action-buttons" style="margin-top:30px;">
-                <button class="btn btn-secondary" onclick="app.stampaPdfRisposte()">🖨️ Scarica Atto di Consapevolezza</button>
-                <button class="btn btn-primary" onclick="app.goToLaboratorioScreen()">🛠️ Diventa Candidato per un Giorno</button>
+            <div class="action-buttons" style="flex-direction: column; gap: 10px;">
+                <button class="btn btn-secondary" style="width:100%;" onclick="app.stampaPdfRisposte()">🖨️ Scarica Atto di Consapevolezza (PDF)</button>
+                <button class="btn btn-primary" style="width:100%; background:#059669;" onclick="app.goToLaboratorioScreen()">🛠️ Entra nel Laboratorio: Candidato per un Giorno</button>
             </div>
         </div>
 
-        <!-- SCHERMO 5: LABORATORIO ELETTORALE INTELLIGENTE -->
         <div id="screen-laboratorio" class="screen">
             <div class="card header-card">
-                <h2>🛠️ Candidato per un Giorno</h2>
-                <p>Basta lamentarsi al bar o sui social. Seleziona un argomento cardine, denuncia il problema e scrivi la tua soluzione tecnica strutturata.</p>
+                <h2>👑 Candidato per un Giorno</h2>
+                <p>Smetti di essere un semplice spettatore critico. Scegli l'argomento legato al territorio, denuncia il problema e formalizza la tua soluzione strutturata.</p>
             </div>
 
-            <!-- MACRO SEZIONE 1: SCELTA DELL'AMBITO -->
             <div class="card info-card">
-                <h3>1. Ambito del Programma Elettorale</h3>
-                <div class="filter-buttons" style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-top: 10px;">
-                    <button id="lblAmbitoNazione" class="btn btn-secondary" onclick="app.cambiaAmbitoLaboratorio('nazione')">🇮🇹 Piano Nazionale</button>
-                    <button id="lblAmbitoRegione" class="btn btn-secondary" onclick="app.cambiaAmbitoLaboratorio('regioni')">🏔️ Piano Regionale</button>
-                    <button id="lblAmbitoComune" class="btn btn-secondary" onclick="app.cambiaAmbitoLaboratorio('comuni')">🏢 Piano Comunale</button>
+                <h3 style="font-size:14px;">1. Modula il Piano d'Azione</h3>
+                <div class="filter-buttons" style="display: flex; gap: 8px; margin-top: 10px;">
+                    <button id="lblAmbitoNazione" style="padding:10px; font-size:12px;" class="btn btn-secondary" onclick="app.cambiaAmbitoLaboratorio('nazione')">🇮🇹 Stato</button>
+                    <button id="lblAmbitoRegione" style="padding:10px; font-size:12px;" class="btn btn-secondary" onclick="app.cambiaAmbitoLaboratorio('regioni')">🏔️ Regione</button>
+                    <button id="lblAmbitoComune" style="padding:10px; font-size:12px;" class="btn btn-secondary" onclick="app.cambiaAmbitoLaboratorio('comuni')">🏢 Comune</button>
                 </div>
-                <div id="infoFasciaDemografica" class="badge" style="margin-top: 12px; display: inline-block; background: var(--color-primary-light); color: var(--color-primary);"></div>
+                <div id="infoFasciaDemografica" class="badge" style="margin-top: 10px; display: inline-block; font-size:10px; padding: 4px 8px;"></div>
             </div>
 
-            <!-- MACRO SEZIONE 2: SELEZIONE TEMA E ARTICOLAZIONE SCRITTA -->
             <div class="card">
-                <h3>2. Sviluppo delle Linee Politiche</h3>
-                <label style="font-weight:600; font-size:14px; margin-top:10px; display:block;">Seleziona l'Argomento Principale:</label>
-                <select id="labThemeSelector" onchange="app.aggiornaPlaceholderLaboratorio()" style="width:100%; padding:12px; border-radius:8px; border:1px solid var(--color-border); margin-top:6px; font-size:14px; font-weight:600; color:var(--color-text-primary);">
-                    <!-- Riempito dinamicamente -->
-                </select>
+                <h3 style="font-size:14px; margin-bottom:10px;">2. Stesura del Programma Autonomo</h3>
+                <label style="font-weight:600; font-size:12px;">Seleziona l'Argomento Cardine:</label>
+                <select id="labThemeSelector" onchange="app.aggiornaPlaceholderLaboratorio()" style="padding:10px; font-size:14px; margin-top:4px;">
+                    </select>
 
-                <div style="margin-top:15px;">
-                    <label style="font-weight:700; font-size:13px; color:var(--color-error);">⚠️ IL PROBLEMA RISCONTRATO (Cosa non funziona e perché):</label>
-                    <textarea id="labProblemInput" rows="3" style="width:100%; padding:12px; border-radius:8px; border:1px solid var(--color-border); margin-top:4px; font-size:14px; resize:none;" placeholder="Descrivi il problema reale..."></textarea>
+                <div style="margin-top:12px;">
+                    <label style="font-weight:700; font-size:11px; color:var(--color-error);">⚠️ DETTAGLIA IL PROBLEMA REALE DEL TUO TERRITORIO:</label>
+                    <textarea id="labProblemInput" rows="3" style="width:100%; padding:10px; border-radius:8px; border:1px solid var(--color-border); margin-top:4px; font-size:14px; resize:none; font-family:sans-serif;"></textarea>
                 </div>
 
-                <div style="margin-top:15px;">
-                    <label style="font-weight:700; font-size:13px; color:var(--color-success);">➡️ LA TUA SOLUZIONE PROPOSTA (Come intendi agire e finanziare):</label>
-                    <textarea id="labSolutionInput" rows="4" style="width:100%; padding:12px; border-radius:8px; border:1px solid var(--color-border); margin-top:4px; font-size:14px; resize:none;" placeholder="Esponi la tua soluzione pratica..."></textarea>
+                <div style="margin-top:12px;">
+                    <label style="font-weight:700; font-size:11px; color:var(--color-success);">➡️ PROVVEDIMENTO E COPERTURA FINANZIARIA PROPOSTA:</label>
+                    <textarea id="labSolutionInput" rows="3" style="width:100%; padding:10px; border-radius:8px; border:1px solid var(--color-border); margin-top:4px; font-size:14px; resize:none; font-family:sans-serif;"></textarea>
                 </div>
-            </div>
-
-            <!-- MACRO SEZIONE 3: ELABORAZIONE DELLA LINEA DI CONDOTTA -->
-            <div id="labLiveReview" class="card hidden" style="border-left:5px solid var(--color-success); background:#f0fff4;">
-                <!-- Elaborazione formale autonoma -->
             </div>
 
             <div class="action-buttons">
-                <button class="btn btn-secondary" onclick="app.goToScreen('report')">← Torna alla Sentenza</button>
-                <button class="btn btn-primary" onclick="app.elaboraEStampaProgramma()">👑 Pubblica e Condividi il Programma Elettorale</button>
+                <button class="btn btn-secondary" onclick="app.goToScreen('report')">← Il mio Bilancio</button>
+                <button class="btn btn-primary" style="background:#0f172a;" onclick="app.elaboraEStampaProgramma()">🖨️ Stampa ed Esporta il tuo Manifesto</button>
             </div>
         </div>
 
