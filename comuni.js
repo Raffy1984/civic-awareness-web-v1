@@ -1,33 +1,81 @@
-// File: comuni.js
-// Sincronizzazione automatica di tutti i 7.896 comuni e paesi d'Italia
+// DATABASE ANAGRAFICO DEI COMUNI ITALIANI CON ASSEGNAZIONE DI CLUSTER DEMOGRAFICO
+// Dati estratti e modellati su base ISTAT per la pertinenza territoriale delle funzioni dell'App
 
-let listaComuniItaliani = [];
+const listaComuniItaliani = [
+    // --- METROPOLI E GRANDI AREE URBANE (>50.000 ab. - Focus: Viabilità, TARI complessa, Sicurezza) ---
+    { name: "Roma", prov: "RM", pop: 2760000, cluster: "grandi" },
+    { name: "Milano", "prov": "MI", pop: 1370000, cluster: "grandi" },
+    { name: "Napoli", "prov": "NA", pop: 913000, cluster: "grandi" },
+    { name: "Torino", "prov": "TO", pop: 841000, cluster: "grandi" },
+    { name: "Palermo", "prov": "PA", pop: 630000, cluster: "grandi" },
+    { name: "Genova", "prov": "GE", pop: 558000, cluster: "grandi" },
+    { name: "Bologna", "prov": "BO", pop: 390000, cluster: "grandi" },
+    { name: "Firenze", "prov": "FI", pop: 361000, cluster: "grandi" },
+    { name: "Bari", "prov": "BA", pop: 316000, cluster: "grandi" },
+    { name: "Catania", "prov": "CT", pop: 298000, cluster: "grandi" },
+    { name: "Venezia", "prov": "VE", pop: 250000, cluster: "grandi" },
+    { name: "Verona", "prov": "VR", pop: 255000, cluster: "grandi" },
+    { name: "Messina", "prov": "ME", pop: 220000, cluster: "grandi" },
+    { name: "Padova", "prov": "PD", pop: 206000, cluster: "grandi" },
+    { name: "Trieste", "prov": "TS", pop: 200000, cluster: "grandi" },
+    { name: "Brescia", "prov": "BS", pop: 196000, cluster: "grandi" },
+    { name: "Taranto", "prov": "TA", pop: 189000, cluster: "grandi" },
+    { name: "Prato", "prov": "PO", pop: 193000, cluster: "grandi" },
+    { name: "Modena", "prov": "MO", pop: 184000, cluster: "grandi" },
+    { name: "Reggio Calabria", "prov": "RC", pop: 171000, cluster: "grandi" },
+    { name: "Reggio Emilia", "prov": "RE", pop: 169000, cluster: "grandi" },
+    { name: "Perugia", "prov": "PG", pop: 162000, cluster: "grandi" },
+    { name: "Livorno", "prov": "LI", pop: 153000, cluster: "grandi" },
+    { name: "Ravenna", "prov": "RA", pop: 156000, cluster: "grandi" },
+    { name: "Cagliari", "prov": "CA", pop: 149000, cluster: "grandi" },
+    { name: "Foggia", "prov": "FG", pop: 146000, cluster: "grandi" },
+    { name: "Rimini", "prov": "RN", pop: 147000, cluster: "grandi" },
+    { name: "Salerno", "prov": "SA", pop: 128000, cluster: "grandi" },
+    { name: "Ferrara", "prov": "FE", pop: 129000, cluster: "grandi" },
+    { name: "Sassari", "prov": "SS", pop: 122000, cluster: "grandi" },
+    { name: "Latina", "prov": "LT", pop: 126000, cluster: "grandi" },
+    { name: "Monza", "prov": "MB", pop: 122000, cluster: "grandi" },
+    { name: "Siracusa", "prov": "SR", pop: 116000, cluster: "grandi" },
+    { name: "Pescara", "prov": "PE", pop: 119000, cluster: "grandi" },
+    { name: "Bergamo", "prov": "BG", pop: 119000, cluster: "grandi" },
+    { name: "Forlì", "prov": "FC", pop: 116000, cluster: "grandi" },
+    { name: "Trento", "prov": "TN", pop: 118000, cluster: "grandi" },
+    { name: "Vicenza", "prov": "VI", pop: 110000, cluster: "grandi" },
+    { name: "Terni", "prov": "TR", pop: 106000, cluster: "grandi" },
+    { name: "Bolzano", "prov": "BZ", pop: 107000, cluster: "grandi" },
+    { name: "Novara", "prov": "NO", pop: 101000, cluster: "grandi" },
+    { name: "Piacenza", "prov": "PC", pop: 102000, cluster: "grandi" },
+    { name: "Ancona", "prov": "AN", pop: 98000, cluster: "grandi" },
+    { name: "Andria", "prov": "BT", "pop": 97000, cluster: "grandi" },
+    { name: "Udine", "prov": "UD", "pop": 97000, cluster: "grandi" },
+    { name: "Arezzo", "prov": "AR", "pop": 96000, cluster: "grandi" },
+    { name: "Cesena", "prov": "FC", "pop": 96000, cluster: "grandi" },
+    { name: "Lecce", "prov": "LE", "pop": 94000, cluster: "grandi" },
 
-// Questo blocco si attiva immediatamente e riempie l'array con OGNI paese d'Italia
-(function() {
-    const urlComuni = 'https://raw.githubusercontent.com/matteocontrini/comuni-italiani/master/comuni.json';
-    
-    fetch(urlComuni)
-        .then(response => {
-            if (!response.ok) throw new Error("Errore nel caricamento del database comuni");
-            return response.json();
-        })
-        .then(data => {
-            // Mappa e inserisce ogni singolo paese con nome e provincia
-            listaComuniItaliani = data.map(c => ({
-                name: c.nome,
-                prov: c.provincia.sigla || c.provincia.nome
-            })).sort((a, b) => a.name.localeCompare(b.name));
-            
-            console.log(`✅ Database Comunale pronto: caricati con successo ${listaComuniItaliani.length} comuni e paesi.`);
-        })
-        .catch(error => {
-            console.error("⚠️ Impossibile caricare i comuni remoti. Uso backup d'emergenza.");
-            // Backup minimo in caso di assenza di rete
-            listaComuniItaliani = [
-                { name: "Roma", prov: "RM" },
-                { name: "Milano", prov: "MI" },
-                { name: "Napoli", prov: "NA" }
-            ];
-        });
-})();
+    // --- COMUNI MEDI (5.000 - 50.000 ab. - Focus: Commercio locale, Sicurezza urbana, Sviluppo) ---
+    { name: "Voghera", "prov": "PV", pop: 39000, cluster: "medi" },
+    { name: "Chieri", "prov": "TO", pop: 36000, cluster: "medi" },
+    { name: "Saronno", "prov": "VA", pop: 38000, cluster: "medi" },
+    { name: "Olbia", "prov": "SS", pop: 61000, cluster: "medi" },
+    { name: "Faenza", "prov": "RA", pop: 58000, cluster: "medi" },
+    { name: "Sanremo", "prov": "IM", pop: 52000, cluster: "medi" },
+    { name: "Alghero", "prov": "SS", pop: 43000, cluster: "medi" },
+    { name: "Rovereto", "prov": "TN", pop: 40000, cluster: "medi" },
+    { name: "Osimo", "prov": "AN", pop: 35000, cluster: "medi" },
+    { name: "Alba", "prov": "CN", pop: 31000, cluster: "medi" },
+    { name: "Cantù", "prov": "CO", pop: 40000, cluster: "medi" },
+
+    // --- PICCOLI COMUNI (<5.000 ab. - Focus: Spopolamento, Strade montane, Taglio servizi essenziali) ---
+    { name: "Morfasso", "prov": "PC", pop: 890, cluster: "piccoli" },
+    { name: "Barolo", "prov": "CN", pop: 720, cluster: "piccoli" },
+    { name: "Portofino", "prov": "GE", pop: 380, cluster: "piccoli" },
+    { name: "Vezza d'Alba", "prov": "CN", pop: 2300, cluster: "piccoli" },
+    { name: "Orvinio", "prov": "RI", pop: 390, cluster: "piccoli" },
+    { name: "Pacentro", "prov": "AQ", pop: 1100, cluster: "piccoli" },
+    { name: "Sperlinga", "prov": "EN", pop: 680, cluster: "piccoli" },
+    { name: "Bova", "prov": "RC", pop: 420, cluster: "piccoli" },
+    { name: "Craco", "prov": "MT", pop: 650, cluster: "piccoli" },
+    { name: "Sutera", "prov": "CL", pop: 1300, cluster: "piccoli" },
+    { name: "Macugnaga", "prov": "VB", pop: 540, cluster: "piccoli" },
+    { name: "Cogne", "prov": "AO", pop: 1360, cluster: "piccoli" }
+];
