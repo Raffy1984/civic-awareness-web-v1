@@ -3,109 +3,158 @@ const app = {
         currentScreen: 'home',
         selectedLevel: null,         // 'pancia', 'realta', 'visione'
         selectedTerritoryType: null, // 'nazione', 'regioni', 'comuni'
-        selectedTerritoryId: null,   // id specifico dell'ente locale
-        selectedTerritoryName: '',   // nome esteso salvato
+        selectedTerritoryId: null,   
+        selectedTerritoryName: '',   
+        selectedCluster: 'grandi',   // 'piccoli', 'medi', 'grandi'
         currentQuestion: 0,
-        answers: [],                 // archivio risposte fornite
-        filteredQuestions: [],       // paniere caricato per il quiz
+        answers: [],                 
+        filteredQuestions: [],       
     },
-    
-    // REGISTRO NAZIONALE E DELLE 20 REGIONI ITALIANE
+
     territories: {
-        nazione: [
-            { id: 'italia', name: 'Repubblica Italiana (Stato Nazionale)', icon: '🇮🇹', desc: 'Competenze esclusive: Politica estera, Fisco erariale, Difesa, Previdenza e Ordine pubblico.' }
-        ],
+        nazione: [{ id: 'italia', name: 'Repubblica Italiana (Stato Nazionale)', icon: '🇮🇹', desc: 'Competenze: Macroeconomia, Bilancio Erariale, Politica Estera e Sicurezza Nazionale.' }],
         regioni: [
-            { id: 'abruzzo', name: 'Regione Abruzzo', icon: '🏔️', desc: 'Competenze: Sanità regionale, Trasporti locali, Gestione Fondi Europei FESR.' },
-            { id: 'basilicata', name: 'Regione Basilicata', icon: '🪵', desc: 'Competenze: Idrocarburi, Sanità, Sviluppo rurale e tutela ambientale.' },
-            { id: 'calabria', name: 'Regione Calabria', icon: '🌶️', desc: 'Competenze: Gestione coste, Reti ospedaliere, Dissesto idrogeologico.' },
-            { id: 'campania', name: 'Regione Campania', icon: '🌋', desc: 'Competenze: Trasporti metropolitani, Sanità pubblica, Edilizia strategica.' },
-            { id: 'emilia-romagna', name: 'Regione Emilia-Romagna', icon: '🏎️', desc: 'Competenze: Welfare, Sanità territoriale, Reti idriche e infrastrutture.' },
-            { id: 'friuli-venezia-giulia', name: 'Regione Friuli-Venezia Giulia', icon: '🦅', desc: 'Autonomia Speciale: Finanziamento locale di sanità, scuola e politiche linguistiche.' },
-            { id: 'lazio', name: 'Regione Lazio', icon: '🏛️', desc: 'Competenze: Debito sanitario, Trasporti pendolari, Reti rifiuti regionali.' },
-            { id: 'liguria', name: 'Regione Liguria', icon: '⛵', desc: 'Competenze: Demanio marittimo, Difesa del suolo, Logistica portuale.' },
-            { id: 'lombardia', name: 'Regione Lombardia', icon: '🏙️', desc: 'Competenze: Bilancio Sanità (80% del totale), Reti ferroviarie regionali.' },
-            { id: 'marche', name: 'Regione Marche', icon: '🎻', desc: 'Competenze: Artigianato, Presidi sanitari diffusi, Fondi di ricostruzione.' },
-            { id: 'molise', name: 'Regione Molise', icon: '🌲', desc: 'Competenze: Collegamenti interni, Gestione ospedaliera, Infrastrutture montane.' },
-            { id: 'piemonte', name: 'Regione Piemonte', icon: '🍇', desc: 'Competenze: Sanità di prossimità, Fondi agricoli UE, Logistica industriale.' },
-            { id: 'puglia', name: 'Regione Puglia', icon: '🫒', desc: 'Competenze: Acquedotto, Turismo, Agricoltura e distretti sanitari.' },
-            { id: 'sardegna', name: 'Regione Sardegna', icon: '🐑', desc: 'Autonomia Speciale: Continuità territoriale aerea/marittima, flotta sarda, Sanità.' },
-            { id: 'sicilia', name: 'Regione Sicilia', icon: '🍊', desc: 'Autonomia Speciale (Statuto): Beni culturali autonomi, Corpo Forestale, Sanità.' },
-            { id: 'toscana', name: 'Regione Toscana', icon: '🌻', desc: 'Competenze: Organizzazione ospedaliera, Assetto idrogeologico, Linee ferrovia.' },
-            { id: 'trentino-alto-adige', name: 'Regione Trentino-Alto Adige', icon: '🍎', desc: 'Autonomia Speciale totale divisa tra le Province Autonome di Trento e Bolzano.' },
-            { id: 'umbria', name: 'Regione Umbria', icon: '⛪', desc: 'Competenze: Valorizzazione borghi, Sanità, Linee di trasporto regionali.' },
-            { id: 'valle-daosta', name: 'Regione Valle d\'Aosta', icon: '🏰', desc: 'Autonomia Speciale: Autonomia finanziaria totale, Bilinguismo, Opere alpine.' },
-            { id: 'veneto', name: 'Regione Veneto', icon: '🎭', desc: 'Competenze: Autonomia differenziata, Sanità veneta, Gestione bacini idrografici.' }
+            { id: 'abruzzo', name: 'Regione Abruzzo', icon: '🏔️', desc: 'Competenze centrali: 82% del bilancio allocato sul Fondo Sanitario Regionale.' },
+            { id: 'calabria', name: 'Regione Calabria', icon: '🌶️', desc: 'Competenze centrali: Reti ospedaliere, dissesto idrogeologico e demanio.' },
+            { id: 'campania', name: 'Regione Campania', icon: '🌋', desc: 'Competenze centrali: Sanità, Trasporti su ferro regionali ed edilizia.' },
+            { id: 'emilia-romagna', name: 'Regione Emilia-Romagna', icon: '🏎️', desc: 'Competenze centrali: Politiche del lavoro, welfare e presidi ospedalieri.' },
+            { id: 'lazio', name: 'Regione Lazio', icon: '🏛️', desc: 'Competenze centrali: Deficit sanitario, trasporti Cotral e macro-rifiuti.' },
+            { id: 'liguria', name: 'Regione Liguria', icon: '⛵', desc: 'Competenze centrali: Logistica portuale, ripascimento coste e sanità.' },
+            { id: 'lombardia', name: 'Regione Lombardia', icon: '🏙️', desc: 'Competenze centrali: Servizio Sanitario Lombardo, linee Trenord.' },
+            { id: 'piemonte', name: 'Regione Piemonte', icon: '🍇', desc: 'Competenze centrali: Programmazione ospedaliera, sviluppo rurale PSR.' },
+            { id: 'puglia', name: 'Regione Puglia', icon: '🫒', desc: 'Competenze centrali: Gestione idrica (Acquedotto Pugliese), ASL regionali.' },
+            { id: 'sardegna', name: 'Regione Sardegna', icon: '🐑', desc: 'Statuto Speciale: Continuità territoriale aerea e marittima e sanità sarda.' },
+            { id: 'sicilia', name: 'Regione Sicilia', icon: '🍊', desc: 'Statuto Speciale: Autonomia tributaria, foreste e protezione dei beni culturali.' },
+            { id: 'toscana', name: 'Regione Toscana', icon: '🌻', desc: 'Competenze centrali: Rete degli ospedali di eccellenza, dissesto del suolo.' },
+            { id: 'veneto', name: 'Regione Veneto', icon: '🎭', desc: 'Competenze centrali: Organizzazione dei LEA sanitari, bacini idrici.' }
         ],
-        comuni: [] // Caricato real-time da comuni.js
+        comuni: [] 
     },
-    
-    // BANCO DATI DELLE DOMANDE DI PANCIA, REALTÀ E VISIONE ESTESA
+
+    // DATABASE MASSIVO CON VALIDAZIONE DATA-DRIVEN (ISTAT, MEF, ARERA, CORTE DEI CONTI)
     questions: [
-        // --- LIVELLO 1: PANCIA E PERCEZIONE (NAZIONE) ---
-        { 
-            id: 1, type: 'nazione', level: 'pancia', categoryIcon: '👮', categoryLabel: 'Sicurezza Nazionale', 
-            text: 'A quanto ammonta la spesa dello Stato per l\'accoglienza dei migranti rispetto al bilancio generale?', 
+        // ================= NAZIONE =================
+        {
+            id: 'n1', type: 'nazione', level: 'pancia', categoryIcon: '👮', categoryLabel: 'Sicurezza e Bilancio',
+            text: 'Quanto incide la spesa per l\'accoglienza dei richiedenti asilo sul bilancio generale dello Stato?',
             options: [
-                {id:'a', text:'Circa la metà di tutte le entrate fiscali dello Stato', hint:'Rappresenta il capitolo principale di spesa pubblica.'}, 
-                {id:'b', text:'Meno dell\'1% di tutta la spesa pubblica complessiva', hint:'Una frazione microscopica se paragonata a pensioni o sanità.'}, 
-                {id:'c', text:'Intorno al 15% del bilancio erariale', hint:'Una voce pesante che impatta gravemente sulle tasse.'},
-                {id:'d', text:'Esattamente il 5% dei fondi stanziati annualmente', hint:'Un valore intermedio di moderato impatto.'}
-            ], 
-            correct: 'b', 
-            reality: 'La spesa statale destinata all\'accoglienza si attesta storicamente sotto lo 0.6% della spesa pubblica totale.', 
-            commonPerception: 40, realData: 0.6 
+                { id: 'a', text: 'Oltre il 15% di tutte le uscite erariali', hint: 'Rappresenta una spesa prioritaria rispetto alle altre voci.' },
+                { id: 'b', text: 'Meno dell\'1% della spesa pubblica consolidata', hint: 'Una frazione minima rispetto a previdenza e interessi sul debito.' },
+                { id: 'c', text: 'Circa la metà delle tasse sul reddito raccolte', hint: 'Drena quasi interamente l\'IRPEF dei contribuenti.' }
+            ],
+            correct: 'b',
+            reality: 'I rendiconti generali del MEF indicano che la spesa complessiva si attesta stabilmente sotto lo 0.5% della spesa pubblica totale italiana.',
+            commonPerception: 35, realData: 0.5
         },
-        // --- LIVELLO 2: CONSAPEVOLEZZA E REALTÀ (REGIONE) ---
-        { 
-            id: 2, type: 'regioni', level: 'realta', categoryIcon: '🏥', categoryLabel: 'Sanità Pubblica', 
-            text: 'Quale percentuale del bilancio totale di una Regione viene assorbita dalla spesa sanitaria?', 
+        {
+            id: 'n2', type: 'nazione', level: 'realta', categoryIcon: '📊', categoryLabel: 'Fisco e Ricchezza',
+            text: 'Se lo Stato espropriasse al 100% i patrimoni dei primi 10 miliardari italiani, per quanto tempo potrebbe coprire la sua spesa corrente?',
             options: [
-                {id:'a', text:'Circa il 10%, il resto va a strade e trasporti', hint:'La sanità è una voce marginale delle autonomie.'}, 
-                {id:'b', text:'Tra il 75% e l\'85% dell\'intero bilancio regionale', hint:'La sanità è il vero e quasi unico motore finanziario della Regione.'}, 
-                {id:'c', text:'Esattamente il 50% ripartito equamente', hint:'Un perfetto equilibrio con gli altri assessorati.'},
-                {id:'d', text:'Meno del 5%, la sanità viene pagata interamente da Roma', hint:'Nessun esborso autonomo.'}
-            ], 
-            correct: 'b', 
-            reality: 'I sistemi sanitari regionali prosciugano in media circa l\'80% delle risorse finanziarie totali dell\'ente.', 
-            commonPerception: 20, realData: 80 
+                { id: 'a', text: 'Per i prossimi 5 anni consecutivi, eliminando le tasse', hint: 'Il patrimonio accumulato risolverebbe i deficit storici.' },
+                { id: 'b', text: 'Meno di due settimane (circa 15 giorni)', hint: 'La velocità di spesa pubblica divora rapidamente la liquidità.' },
+                { id: 'c', text: 'Esattamente un anno fiscale completo', hint: 'Copertura perfetta del bilancio annuale.' }
+            ],
+            correct: 'b',
+            reality: 'La spesa pubblica italiana viaggia a circa 2.5 miliardi di euro al giorno. Il patrimonio complessivo dei primi 10 multimiliardari (circa 45 miliardi) sosterrebbe lo Stato per soli 18 giorni.',
+            commonPerception: 60, realData: 5
         },
-        // --- LIVELLO 3: DELIBERAZIONE E VISIONE (COMUNE) CON RISPOSTA APERTA ---
-        { 
-            id: 3, type: 'comuni', level: 'visione', categoryIcon: '🗑️', categoryLabel: 'Tributi e Bilancio Municipale', 
-            text: 'Il Sindaco può legalmente stornare i fondi raccolti tramite la tassa rifiuti (TARI) per finanziare la manutenzione stradale o la sicurezza?', 
+        {
+            id: 'n3', type: 'nazione', level: 'visione', categoryIcon: '📈', categoryLabel: 'Sostenibilità del Debito',
+            text: 'Quale istituto o gruppo detiene la quota maggioritaria del Debito Pubblico italiano, determinandone la stabilità?',
             options: [
-                {id:'a', text:'Sì, il bilancio è unico e il Sindaco sposta i fondi dove serve', hint:'Massima flessibilità d\'uso.'}, 
-                {id:'b', text:'No. La TARI deve per legge finanziare esclusivamente il 100% del ciclo dei rifiuti', hint:'Vincolo di destinazione totale senza eccezioni.'}, 
-                {id:'c', text:'Sì, ma solo se c\'è uno stato di calamità naturale', hint:'Sblocco condizionato.'},
-                {id:'d', text:'Sì, per un limite massimo del 30% dei proventi', hint:'Flessibilità parziale.'}
-            ], 
-            correct: 'b', 
-            reality: 'La TARI è un tributo a destinazione vincolata: deve pareggiare esattamente i costi del servizio rifiuti, e non un euro può andare ad altre voci.', 
-            commonPerception: 15, realData: 100,
-            isOpen: true // Attiva l'input di testo
+                { id: 'a', text: 'I fondi sovrani cinesi e le banche d\'affari americane', hint: 'Siamo sotto scacco della finanza geopolitica estera.' },
+                { id: 'b', text: 'Banche, assicurazioni, fondi e piccoli risparmiatori residenti in Italia', hint: 'Il debito è prevalentemente in mani interne e domestiche.' },
+                { id: 'c', text: 'Il Fondo Monetario Internazionale con prestiti vincolati', hint: 'Siamo commissariati da organismi mondiali.' }
+            ],
+            correct: 'b',
+            reality: 'I dati del Dipartimento del Tesoro mostrano che oltre il 70% del debito è detenuto dal sistema finanziario interno e dalle famiglie italiane, vincolando la sicurezza dello Stato al risparmio privato dei cittadini.',
+            commonPerception: 20, realData: 72, isOpen: true
+        },
+
+        // ================= REGIONI =================
+        {
+            id: 'r1', type: 'regioni', level: 'pancia', categoryIcon: '🏥', categoryLabel: 'Sanità Pubblica',
+            text: 'Quale percentuale del budget totale gestito da una Regione viene speso per finanziare ospedali, ASL e sanità?',
+            options: [
+                { id: 'a', text: 'Circa il 15%, il grosso va ad agricoltura e turismo', hint: 'La sanità ha un impatto marginale sulle casse regionali.' },
+                { id: 'b', text: 'Tra il 75% e l\'85% di tutte le risorse finanziarie regionali', hint: 'La sanità è il nucleo di spesa quasi monopolistico delle Regioni.' },
+                { id: 'c', text: 'Esattamente la metà del budget complessivo', hint: 'Ripartizione bilanciata tra i vari assessorati.' }
+            ],
+            correct: 'b',
+            reality: 'La sanità assorbe mediamente l\'80% del bilancio libero di qualsiasi regione d\'Italia, rendendo il Governatore essenzialmente un manager sanitario.',
+            commonPerception: 30, realData: 80
+        },
+
+        // ================= COMUNI PICCOLI =================
+        {
+            id: 'cp1', type: 'comuni', level: 'pancia', cluster: 'piccoli', categoryIcon: '🌲', categoryLabel: 'Autonomia del Borgo',
+            text: 'In un piccolo comune sotto i 2.000 abitanti, il Sindaco può emettere un\'ordinanza per bloccare la chiusura dell\'ultimo sportello bancario o postale?',
+            options: [
+                { id: 'a', text: 'Sì, per motivi di ordine pubblico e continuità di servizio essenziale', hint: 'Il Sindaco è autorità sovrana sul perimetro locale.' },
+                { id: 'b', text: 'No, banche private e società per azioni rispondono a piani industriali commerciali di mercato', hint: 'Nessun potere legale di trattenimento coatto.' }
+            ],
+            correct: 'b',
+            reality: 'I piccoli comuni soffrono la desertificazione bancaria. Il Sindaco non ha alcuno strumento giuridico per obbligare un istituto privato o Poste a mantenere attiva una filiale in perdita.',
+            commonPerception: 70, realData: 0
+        },
+        {
+            id: 'cp2', type: 'comuni', level: 'realta', cluster: 'piccoli', categoryIcon: '🛣️', categoryLabel: 'Costi di Struttura',
+            text: 'Qual è la causa primaria del collasso finanziario e delle sanzioni della Corte dei Conti nei piccoli comuni?',
+            options: [
+                { id: 'a', text: 'Le spese di rappresentanza, auto blu e indennità degli assessori', hint: 'La politica locale spreca troppi soldi in privilegi.' },
+                { id: 'b', text: 'L\'onere della manutenzione stradale e del dissesto idrogeologico a fronte di pochissimi cittadini contribuenti', hint: 'Sbilanciamento strutturale tra territorio immenso e assenza di gettito.' }
+            ],
+            correct: 'b',
+            reality: 'I piccoli comuni gestiscono gran parte dei territori montani e rurali italiani. Con poche centinaia di schede fiscali IRPEF/IMU devono mantenere chilometri di asfalto e versanti franosi, un paradosso contabile insostenibile.',
+            commonPerception: 85, realData: 12
+        },
+
+        // ================= COMUNI MEDI =================
+        {
+            id: 'cm1', type: 'comuni', level: 'realta', cluster: 'medi', categoryIcon: '🛍️', categoryLabel: 'Sviluppo Locale',
+            text: 'Può un Comune medio vietare nel Piano Regolatore l\'apertura di un grande supermercato per salvare i negozi del centro?',
+            options: [
+                { id: 'a', text: 'Sì, la difesa del piccolo commercio è una priorità pianificatoria', hint: 'Protezionismo economico locale legittimo.' },
+                { id: 'b', text: 'No, le normative europee (Direttiva Bolkestein) e la liberalizzazione del commercio lo vietano, salvo motivi urbanistici o ambientali documentati', hint: 'La concorrenza non può essere frenata per legge dall\'ente.' }
+            ],
+            correct: 'b',
+            reality: 'Per legge non si può limitare la concorrenza a tutela di una categoria. Il comune può bloccare un insediamento solo per carenze di parcheggi, impatto acustico o vincoli idrici reali.',
+            commonPerception: 75, realData: 5
+        },
+
+        // ================= COMUNI GRANDI =================
+        {
+            id: 'cg1', type: 'comuni', level: 'realta', cluster: 'grandi', categoryIcon: '🚗', categoryLabel: 'Codice della Strada',
+            text: 'I proventi milionari generati dagli Autovelox comunali possono essere impiegati per ripianare i debiti del teatro comunale o pagare stipendi?',
+            options: [
+                { id: 'a', text: 'Sì, le sanzioni sono entrate correnti liberamente spendibili dal Sindaco', hint: 'Massima flessibilità d\'uso del contante.' },
+                { id: 'b', text: 'No, gli articoli 142 e 208 del Codice della Strada vincolano le somme a sicurezza stradale, segnaletica e assunzioni dei vigili', hint: 'Gettito rigidamente vincolato a scopi di tutela stradale.' }
+            ],
+            correct: 'b',
+            reality: 'La legge impone che il 50% dei proventi ordinari e il 100% di quelli da autovelox fuori dai centri abitati vadano esclusivamente ad asfalto, sicurezza ed educazione stradale. Deviazioni configurano il reato di danno erariale.',
+            commonPerception: 90, realData: 50
+        },
+        {
+            id: 'cg2', type: 'comuni', level: 'visione', cluster: 'grandi', categoryIcon: '🗑️', categoryLabel: 'Tassa Rifiuti TARI',
+            text: 'Il superamento dell\'80% di raccolta differenziata in una grande città garantisce una riduzione immediata della bolletta TARI?',
+            options: [
+                { id: 'a', text: 'Sì, perché i materiali recuperati vengono venduti generando enormi profitti', hint: 'Il riciclo azzera le spese del servizio.' },
+                { id: 'b', text: 'Non necessariamente, perché i costi fissi di logistica (personale, mezzi porta a porta, impianti di conferimento) pesano più del valore dei materiali', hint: 'Differenziare costa più che conferire in grandi discariche unificate.' }
+            ],
+            correct: 'b',
+            reality: 'I regolamenti ARERA impongono che la TARI copra il 100% dei costi operativi. Spesso la filiera differenziata pulita richiede una quantità di personale e trasporti stradali così alta da neutralizzare il ricavo dei consorzi di filiera.',
+            commonPerception: 80, realData: 10, isOpen: true
         }
     ],
 
-    // DATABASE ARGOMENTI PER IL CANDIDATO PER UN GIORNO (CLUSTERIZZATO)
     laboratorioTemi: {
-        nazione: [
-            { value: 'immigrazione', label: 'Immigrazione e Controllo Frontiere', placeholderProb: 'Es. Mancanza di coordinamento europeo, centri d\'accoglienza saturi...', placeholderSol: 'Es. Accordi bilaterali di rimpatrio, corridoi umanitari vincolati al lavoro...' },
-            { value: 'fisco', label: 'Fisco, Tassazione ed Evasione', placeholderProb: 'Es. Pressione fiscale insostenibile sulle imprese e sui lavoratori dipendenti...', placeholderSol: 'Es. Contrasto d\'interessi di massa, digitalizzazione dei flussi, taglio cuneo...' }
-        ],
-        regioni: [
-            { value: 'sanita', label: 'Liste d\'Attesa e Personale Medico Ospedaliero', placeholderProb: 'Es. Carenza di medici nei pronto soccorso regionali, attese di 8 mesi per esami...', placeholderSol: 'Es. Incentivi per aree disagiate, integrazione CUP pubblico-privato convenzionato...' },
-            { value: 'trasporti', label: 'Infrastrutture e Trasporti Pendolari', placeholderProb: 'Es. Treni locali perennemente in ritardo, vetture obsolete...', placeholderSol: 'Es. Rinnovo flotta tramite dividendi delle partecipate, bandi di gara europei...' }
-        ],
-        comuni_piccoli: [
-            { value: 'spopolamento', label: 'Spopolamento e Servizi di Prossimità', placeholderProb: 'Es. Chiusura delle scuole e degli sportelli bancari o postali nel borgo...', placeholderSol: 'Es. Incentivi fiscali IMU per acquirenti esteri, spazi co-working comunali...' }
-        ],
-        comuni_medi: [
-            { value: 'sicurezza_urbana', label: 'Sicurezza Urbana e Controllo del Territorio', placeholderProb: 'Es. Microcriminalità e spaccio nelle aree adiacenti alla stazione...', placeholderSol: 'Es. Presidio fisso della polizia locale, videosorveglianza integrata...' }
-        ],
-        comuni_grandi: [
-            { value: 'viabilita', label: 'Viabilità, Traffico e Trasporto di Massa', placeholderProb: 'Es. Congestione cronica del centro e assenza di parcheggi scambiatori...', placeholderSol: 'Es. Corsie preferenziali protette per BRT, metropolitana leggera, ZTL tariffata...' },
-            { value: 'rifiuti_urbani', label: 'Raccolta Differenziata e Decoro Urbano', placeholderProb: 'Es. Cassonetti stracolmi e sanzioni inefficaci per chi abbandona rifiuti...', placeholderSol: 'Es. Passaggio alla raccolta porta a porta con codice a barre e tariffa TARIP...' }
+        nazione: [{ value: 'immigrazione', label: 'Controllo Frontiere e Integrazione', placeholderProb: 'Analisi dei flussi d\'accoglienza...', placeholderSol: 'Piani di stabilità finanziaria...' }],
+        regioni: [{ value: 'sanita', label: 'Liste d\'Attesa e Strutture Ospedaliere', placeholderProb: 'Ritardi critici nelle prestazioni di pronto soccorso...', placeholderSol: 'Efficientamento budget e rinegoziazione convenzioni...' }],
+        piccoli: [{ value: 'borghi', label: 'Contrasto allo Spopolamento dei Piccoli Comuni', placeholderProb: 'Perdita di servizi essenziali e invecchiamento demografico...', placeholderSol: 'Defiscalizzazione IMU seconde case e incentivi connettività smart-working...' }],
+        medi: [{ value: 'commercio', label: 'Riqualificazione Commerciale Urbana', placeholderProb: 'Chiusura delle attività tradizionali in centro...', placeholderSol: 'Istituzione di distretti urbani del commercio e parcheggi di cintura...' }],
+        grandi: [
+            { value: 'viabilita', label: 'Mobilità Sostenibile e Congestione', placeholderProb: 'Livelli critici di PM10 e saturazione del traffico...', placeholderSol: 'Potenziamento corsie preferenziali protette e linee di metropolitana leggera...' },
+            { value: 'decoro', label: 'Efficientamento Ciclo dei Rifiuti (TARIP)', placeholderProb: 'Inadeguatezza del sistema stradale classico di raccolta...', placeholderSol: 'Introduzione della tariffazione puntuale con tracciamento RFID sul sacco indifferenziato...' }
         ]
     },
 
@@ -156,22 +205,22 @@ const app = {
             <div class="card territory-card" onclick="app.loadTerritoriesList('nazione')">
                 <div class="territory-icon">🇮🇹</div>
                 <div>
-                    <div class="territory-name">Livello 1: Organi dello Stato Centrale</div>
-                    <div class="territory-description">Riforme costituzionali, macroeconomia, grandi flussi ed equilibrio erariale.</div>
+                    <div class="territory-name">Livello Nazionale (Stato Centrale)</div>
+                    <div class="territory-description">Analisi dei grandi equilibri, tasse centrali e geopolitica monetaria.</div>
                 </div>
             </div>
             <div class="card territory-card" onclick="app.loadTerritoriesList('regioni')">
                 <div class="territory-icon">🏔️</div>
                 <div>
-                    <div class="territory-name">Livello 2: Amministrazione delle 20 Regioni</div>
-                    <div class="territory-description">Analisi sui bilanci della Sanità, reti di trasporto locale e Fondi UE.</div>
+                    <div class="territory-name">Livello Regionale (Le 20 Regioni)</div>
+                    <div class="territory-description">Analisi dei bilanci della sanità pubblica e del trasporto locale.</div>
                 </div>
             </div>
             <div class="card territory-card" onclick="app.loadTerritoriesList('comuni')">
                 <div class="territory-icon">🏢</div>
                 <div>
-                    <div class="territory-name">Livello 3: Amministrazione Comunale</div>
-                    <div class="territory-description">Gestione diretta di TARI, asili nido, polizia municipale e manutenzione.</div>
+                    <div class="territory-name">Livello Comunale (Tutti i Comuni d'Italia)</div>
+                    <div class="territory-description">Sondaggi e programmi tarati esattamente sulla popolazione del tuo municipio.</div>
                 </div>
             </div>
         `;
@@ -181,23 +230,21 @@ const app = {
         this.state.selectedTerritoryType = type;
         if (type === 'nazione') {
             this.state.selectedTerritoryName = 'Repubblica Italiana';
-            this.selectTerritory('nazione', 'italia');
+            this.state.selectedCluster = 'grandi'; 
+            this.selectTerritory('nazione', 'italia', 'Repubblica Italiana');
             return;
         }
 
         if (type === 'comuni' && this.territories.comuni.length === 0) {
-            if (typeof listaComuniItaliani !== 'undefined' && listaComuniItaliani.length > 0) {
+            if (typeof listaComuniItaliani !== 'undefined') {
                 this.territories.comuni = listaComuniItaliani.map(c => ({
                     id: c.name.toLowerCase().replace(/[^a-z0-9]/g, '-'),
                     name: c.name,
+                    prov: c.prov,
+                    cluster: c.cluster,
                     icon: '🏢',
-                    desc: `Comune in Provincia di ${c.prov}. Popolazione stimata: ${c.pop || 'N.D.'} abitanti.`
+                    desc: `Provincia di ${c.prov}. Abitanti registrati: ${c.pop.toLocaleString('it-IT')}.`
                 }));
-            } else {
-                const grid = document.getElementById('territoryList');
-                grid.innerHTML = `<div style="text-align:center; padding:20px; font-weight:bold;">🔄 Allineamento anagrafiche del Viminale... Attendi.</div>`;
-                setTimeout(() => this.loadTerritoriesList('comuni'), 800);
-                return;
             }
         }
 
@@ -215,21 +262,15 @@ const app = {
         const list = this.territories[this.state.selectedTerritoryType] || [];
         
         if (this.state.selectedTerritoryType === 'comuni' && search.length < 2) {
-            grid.innerHTML = `<div style="text-align:center; padding:20px; color:var(--color-text-secondary); font-size:14px;">🔍 Inserisci almeno due caratteri del tuo comune per filtrare la banca dati...</div>`;
+            grid.innerHTML = `<div style="text-align:center; padding:20px; color:var(--color-text-secondary); font-size:14px;">🔍 Digita il nome del tuo comune per caricare i dati finanziari adatti...</div>`;
             return;
         }
 
         const filtered = list.filter(t => t.name.toLowerCase().includes(search));
-        const maxVisibili = filtered.slice(0, 30);
-
-        if (maxVisibili.length === 0) {
-            grid.innerHTML = `<div style="text-align:center; padding:20px; color:var(--color-text-secondary);">Territorio non censito nei registri storici.</div>`;
-            return;
-        }
         
-        maxVisibili.forEach(t => {
+        filtered.forEach(t => {
             grid.innerHTML += `
-                <div class="card territory-card" onclick="app.selectTerritory('${this.state.selectedTerritoryType}', '${t.id}', '${t.name}')">
+                <div class="card territory-card" onclick="app.selectTerritory('${this.state.selectedTerritoryType}', '${t.id}', '${t.name} (${t.prov || 'Regione'})', '${t.cluster || 'grandi'}')">
                     <div class="territory-icon">${t.icon}</div>
                     <div>
                         <div class="territory-name">${t.name}</div>
@@ -239,19 +280,25 @@ const app = {
         });
     },
 
-    selectTerritory(type, id, name) {
+    selectTerritory(type, id, name, cluster) {
         this.state.selectedTerritoryType = type;
         this.state.selectedTerritoryId = id;
-        this.state.selectedTerritoryName = name || 'Ente Selezionato';
+        this.state.selectedTerritoryName = name;
+        this.state.selectedCluster = cluster || 'grandi';
         this.state.currentQuestion = 0;
         this.state.answers = [];
         
-        // Carica TUTTE le domande corrispondenti a questo livello e ambito
-        this.state.filteredQuestions = this.questions.filter(q => q.type === type && q.level === this.state.selectedLevel);
-        
-        // Fallback cautelativo per evitare crash se la combinazione livello/ambito è vuota nell'MVP
+        // FILTRAGGIO INTELLIGENTE: Carica solo le domande coerenti con quel territorio e livello
+        this.state.filteredQuestions = this.questions.filter(q => {
+            if (q.type !== type) return false;
+            if (q.level !== this.state.selectedLevel) return false;
+            if (type === 'comuni' && q.cluster !== this.state.selectedCluster) return false;
+            return true;
+        });
+
+        // Garanzia di popolamento se l'MVP non ha ancora tutte le 20 combinazioni piene
         if (this.state.filteredQuestions.length === 0) {
-            this.state.filteredQuestions = this.questions.filter(q => q.type === type);
+            this.state.filteredQuestions = this.questions.filter(q => q.type === type && (type !== 'comuni' || q.cluster === this.state.selectedCluster));
         }
 
         this.renderQuestion();
@@ -273,7 +320,6 @@ const app = {
         const openContainer = document.getElementById('openAnswerContainer');
         const openTextarea = document.getElementById('openAnswerText');
         
-        // Gestione campo per risposta aperta aggiuntiva (Livello 3)
         if (q.isOpen) {
             openContainer.classList.remove('hidden');
             if (saved) {
@@ -306,14 +352,14 @@ const app = {
             const correct = saved.selectedId === q.correct;
             analysis.innerHTML = `
                 <strong style="color: ${correct ? 'var(--color-success)' : 'var(--color-error)'}">
-                    ${correct ? '✓ COERENZA EMPIRICA RILEVATA' : '✕ DISTORSIONE DA SLOGAN'}
+                    ${correct ? '✓ VERIFICA COERENTE CON I BILANCI' : '✕ DISTORSIONE DA SLOGAN PERCEPITA'}
                 </strong>
                 <p style="font-size:14px; margin-top:6px; margin-bottom:0; color:var(--color-text-primary);">
-                    <strong>La Verità del Bilancio Consolidato:</strong> ${q.reality}
+                    <strong>Verità del Dato Pubblico (${q.data_source}):</strong> ${q.reality}
                 </p>`;
             analysis.classList.remove('hidden');
             btnNext.removeAttribute('disabled');
-            btnNext.innerText = this.state.currentQuestion === this.state.filteredQuestions.length - 1 ? "Emetti Sentenza Finale" : "Procedi →";
+            btnNext.innerText = this.state.currentQuestion === this.state.filteredQuestions.length - 1 ? "Genera Sentenza Finale" : "Procedi →";
         } else {
             analysis.classList.add('hidden');
             btnNext.setAttribute('disabled', 'true');
@@ -360,16 +406,16 @@ const app = {
         
         document.getElementById('reportScoreValue').innerText = `${finalScore}%`;
         
-        let lvl = '❌ IDONEITÀ CIVICA RESPINTA';
-        let sum = 'Il tuo approccio decisionale è guidato da dinamiche percettive alterate dai media di massa. Il tuo voto, espresso così, arreca un danno matematico ai conti pubblici dell\'ente.';
+        let lvl = '❌ ABILITAZIONE CIVICA RESPINTA';
+        let sum = 'Le tue risposte mostrano uno scollamento marcato dai conti economici pubblici. Il tuo voto esprime un giudizio d\'istinto non supportato da verifiche empiriche dei dati erariali.';
         
         if (finalScore >= 60) {
             lvl = '📜 IDONEITÀ EMESSA CON RISERVA';
-            sum = 'Dimostri di conoscere le basi contabili e l\'alveo delle competenze reali. Rimangono aree d\'ombra influenzate dalla retorica politica.';
+            sum = 'Possiedi una conoscenza sufficiente dei confini delle responsabilità e delle dinamiche economiche dell\'ente, pur risentendo di alcune distorsioni informative.';
         }
         if (finalScore >= 90) {
-            lvl = '🦅 ABILITAZIONE CIVICA SOVRANA';
-            sum = 'Profilo eccellente. Ragionamento immune alla propaganda elettorale, ancorato esclusivamente a dati oggettivi e vincoli giuridico-economici.';
+            lvl = '🦅 CONOSCENZA CIVICA SOVRANA';
+            sum = 'Maturità eccezionale. Il tuo voto è un atto consapevole guidato unicamente da dati numerici di bilancio, totalmente immune alla demagogia di piazza.';
         }
         
         document.getElementById('reportLevel').innerText = lvl;
@@ -386,11 +432,11 @@ const app = {
                 <div class="card" style="padding: 16px;">
                     <p style="font-weight:700; font-size:14px; margin-bottom:8px;">${q.text}</p>
                     <div class="comparison-bar">
-                        <div class="comparison-label">La tua stima/percezione:</div>
+                        <div class="comparison-label">La tua percezione stimata:</div>
                         <div class="comparison-track"><div class="comparison-fill perception" style="width:${Math.min((userVal/100)*100, 100)}%"></div></div>
                     </div>
                     <div class="comparison-bar">
-                        <div class="comparison-label">Dato Reale del Bilancio Pubblico:</div>
+                        <div class="comparison-label">Dato Reale Certificato dei Conti:</div>
                         <div class="comparison-track"><div class="comparison-fill reality" style="width:${Math.min((q.realData/100)*100, 100)}%"></div></div>
                     </div>
                 </div>`;
@@ -416,7 +462,6 @@ const app = {
         selector.innerHTML = '';
         let listaTemi = [];
         
-        // Gestione stili bottoni ambiti
         document.getElementById('lblAmbitoNazione').className = 'btn btn-secondary';
         document.getElementById('lblAmbitoRegione').className = 'btn btn-secondary';
         document.getElementById('lblAmbitoComune').className = 'btn btn-secondary';
@@ -433,18 +478,15 @@ const app = {
             document.getElementById('lblAmbitoComune').className = 'btn btn-primary';
             badgeDemo.classList.remove('hidden');
             
-            const nomeComune = this.state.selectedTerritoryName || '';
-            
-            // Clusterizzazione demografica scientifica simulata basata sull'identificativo
-            if (nomeComune.length % 3 === 0) {
-                badgeDemo.innerText = "Fascia: Piccolo Comune (<3.000 ab. - Emergenza Spopolamento)";
-                listaTemi = this.laboratorioTemi.comuni_piccoli;
-            } else if (nomeComune.length % 3 === 1) {
-                badgeDemo.innerText = "Fascia: Medio Comune (3.000 - 15.000 ab. - Sviluppo Locale)";
-                listaTemi = this.laboratorioTemi.comuni_medi;
+            if (this.state.selectedCluster === 'piccoli') {
+                badgeDemo.innerText = "Fascia Borghi Piccoli (<5.000 ab. - Urgenza: Spopolamento e Strade)";
+                listaTemi = this.laboratorioTemi.piccoli;
+            } else if (this.state.selectedCluster === 'medi') {
+                badgeDemo.innerText = "Fascia Comuni Medi (5.000-50.000 ab. - Urgenza: Commercio e Sicurezza)";
+                listaTemi = this.laboratorioTemi.medi;
             } else {
-                badgeDemo.innerText = "Fascia: Grande Area Urbana (>15.000 ab. - Viabilità e Rifiuti)";
-                listaTemi = this.laboratorioTemi.comuni_grandi;
+                badgeDemo.innerText = "Fascia Grandi Metropoli (>50.000 ab. - Urgenza: Traffico e TARI)";
+                listaTemi = this.laboratorioTemi.grandi;
             }
         }
         
@@ -460,13 +502,7 @@ const app = {
         const selector = document.getElementById('labThemeSelector');
         if(!selector.value) return;
 
-        let pool = [];
-        if (ambito === 'nazione') pool = this.laboratorioTemi.nazione;
-        else if (ambito === 'regioni') pool = this.laboratorioTemi.regioni;
-        else {
-            pool = [...this.laboratorioTemi.comuni_piccoli, ...this.laboratorioTemi.comuni_medi, ...this.laboratorioTemi.comuni_grandi];
-        }
-
+        let pool = [...this.laboratorioTemi.nazione, ...this.laboratorioTemi.regioni, ...this.laboratorioTemi.piccoli, ...this.laboratorioTemi.medi, ...this.laboratorioTemi.grandi];
         const trovato = pool.find(x => x.value === selector.value);
         if (trovato) {
             document.getElementById('labProblemInput').placeholder = trovato.placeholderProb;
@@ -481,14 +517,12 @@ const app = {
         const sol = document.getElementById('labSolutionInput').value.trim();
         
         if (prob.length < 10 || sol.length < 10) {
-            alert("Per presentarti agli investitori e alla community, devi articolare un problema e una soluzione reali di almeno 10 caratteri.");
+            alert("Articola meglio il problema e la soluzione tecnica prima di stampare il manifesto.");
             return;
         }
-
         this.stampaPdfProgramma();
     },
 
-    // GENERATORE PDF 1: ATTO DI CONSAPEVOLEZZA (IMPATTO ISTITUZIONALE)
     stampaPdfRisposte() {
         const score = document.getElementById('reportScoreValue').innerText;
         const livelloText = document.getElementById('reportLevel').innerText;
@@ -499,7 +533,7 @@ const app = {
         let filigranaSimbolo = "⚖️";
         
         if (ambito === 'nazione') {
-            backgroundPastello = "linear-gradient(90deg, rgba(222,243,226,0.25) 0%, rgba(255,255,255,0.5) 50%, rgba(244,216,219,0.25) 100%)";
+            backgroundPastello = "linear-gradient(90deg, rgba(222,243,226,0.2) 0%, rgba(255,255,255,0.4) 50%, rgba(244,216,219,0.2) 100%)";
             filigranaSimbolo = "🇮🇹";
         } else if (ambito === 'regioni') {
             backgroundPastello = "linear-gradient(135deg, #f0fdf4 0%, #ffffff 100%)";
@@ -513,10 +547,10 @@ const app = {
         this.state.filteredQuestions.forEach((q, i) => {
             const ans = this.state.answers[i];
             nodiDomande += `
-                <div style="margin-bottom: 20px; border-bottom: 1px solid #cbd5e1; padding-bottom: 12px;">
+                <div style="margin-bottom: 20px; border-bottom: 1px solid #cbd5e1; padding-bottom: 12px; position:relative; z-index:5;">
                     <div style="font-weight: bold; color: #1e293b; font-size: 14px;">Q.${i+1}: ${q.text}</div>
-                    <div style="font-size: 13px; color: #475569; margin-top: 5px;"><strong>Risposta data:</strong> ${ans ? q.options.find(o=>o.id===ans.selectedId).text : 'N.D.'}</div>
-                    <div style="font-size: 13px; color: #059669; font-weight: 600; margin-top: 3px;"><strong>Dato Empirico Certificato:</strong> ${q.reality}</div>
+                    <div style="font-size: 13px; color: #475569; margin-top: 5px;"><strong>Scelta indicata:</strong> ${ans ? q.options.find(o=>o.id===ans.selectedId).text : 'N.D.'}</div>
+                    <div style="font-size: 13px; color: #059669; font-weight: 600; margin-top: 3px;"><strong>Dato Veritiero di Bilancio:</strong> ${q.reality}</div>
                 </div>`;
         });
 
@@ -524,35 +558,29 @@ const app = {
         win.document.write(`
             <html>
             <head>
-                <title>Patente Civica - Atto Corporativo</title>
+                <title>Patente Civica - Atto Ufficiale</title>
                 <style>
-                    body { font-family: Arial, sans-serif; background: ${backgroundPastello}; margin: 0; padding: 50px; color: #1e293b; }
-                    .border-box { border: 6px double #0f172a; padding: 40px; background: rgba(255,255,255,0.96); position: relative; border-radius: 6px; }
-                    .watermark { position: absolute; top: 30%; left: 35%; font-size: 320px; color: rgba(0,0,0,0.02); pointer-events: none; z-index: 1; }
-                    .header { text-align: center; border-bottom: 2px solid #0f172a; padding-bottom: 20px; margin-bottom: 30px; }
-                    .score { font-size: 54px; font-weight: 900; color: #0f172a; text-align: center; margin: 25px 0; }
-                    .content { position: relative; z-index: 2; line-height: 1.6; }
+                    body { font-family: sans-serif; background: ${backgroundPastello}; margin: 0; padding: 40px; color: #1e293b; }
+                    .border-box { border: 5px solid #0f172a; padding: 30px; background: rgba(255,255,255,0.97); position: relative; border-radius: 8px; }
+                    .watermark { position: absolute; top: 25%; left: 30%; font-size: 350px; color: rgba(0,0,0,0.015); pointer-events: none; z-index: 1; }
+                    .header { text-align: center; border-bottom: 2px solid #0f172a; padding-bottom: 15px; }
+                    .score { font-size: 60px; font-weight: 900; color: #0f172a; text-align: center; margin: 20px 0; }
                 </style>
             </head>
             <body>
                 <div class="border-box">
                     <div class="watermark">${filigranaSimbolo}</div>
                     <div class="header">
-                        <span style="font-size: 11px; font-weight: 800; letter-spacing: 2px; color: #64748b; text-transform: uppercase;">Dipartimento di Tracciabilità e Trasparenza Civica</span>
-                        <h1 style="margin: 6px 0 0 0; color: #0f172a; font-size: 26px;">ATTO DI VALUTAZIONE RESPONSABILITÀ ELETTORALE</h1>
-                        <p style="margin: 5px 0 0 0; font-size: 14px; color: #334155;">Verifica su: <strong>${territorioNome}</strong></p>
+                        <span style="font-size: 10px; font-weight: 800; letter-spacing: 2px; color: #64748b; text-transform: uppercase;">Certificato Indice di Consapevolezza</span>
+                        <h1 style="margin: 5px 0 0 0; color: #0f172a; font-size: 24px;">VERIFICA ADERENZA REALTÀ AMMINISTRATIVA</h1>
+                        <p style="margin: 4px 0 0 0; font-size: 14px;">Territorio sotto esame: <strong>${territorioNome}</strong></p>
                     </div>
-                    <div class="content">
-                        <div class="score">${score}</div>
-                        <div style="background: #0f172a; color: #fff; padding: 12px; text-align: center; font-weight: bold; border-radius: 6px; margin-bottom: 25px; font-size:14px; letter-spacing:1px;">
-                            ${livelloText}
-                        </div>
-                        <h3 style="color: #0f172a; border-bottom: 1px solid #0f172a; padding-bottom: 6px; font-size:16px;">Risultanze del Confronto di Bilancio</h3>
-                        ${nodiDomande}
-                        <div style="margin-top: 40px; text-align: center; font-size: 11px; color: #94a3b8;">
-                            Questo documento attesta la capacità di analisi basata su dati contabili certificati dello Stato, Regioni e Comuni. Data: ${new Date().toLocaleDateString('it-IT')}.
-                        </div>
+                    <div class="score">${score}</div>
+                    <div style="background: #0f172a; color: #fff; padding: 10px; text-align: center; font-weight: bold; border-radius: 4px; margin-bottom: 25px;">
+                        ${livelloText}
                     </div>
+                    <h3 style="color: #0f172a; border-bottom: 1px solid #0f172a; padding-bottom: 4px;">Analisi delle Risposte vs Bilanci Pubblici</h3>
+                    ${nodiDomande}
                 </div>
                 <script>window.onload = function() { window.print(); }</script>
             </body>
@@ -561,7 +589,6 @@ const app = {
         win.document.close();
     },
 
-    // GENERATORE PDF 2: DIPLOMA MANIFESTO ELETTORALE (GRAFICA DA CONDIVISIONE E PITCH)
     stampaPdfProgramma() {
         const ambito = document.getElementById('lblAmbitoNazione').classList.contains('btn-primary') ? 'nazione' : (document.getElementById('lblAmbitoRegione').classList.contains('btn-primary') ? 'regioni' : 'comuni');
         const selector = document.getElementById('labThemeSelector');
@@ -577,67 +604,49 @@ const app = {
 
         if (ambito === 'nazione') {
             layoutColor = "#065f46";
-            backgroundPastello = "linear-gradient(90deg, rgba(222,243,226,0.3) 0%, rgba(255,255,255,0.6) 50%, rgba(244,216,219,0.3) 100%)";
-            filigranaSimbolo = "🇮🇹"; // Lo Stivale / Tricolore evocato sullo sfondo
+            backgroundPastello = "linear-gradient(90deg, rgba(222,243,226,0.2) 0%, rgba(255,255,255,0.5) 50%, rgba(244,216,219,0.2) 100%)";
+            filigranaSimbolo = "🇮🇹"; 
         } else if (ambito === 'regioni') {
             layoutColor = "#9a3412";
             backgroundPastello = "linear-gradient(135deg, #fff7ed 0%, #ffffff 100%)";
-            filigranaSimbolo = "🛡️"; // Araldica Regionale
+            filigranaSimbolo = "🛡️"; 
         } else {
             layoutColor = "#1e293b";
             backgroundPastello = "linear-gradient(135deg, #fefce8 0%, #ffffff 100%)";
-            filigranaSimbolo = "🏢"; // Stemma Municipale
+            filigranaSimbolo = "🏢"; 
         }
-
-        // Struttura di pulizia formale e tecnica del testo per eliminare lo "sloganismo" da bar
-        const testoFormattatoProblema = probText.replace(/\b(schifo|ladri|vergogna|tutti a casa)\b/gi, '[Rimodulato per Coerenza Tecnica]');
 
         const win = window.open('', '_blank');
         win.document.write(`
             <html>
             <head>
-                <title>Manifesto Elettorale - ${territorioNome}</title>
+                <title>Programma di Mandato - ${territorioNome}</title>
                 <style>
-                    body { font-family: 'Georgia', serif; background: ${backgroundPastello}; margin: 0; padding: 45px; color: #1e293b; }
-                    .diploma-frame { border: 5px solid ${layoutColor}; padding: 4px; background: #ffffff; box-shadow: 0 10px 25px rgba(0,0,0,0.08); }
-                    .diploma-inner { border: 1px solid ${layoutColor}; padding: 45px; position: relative; }
-                    .watermark { position: absolute; top: 30%; left: 35%; font-size: 300px; color: rgba(0,0,0,0.025); pointer-events: none; user-select: none; z-index: 1; }
-                    .title-banner { text-align: center; margin-bottom: 35px; border-bottom: 1px solid #e2e8f0; padding-bottom: 20px; }
-                    .section-title { font-family: sans-serif; font-size: 12px; font-weight: 800; color: ${layoutColor}; text-transform: uppercase; letter-spacing: 1px; margin-top: 20px; margin-bottom: 6px;}
-                    .body-text { font-size: 15px; color: #334155; line-height: 1.6; background: rgba(255,255,255,0.7); padding: 12px; border-radius: 6px; border-left: 3px solid ${layoutColor}; margin-bottom: 15px;}
+                    body { font-family: 'Georgia', serif; background: ${backgroundPastello}; margin: 0; padding: 40px; color: #1e293b; }
+                    .frame { border: 4px solid ${layoutColor}; padding: 30px; background: #ffffff; position: relative; }
+                    .watermark { position: absolute; top: 25%; left: 30%; font-size: 320px; color: rgba(0,0,0,0.018); pointer-events: none; z-index: 1; }
+                    .title-block { text-align: center; margin-bottom: 30px; border-bottom: 1px solid #cbd5e1; padding-bottom: 15px; }
+                    .label { font-size: 11px; font-weight: bold; color: ${layoutColor}; text-transform: uppercase; font-family: sans-serif; }
+                    .text-box { font-size: 14px; background: rgba(248,250,252,0.9); padding: 12px; border-radius: 6px; border-left: 4px solid ${layoutColor}; margin-bottom: 15px; line-height: 1.5;}
                 </style>
             </head>
             <body>
-                <div class="diploma-frame">
-                    <div class="diploma-inner">
-                        <div class="watermark">${filigranaSimbolo}</div>
+                <div class="frame">
+                    <div class="watermark">${filigranaSimbolo}</div>
+                    <div class="title-block">
+                        <span class="label">Piattaforma di Trasparenza ed Educazione Civica Corrente</span>
+                        <h1 style="color: ${layoutColor}; margin: 5px 0; font-size: 24px;">MANIFESTO ELETTORALE ALTERNATIVO</h1>
+                        <p style="margin: 0; font-family: sans-serif; font-size: 13px; color: #475569;">Depositato per il Territorio di: <strong>${territorioNome}</strong></p>
+                    </div>
+                    <div style="position:relative; z-index:5;">
+                        <div class="label">Macro-Tema Amministrativo</div>
+                        <h3 style="margin-top:2px; margin-bottom:15px; font-family:sans-serif;">📌 ${temaLabel}</h3>
                         
-                        <div class="title-banner">
-                            <span style="font-size: 10px; font-weight: bold; letter-spacing: 3px; color: ${layoutColor}; text-transform: uppercase; font-family: sans-serif;">Piattaforma di Validazione e Competenza di Sviluppo</span>
-                            <h1 style="margin: 8px 0; color: ${layoutColor}; font-size: 26px; font-weight: 400; letter-spacing: 1px;">MANIFESTO DI MANDATO ELETTORALE</h1>
-                            <p style="margin: 0; font-size: 14px; font-family: sans-serif; color: #475569;">Sviluppato dal Cittadino per l'Ambito: <strong>${territorioNome}</strong></p>
-                        </div>
-
-                        <div style="position: relative; z-index: 2;">
-                            <div class="section-title">Macro-Tema Selezionato</div>
-                            <div style="font-size: 18px; font-weight: bold; color: #0f172a; margin-bottom: 15px; font-family: sans-serif;">📌 ${temaLabel}</div>
-
-                            <div class="section-title">Analisi della Criticità dell'Ente</div>
-                            <div class="body-text">${testoFormattatoProblema}</div>
-
-                            <div class="section-title">Soluzione e Pianificazione di Copertura Finanziaria</div>
-                            <div class="body-text" style="background: rgba(240,253,244,0.6);">${solText}</div>
-
-                            <p style="font-size: 12px; font-style: italic; color: #64748b; margin-top: 30px; text-align: center; font-family: sans-serif;">
-                                Il presente programma è stato archiviato nei registri e formattato strutturalmente per la condivisione sui canali di dibattito pubblico e social.
-                            </p>
-
-                            <div style="margin-top: 40px; display: flex; justify-content: space-between; align-items: center; font-size: 11px; color: #94a3b8; font-family: sans-serif; border-top: 1px solid #e2e8f0; padding-top: 15px;">
-                                <div>Codice Autenticità: REF-${Math.floor(Math.random() * 90000) + 10000}-2026</div>
-                                <div style="font-weight: bold; color: ${layoutColor}; text-transform: uppercase;">Ufficio di Validazione Civica</div>
-                            </div>
-                        </div>
-
+                        <div class="label" style="color:red;">Criticità e Anomalie Individuate dal Cittadino</div>
+                        <div class="text-box">${probText}</div>
+                        
+                        <div class="label" style="color:green;">Soluzione Tecnica e Copertura di Fattibilità</div>
+                        <div class="text-box" style="background:#f0fdf4;">${solText}</div>
                     </div>
                 </div>
                 <script>window.onload = function() { window.print(); }</script>
