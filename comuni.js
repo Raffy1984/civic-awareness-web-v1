@@ -1,81 +1,65 @@
-// DATABASE ANAGRAFICO DEI COMUNI ITALIANI CON ASSEGNAZIONE DI CLUSTER DEMOGRAFICO
-// Dati estratti e modellati su base ISTAT per la pertinenza territoriale delle funzioni dell'App
+// Funzione per caricare TUTTI i comuni italiani da un'API pubblica open-data
+export async function caricaTuttiIComuni() {
+    try {
+        // Utilizziamo un endpoint open-source affidabile per i comuni italiani
+        const response = await fetch('https://raw.githubusercontent.com/matteocontrini/comuni-italiani/master/comuni.json');
+        if (!response.isOk && response.status !== 200) {
+            throw new Error("Impossibile scaricare l'elenco dei comuni.");
+        }
+        const comuni = await response.json();
+        
+        // Mappiamo i dati per averli pronti con Nome, Regione, Provincia
+        return comuni.map(c => ({
+            nome: c.nome,
+            regione: c.regione,
+            provincia: c.provincia.nome,
+            sigla: c.provincia.sigla
+        }));
+    } catch (error) {
+        console.error("Errore nel caricamento del database comuni:", error);
+        // Fallback locale di emergenza se l'API è offline
+        return [
+            { nome: "Roma", regione: "Lazio", provincia: "Roma", sigla: "RM" },
+            { nome: "Milano", regione: "Lombardia", provincia: "Milano", sigla: "MI" }
+        ];
+    }
+}
 
-const listaComuniItaliani = [
-    // --- METROPOLI E GRANDI AREE URBANE (>50.000 ab. - Focus: Viabilità, TARI complessa, Sicurezza) ---
-    { name: "Roma", prov: "RM", pop: 2760000, cluster: "grandi" },
-    { name: "Milano", "prov": "MI", pop: 1370000, cluster: "grandi" },
-    { name: "Napoli", "prov": "NA", pop: 913000, cluster: "grandi" },
-    { name: "Torino", "prov": "TO", pop: 841000, cluster: "grandi" },
-    { name: "Palermo", "prov": "PA", pop: 630000, cluster: "grandi" },
-    { name: "Genova", "prov": "GE", pop: 558000, cluster: "grandi" },
-    { name: "Bologna", "prov": "BO", pop: 390000, cluster: "grandi" },
-    { name: "Firenze", "prov": "FI", pop: 361000, cluster: "grandi" },
-    { name: "Bari", "prov": "BA", pop: 316000, cluster: "grandi" },
-    { name: "Catania", "prov": "CT", pop: 298000, cluster: "grandi" },
-    { name: "Venezia", "prov": "VE", pop: 250000, cluster: "grandi" },
-    { name: "Verona", "prov": "VR", pop: 255000, cluster: "grandi" },
-    { name: "Messina", "prov": "ME", pop: 220000, cluster: "grandi" },
-    { name: "Padova", "prov": "PD", pop: 206000, cluster: "grandi" },
-    { name: "Trieste", "prov": "TS", pop: 200000, cluster: "grandi" },
-    { name: "Brescia", "prov": "BS", pop: 196000, cluster: "grandi" },
-    { name: "Taranto", "prov": "TA", pop: 189000, cluster: "grandi" },
-    { name: "Prato", "prov": "PO", pop: 193000, cluster: "grandi" },
-    { name: "Modena", "prov": "MO", pop: 184000, cluster: "grandi" },
-    { name: "Reggio Calabria", "prov": "RC", pop: 171000, cluster: "grandi" },
-    { name: "Reggio Emilia", "prov": "RE", pop: 169000, cluster: "grandi" },
-    { name: "Perugia", "prov": "PG", pop: 162000, cluster: "grandi" },
-    { name: "Livorno", "prov": "LI", pop: 153000, cluster: "grandi" },
-    { name: "Ravenna", "prov": "RA", pop: 156000, cluster: "grandi" },
-    { name: "Cagliari", "prov": "CA", pop: 149000, cluster: "grandi" },
-    { name: "Foggia", "prov": "FG", pop: 146000, cluster: "grandi" },
-    { name: "Rimini", "prov": "RN", pop: 147000, cluster: "grandi" },
-    { name: "Salerno", "prov": "SA", pop: 128000, cluster: "grandi" },
-    { name: "Ferrara", "prov": "FE", pop: 129000, cluster: "grandi" },
-    { name: "Sassari", "prov": "SS", pop: 122000, cluster: "grandi" },
-    { name: "Latina", "prov": "LT", pop: 126000, cluster: "grandi" },
-    { name: "Monza", "prov": "MB", pop: 122000, cluster: "grandi" },
-    { name: "Siracusa", "prov": "SR", pop: 116000, cluster: "grandi" },
-    { name: "Pescara", "prov": "PE", pop: 119000, cluster: "grandi" },
-    { name: "Bergamo", "prov": "BG", pop: 119000, cluster: "grandi" },
-    { name: "Forlì", "prov": "FC", pop: 116000, cluster: "grandi" },
-    { name: "Trento", "prov": "TN", pop: 118000, cluster: "grandi" },
-    { name: "Vicenza", "prov": "VI", pop: 110000, cluster: "grandi" },
-    { name: "Terni", "prov": "TR", pop: 106000, cluster: "grandi" },
-    { name: "Bolzano", "prov": "BZ", pop: 107000, cluster: "grandi" },
-    { name: "Novara", "prov": "NO", pop: 101000, cluster: "grandi" },
-    { name: "Piacenza", "prov": "PC", pop: 102000, cluster: "grandi" },
-    { name: "Ancona", "prov": "AN", pop: 98000, cluster: "grandi" },
-    { name: "Andria", "prov": "BT", "pop": 97000, cluster: "grandi" },
-    { name: "Udine", "prov": "UD", "pop": 97000, cluster: "grandi" },
-    { name: "Arezzo", "prov": "AR", "pop": 96000, cluster: "grandi" },
-    { name: "Cesena", "prov": "FC", "pop": 96000, cluster: "grandi" },
-    { name: "Lecce", "prov": "LE", "pop": 94000, cluster: "grandi" },
+// Generatore dinamico di quiz basato sul livello (Comune, Regione, Nazione)
+export function generaQuiz(livello, entita) {
+    // Database di modelli di domande che si adattano dinamicamente a QUALSIASI comune o regione
+    const databaseDomande = {
+        comunali: [
+            {
+                domanda: `Qual è l'organo principale che approva il bilancio del Comune di ${entita}?`,
+                opzioni: ["Il Consiglio Comunale", "La Giunta", "Il Sindaco da solo", "Il Prefetto"],
+                risposta: 0,
+                spiegazione: "Il Consiglio Comunale rappresenta l'organo di indirizzo e controllo politico-amministrativo del Comune."
+            },
+            {
+                domanda: `Chi nomina gli assessori che compongono la Giunta a ${entita}?`,
+                opzioni: ["Il Consiglio", "Il Sindaco", "I Cittadini tramite voto", "La Regione"],
+                risposta: 1,
+                spiegazione: "Gli assessori sono nominati direttamente dal Sindaco, che può anche revocare le loro deleghe."
+            }
+        ],
+        regionali: [
+            {
+                domanda: `Quale di queste materie è di competenza concorrente o esclusiva della Regione ${entita}?`,
+                opzioni: ["Politica Estera", "Tutela della Salute e Sanità", "Forze Armate", "Moneta e Battere moneta"],
+                risposta: 1,
+                spiegazione: "La gestione e l'organizzazione del Servizio Sanitario è una delle principali competenze delle Regioni."
+            }
+        ],
+        nazionali: [
+            {
+                domanda: "In Italia, da quanti membri è composto attualmente il Parlamento (Deputati + Senatori elettivi)?",
+                opzioni: ["945", "630", "600", "500"],
+                risposta: 2,
+                spiegazione: "A seguito della riforma costituzionale, i deputati sono 400 e i senatori elettivi sono 200, per un totale di 600."
+            }
+        ]
+    };
 
-    // --- COMUNI MEDI (5.000 - 50.000 ab. - Focus: Commercio locale, Sicurezza urbana, Sviluppo) ---
-    { name: "Voghera", "prov": "PV", pop: 39000, cluster: "medi" },
-    { name: "Chieri", "prov": "TO", pop: 36000, cluster: "medi" },
-    { name: "Saronno", "prov": "VA", pop: 38000, cluster: "medi" },
-    { name: "Olbia", "prov": "SS", pop: 61000, cluster: "medi" },
-    { name: "Faenza", "prov": "RA", pop: 58000, cluster: "medi" },
-    { name: "Sanremo", "prov": "IM", pop: 52000, cluster: "medi" },
-    { name: "Alghero", "prov": "SS", pop: 43000, cluster: "medi" },
-    { name: "Rovereto", "prov": "TN", pop: 40000, cluster: "medi" },
-    { name: "Osimo", "prov": "AN", pop: 35000, cluster: "medi" },
-    { name: "Alba", "prov": "CN", pop: 31000, cluster: "medi" },
-    { name: "Cantù", "prov": "CO", pop: 40000, cluster: "medi" },
-
-    // --- PICCOLI COMUNI (<5.000 ab. - Focus: Spopolamento, Strade montane, Taglio servizi essenziali) ---
-    { name: "Morfasso", "prov": "PC", pop: 890, cluster: "piccoli" },
-    { name: "Barolo", "prov": "CN", pop: 720, cluster: "piccoli" },
-    { name: "Portofino", "prov": "GE", pop: 380, cluster: "piccoli" },
-    { name: "Vezza d'Alba", "prov": "CN", pop: 2300, cluster: "piccoli" },
-    { name: "Orvinio", "prov": "RI", pop: 390, cluster: "piccoli" },
-    { name: "Pacentro", "prov": "AQ", pop: 1100, cluster: "piccoli" },
-    { name: "Sperlinga", "prov": "EN", pop: 680, cluster: "piccoli" },
-    { name: "Bova", "prov": "RC", pop: 420, cluster: "piccoli" },
-    { name: "Craco", "prov": "MT", pop: 650, cluster: "piccoli" },
-    { name: "Sutera", "prov": "CL", pop: 1300, cluster: "piccoli" },
-    { name: "Macugnaga", "prov": "VB", pop: 540, cluster: "piccoli" },
-    { name: "Cogne", "prov": "AO", pop: 1360, cluster: "piccoli" }
-];
+    return databaseDomande[livello] || databaseDomande.nazionali;
+}
