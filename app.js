@@ -1,221 +1,190 @@
-// 1. DATABASE ESPANSO DELLE DOMANDE (Percezione vs Realtà)
-const databaseDomande = [
-    {
-        id: "bil1",
-        sezione: "Bilancio e Finanze",
-        testo: "Qual è la principale voce di spesa corrente nel bilancio del tuo Comune?",
-        opzioni: [
-            { testo: "Personale e macchina amministrativa", corretta: true, feedback: "Esatto. Spesso oltre il 35% delle risorse correnti va nella gestione interna del personale.", impatto: "Ottimizzazione della macchina comunale, digitalizzazione dei processi amministrativi e riduzione dei tempi di attesa per i cittadini." },
-            { testo: "Manutenzione di strade e verde pubblico", corretta: false, feedback: "Falso. Questa è spesa in conto capitale o, purtroppo, spesso sotto-finanziata.", impatto: "Piano straordinario di manutenzione stradale con reperimento di fondi extra-bilancio e monitoraggio costante dell'asfalto." },
-            { testo: "Servizi culturali e turismo", corretta: false, feedback: "Magari! Nei piccoli comuni spesso non supera il 2-3% del bilancio totale.", impatto: "Rilancio dell'attrattività culturale tramite reti di partenariato pubblico-privato e sponsorizzazioni." }
-        ]
-    },
-    {
-        id: "bil2",
-        sezione: "Bilancio e Finanze",
-        testo: "A quanto ammonta mediamente l'indebitamento pro-capite nei piccoli comuni italiani?",
-        opzioni: [
-            { testo: "Circa 300-500€ per cittadino", corretta: true, feedback: "Corretto. È una media nazionale che condiziona pesantemente la capacità di fare nuovi investimenti.", impatto: "Piano pluriennale di rientro del debito e rinegoziazione dei mutui storici con Cassa Depositi e Prestiti." },
-            { testo: "Quasi zero, sono tutti virtuosi", corretta: false, feedback: "Inesatto. Quasi tutti i comuni hanno mutui accesi per vecchie opere pubbliche da pagare.", impatto: "Istituzione di un audit straordinario dei debiti per bloccare gli sprechi occulti." }
-        ]
-    },
-    {
-        id: "terr1",
-        sezione: "Territorio e Ambiente",
-        testo: "Quale percentuale di piccoli comuni italiani ha aree classificate a rischio idrogeologico medio-alto?",
-        opzioni: [
-            { testo: "Oltre il 70% (con picchi del 90% in zone collinari)", corretta: true, feedback: "Purtroppo è vero. Il dissesto è la vera emergenza silenziosa del territorio italiano.", impatto: "Istituzione del 'Fascicolo Digitale del Territorio' e monitoraggio predittivo tramite droni per la prevenzione di frane e smottamenti nelle frazioni." },
-            { testo: "Meno del 15%", corretta: false, feedback: "Dato troppo ottimista. I report ISPRA evidenziano una fragilità nazionale estrema.", impatto: "Interventi di somma urgenza solo ad emergenza conclamata, massimizzando l'efficienza della Protezione Civile locale." }
-        ]
-    },
-    {
-        id: "terr2",
-        sezione: "Territorio e Ambiente",
-        testo: "Cosa prevede l'obiettivo europeo 'Consumo di Suolo Zero' entro il 2050?",
-        opzioni: [
-            { testo: "Bloccare l'espansione su aree agricole e rigenerare l'esistente", corretta: true, feedback: "Esatto! Recuperare l'abbandonato prima di colare nuovo cemento.", impatto: "Stop a nuovi piani di lottizzazione su aree verdi e introduzione di sgravi IMU per chi ristruttura gli immobili sfitti del centro storico." },
-            { testo: "Vietare qualsiasi tipo di ristrutturazione o lavoro edile", corretta: false, feedback: "Sbagliato, l'efficientamento e il recupero dell'esistente sono incentivati.", impatto: "Semplificazione burocratica radicale per i bonus edilizi gestiti dall'ufficio tecnico comunale." }
-        ]
-    },
-    {
-        id: "serv1",
-        sezione: "Servizi Pubblici",
-        testo: "Qual è la percentuale media di acqua potabile che va persa nelle reti idriche comunali?",
-        opzioni: [
-            { testo: "Si perde circa il 42% dell'acqua immessa", corretta: true, feedback: "Dato reale ISTAT. Quasi metà dell'acqua potabile si disperde nel terreno prima di arrivare ai rubinetti.", impatto: "Digitalizzazione della rete idrica comunale con sensori acustici di perdita e sostituzione delle tubature ammalorate tramite fondi regionali." },
-            { testo: "Meno del 5%, le reti sono moderne", corretta: false, feedback: "Falso. Le infrastrutture idriche italiane sono storicamente obsolete.", impatto: "Campagne di sensibilizzazione nelle scuole sul risparmio idrico domestico, in attesa di riforme strutturali." }
-        ]
-    },
-    {
-        id: "pnrr1",
-        sezione: "Fondi e PNRR",
-        testo: "Qual è il collo di bottiglia principale per un piccolo Comune che si aggiudica un bando PNRR?",
-        opzioni: [
-            { testo: "La carenza di personale tecnico interno per gestire appalti e rendicontazioni", corretta: true, feedback: "Centro. La mancanza di ingegneri, architetti e segretari comunali blocca i progetti.", impatto: "Costituzione di una 'Task Force Tecnico-Amministrativa' in convenzione con i Comuni limitrofi per condividere le competenze professionali." },
-            { testo: "La mancanza di interesse da parte delle ditte locali", corretta: false, feedback: "Sbagliato. Le ditte partecipano, ma mancano i bandi pubblicati in tempo.", impatto: "Esternalizzazione totale della progettazione esecutiva a studi professionali esterni per accelerare le tempistiche." }
-        ]
-    },
-    {
-        id: "soc1",
-        sezione: "Sociale e Demografia",
-        testo: "Qual è l'indice di vecchiaia attuale nei piccoli comuni (rapporto anziani/giovani)?",
-        opzioni: [
-            { testo: "Ci sono oltre 200 anziani ogni 100 giovani sotto i 14 anni", corretta: true, feedback: "Dato reale. Lo spopolamento e l'invecchiamento sono le minacce principali per la sopravvivenza dei servizi.", impatto: "Potenziamento del 'Welfare di Prossimità' con telemedicina di base e servizi di trasporto sociale per gli anziani residenti nelle frazioni isolate." },
-            { testo: "Il rapporto è quasi in perfetto equilibrio (100 a 100)", corretta: false, feedback: "Inesatto. Questo scenario demografico manca in Italia da più di trent'anni.", impatto: "Erogazione di bonus 'una tantum' per i nuovi nati residenti, per incentivare la natalità nel breve termine." }
-        ]
-    }
-];
+import { caricaTuttiIComuni, generaQuiz } from './comuni.js';
+import { StatoCandidato } from './territori.js';
 
-// 2. STATO DELL'APPLICAZIONE
-let indiceDomandaCorrente = 0;
-let punteggioCorretto = 0;
-let nomeCandidato = "";
-// Oggetto che conterrà le proposte programmatiche scelte dall'utente per ogni sezione
-let programmaElettoraleUtente = [];
+const gioco = new StatoCandidato();
+let databaseComuni globali = [];
 
-// 3. LOGICA DI GIOCO
-function iniziaSimulazione() {
-    const inputNome = document.getElementById("nome-candidato").value.trim();
-    nomeCandidato = inputNome !== "" ? inputNome : "Candidato Anonimo";
+async function init() {
+    const app = document.getElementById('app');
+    app.innerHTML = `<div class="loader">Caricamento del database nazionale dei 7.800+ Comuni... Per favore attendi.</div>`;
 
-    // Cambiamento schermata
-    document.getElementById("config-iniziale").classList.add("hidden");
-    document.getElementById("area-quiz").classList.remove("hidden");
+    // Carichiamo tutti i comuni d'Italia dall'API
+    databaseComuni = await caricaTuttiIComuni();
 
-    // Reset variabili
-    indiceDomandaCorrente = 0;
-    punteggioCorretto = 0;
-    programmaElettoraleUtente = [];
-
-    mostraDomanda();
+    // Mostriamo la schermata di creazione del Candidato
+    renderSchermataIniziale();
 }
 
-function mostraDomanda() {
-    // Nascondi il feedback della domanda precedente
-    document.getElementById("feedback-risposta").classList.add("hidden");
-
-    const domanda = databaseDomande[indiceDomandaCorrente];
-
-    // Aggiorna Avanzamento e Scrittura Intestazioni
-    document.getElementById("badge-sezione").innerText = `Sezione: ${domanda.sezione}`;
-    const percentualeAvanzamento = ((indiceDomandaCorrente) / databaseDomande.length) * 100;
-    document.getElementById("barra-avanzamento").style.width = `${percentualeAvanzamento}%`;
-
-    // Testo Domanda
-    document.getElementById("testo-domanda").innerText = `${indiceDomandaCorrente + 1}. ${domanda.testo}`;
-
-    // Generazione Bottoni Risposta
-    const containerOpzioni = document.getElementById("opzioni-risposta");
-    containerOpzioni.innerHTML = ""; // Svuota
-
-    domanda.opzioni.forEach((opzione, index) => {
-        const bottone = document.createElement("button");
-        bottone.className = "btn-opzione";
-        bottone.innerText = opzione.testo;
-        // Passiamo i dati della scelta alla funzione di verifica
-        bottone.onclick = () => verificaRisposta(index, bottone);
-        containerOpzioni.appendChild(bottone);
-    });
-}
-
-function verificaRisposta(indexScelto, bottoneSelezionato) {
-    const domanda = databaseDomande[indiceDomandaCorrente];
-    const opzioneScelta = ...domanda.opzioni[indexScelto];
-    const bottoni = document.querySelectorAll(".btn-opzione");
-
-    // Disabilita tutti i bottoni per evitare doppi click
-    bottoni.forEach(btn => btn.disabled = true);
-
-    // Salva l'impatto politico nel programma dell'utente (Laboratorio)
-    programmaElettoraleUtente.push({
-        sezione: domanda.sezione,
-        politica: opzioneScelta.impatto
-    });
-
-    // Controllo correttezza logica/amministrativa
-    if (opzioneScelta.corretta) {
-        punteggioCorretto++;
-        bottoneSelezionato.classList.add("correct");
-    } else {
-        bottoneSelezionato.classList.add("wrong");
-        // Evidenzia comunque quella corretta per scopi didattici
-        bottoni.forEach((btn, idx) => {
-            if (domanda.opzioni[idx].corretta) {
-                btn.classList.add("correct");
-            }
-        });
-    }
-
-    // Mostra il feedback box con la spiegazione dei dati reali
-    document.getElementById("testo-feedback").innerText = opzioneScelta.feedback;
-    document.getElementById("feedback-risposta").classList.remove("hidden");
-}
-
-function prossimaDomanda() {
-    indiceDomandaCorrente++;
-
-    if (indiceDomandaCorrente < databaseDomande.length) {
-        mostraDomanda();
-    } else {
-        mostraProgrammaFinale();
-    }
-}
-
-// 4. GENERATORE DEL PROGRAMMA ELETTORALE REALE (IL LABORATORIO)
-function mostraProgrammaFinale() {
-    document.getElementById("area-quiz").classList.add("hidden");
-    const areaRisultato = document.getElementById("area-resultado"); // Fallback se id differisce
-    const areaRisultatoReale = document.getElementById("area-risultato");
-    
-    const percentualeIdoneita = Math.round((punteggioCorretto / databaseDomande.length) * 100);
-
-    // Costruzione dinamica del documento programmatico
-    let htmlProgramma = `
-        <div class="programma-documento">
-            <div class="programma-header">
-                <span class="badge-documento">DOCUMENTO UFFICIALE</span>
-                <h2>Linee Guida del Programma di Mandato</h2>
-                <p class="sottotitolo">Candidato Sindaco: <strong>${nomeCandidato}</strong></p>
-                <div class="punteggio-box">
-                    <strong>Idoneità Amministrativa Conseguita: ${percentualeIdoneita}%</strong>
-                    <p>Hai risposto correttamente a ${punteggioCorretto} quesiti normativi e finanziari su ${databaseDomande.length}.</p>
-                </div>
-            </div>
+function renderSchermataIniziale() {
+    const app = document.getElementById('app');
+    app.innerHTML = `
+        <div class="game-container card">
+            <h1>Simulatore: Candidato per un Giorno! 🎯</h1>
+            <p>Riuscirai a scalare la politica italiana partendo dal tuo Comune, passando per la Regione, fino al Governo Nazionale?</p>
             
-            <div class="programma-corpo">
-                <p class="intro-programma">Sulla base delle risposte e delle analisi strategiche effettuate durante la simulazione, si delineano i seguenti punti programmatici prioritari per l'amministrazione del territorio:</p>
-                
-                <ol class="lista-punti-programma">
-    `;
-
-    // Ciclo all'interno delle scelte fatte nel laboratorio per popolare il testo del manifesto
-    programmaElettoraleUtente.forEach((item, index) => {
-        htmlProgramma += `
-            <li>
-                <strong>Punto ${index + 1} - ${item.sezione}:</strong> 
-                <span class="testo-politica">${item.politica}</span>
-            </li>
-        `;
-    });
-
-    htmlProgramma += `
-                </ol>
+            <div class="form-group">
+                <label for="nome-candidato">Inserisci il tuo nome da Candidato:</label>
+                <input type="text" id="nome-candidato" placeholder="Es. Mario Rossi">
             </div>
 
-            <div class="programma-footer">
-                <p class="nota-virale">Pensi che i candidati reali del tuo comune saprebbero fare di meglio? Sfida i tuoi concittadini o condividi il tuo programma sui canali social.</p>
-                <div class="Azioni-Riquadro">
-                    <button class="btn-azione stampa" onclick="window.print()">Stampa / Salva in PDF</button>
-                    <button class="btn-azione condividi" onclick="condividiRisultato(${percentualeIdoneita})">Condividi Sfida</button>
-                </div>
+            <div class="form-group" style="position: relative;">
+                <label for="cerca-comune">Seleziona il tuo Comune di partenza (Cerca tra tutti i 7.000+ in Italia):</label>
+                <input type="text" id="cerca-comune" placeholder="Inizia a digitare il nome del tuo comune...">
+                <div id="suggerimenti-comuni" class="dropdown-suggerimenti"></div>
             </div>
+
+            <button id="btn-avvia-gioco" disabled>Inizia la Campagna Elettorale</button>
         </div>
     `;
 
-    areaRisultatoReale.innerHTML = htmlProgramma;
-    areaRisultatoReale.classList.remove("hidden");
+    const inputCerca = document.getElementById('cerca-comune');
+    const divSuggerimenti = document.getElementById('suggerimenti-comuni');
+    const btnAvvia = document.getElementById('btn-avvia-gioco');
+    let comuneSelezionato = null;
+
+    // Gestione della ricerca dinamica real-time tra i 7000+ comuni
+    inputCerca.addEventListener('input', (e) => {
+        const testo = e.target.value.toLowerCase();
+        if (testo.length < 2) {
+            divSuggerimenti.innerHTML = '';
+            return;
+        }
+
+        const filtrati = databaseComuni.filter(c => c.nome.toLowerCase().startsWith(testo)).slice(0, 5);
+        
+        divSuggerimenti.innerHTML = filtrati.map(c => `
+            <div class="suggerimento-item" data-comune="${c.nome}" data-regione="${c.regione}">
+                <strong>${c.nome}</strong> (${c.sigla}) - <span>${c.regione}</span>
+            </div>
+        `).join('');
+    });
+
+    // Selezione del comune dal menu a tendina
+    divSuggerimenti.addEventListener('click', (e) => {
+        const item = e.target.closest('.suggerimento-item');
+        if (!item) return;
+
+        comuneSelezionato = {
+            nome: item.dataset.comune,
+            regione: item.dataset.regione
+        };
+
+        inputCerca.value = `${comuneSelezionato.nome} (${comuneSelezionato.regione})`;
+        divSuggerimenti.innerHTML = '';
+        btnAvvia.disabled = false;
+    });
+
+    // Avvio della partita
+    btnAvvia.addEventListener('click', () => {
+        const nome = document.getElementById('nome-candidato').value || "Candidato Anonimo";
+        const quiz = generaQuiz("comunali", comuneSelezionato.nome);
+        
+        gioco.iniziaCampagna(nome, comuneSelezionato.nome, quiz);
+        gioco.regioneScelta = comuneSelezionato.regione; // Salviamo la regione per il livello 2
+        
+        renderSchermataQuiz();
+    });
 }
 
-function condividiRisultato(percentuale) {
-    alert(`Copiato negli appunti: "Ho ottenuto il ${percentuale}% di Idoneità Civica simulando la carica di Sindaco! Sfida il mio programma elettorale!"`);
+function renderSchermataQuiz() {
+    const app = document.getElementById('app');
+    const domandaCorrente = gioco.quizAttuali[gioco.indiceDomanda];
+
+    app.innerHTML = `
+        <div class="game-container card">
+            <div class="game-header">
+                <span>Candidato: <strong>${gioco.nomeCandidato}</strong></span>
+                <span>Livello: <span class="badge">${gioco.livelloAttuale.toUpperCase()} (${gioco.entitaScelta})</span></span>
+                <span>Punteggio: <strong>${gioco.punteggio}</strong></span>
+            </div>
+
+            <div class="quiz-box">
+                <h2>Domanda ${gioco.indiceDomanda + 1} di ${gioco.quizAttuali.length}</h2>
+                <p class="testo-domanda">${domandaCorrente.domanda}</p>
+                
+                <div class="opzioni-container">
+                    ${domandaCorrente.opzioni.map((opzione, idx) => `
+                        <button class="btn-opzione" data-idx="${idx}">${opzione}</button>
+                    `).join('')}
+                </div>
+            </div>
+            <div id="feedback-box" class="feedback-box nascosto"></div>
+        </div>
+    `;
+
+    document.querySelectorAll('.btn-opzione').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            const idxScelto = parseInt(e.target.dataset.idx);
+            gestisciRisposta(idxScelto);
+        });
+    });
 }
+
+function gestisciRisposta(idxScelto) {
+    // Disabilita tutti i bottoni per evitare doppi click
+    document.querySelectorAll('.btn-opzione').forEach(b => b.disabled = true);
+    
+    const esito = gioco.verificaRisposta(idxScelto);
+    const feedbackBox = document.getElementById('feedback-box');
+    
+    feedbackBox.className = `feedback-box ${esito.corretto ? 'corretto' : 'errato'}`;
+    feedbackBox.innerHTML = `
+        <h3>${esito.corretto ? '✅ Esatto! (+10 Punti)' : '❌ Errato!'}</h3>
+        <p>${esito.spiegazione}</p>
+        <button id="btn-avanti">Continua la Campagna</button>
+    `;
+
+    document.getElementById('btn-avanti').addEventListener('click', () => {
+        if (gioco.prossimaDomanda()) {
+            renderSchermataQuiz();
+        } else {
+            gestisciAvanzamentoLivello();
+        }
+    });
+}
+
+function gestisciAvanzamentoLivello() {
+    if (gioco.livelloAttuale === "comunali") {
+        gioco.livelloAttuale = "regionali";
+        gioco.entitaScelta = gioco.regioneScelta;
+        gioco.quizAttuali = generaQuiz("regionali", gioco.entitaScelta);
+        gioco.indiceDomanda = 0;
+        mostraIntermezzo(`Complimenti! Sei stato eletto nel Consiglio Comunale! Ora punti alle Elezioni Regionali della ${gioco.entitaScelta}!`);
+    } else if (gioco.livelloAttuale === "regionali") {
+        gioco.livelloAttuale = "nazionali";
+        gioco.entitaScelta = "Italia";
+        gioco.quizAttuali = generaQuiz("nazionali", "Italia");
+        gioco.indiceDomanda = 0;
+        mostraIntermezzo("Incredibile! Hai conquistato la Regione! La nazione intera ti guarda: iniziano le Elezioni Politiche Parlamentari!");
+    } else {
+        mostraFineGioco();
+    }
+}
+
+function mostraIntermezzo(messaggio) {
+    const app = document.getElementById('app');
+    app.innerHTML = `
+        <div class="game-container card text-center">
+            <h2>🏆 Avanzamento di Carriera!</h2>
+            <p style="font-size: 1.2rem; margin: 20px 0;">${messaggio}</p>
+            <button id="btn-inizia-nuovo-livello">Inizia Prossima Campagna</button>
+        </div>
+    `;
+    document.getElementById('btn-inizia-nuovo-livello').addEventListener('click', renderSchermataQuiz);
+}
+
+function mostraFineGioco() {
+    const app = document.getElementById('app');
+    app.innerHTML = `
+        <div class="game-container card text-center">
+            <h1>🎉 Campagna Conclusa!</h1>
+            <p>Il candidato <strong>${gioco.nomeCandidato}</strong> ha completato il percorso elettorale.</p>
+            <div class="punteggio-finale">Punteggio Totale: ${gioco.punteggio} Punti</div>
+            <p>${gioco.punteggio >= 40 ? "Sei diventato Presidente del Consiglio! Statista eccellente!" : "Sei un onorevole parlamentare. Puoi fare di meglio!"}</p>
+            <button id="btn-Riavvia">Gioca di Nuovo</button>
+        </div>
+    `;
+    document.getElementById('btn-Riavvia').addEventListener('click', init);
+}
+
+document.addEventListener('DOMContentLoaded', init);
