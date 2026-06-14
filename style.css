@@ -1,145 +1,111 @@
-/* STILI DI BASE PER TESTARE L'APPLICAZIONE */
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #f4f6f9;
-    color: #333;
-    line-height: 1.6;
-    margin: 0;
+    font-family: 'Segoe UI', Roboto, sans-serif;
+    background: #0f172a;
+    color: #f8fafc;
     padding: 20px;
 }
 
-.container {
-    max-width: 800px;
-    margin: 0 auto;
+.game-container {
+    max-width: 650px;
+    margin: 40px auto;
+    background: #1e293b;
+    border: 1px solid #334155;
+    border-radius: 12px;
+    padding: 30px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.3);
 }
 
-header {
-    text-align: center;
-    margin-bottom: 30px;
-}
-
-.card {
-    background: #fff;
-    border-radius: 8px;
-    padding: 25px;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+.game-header {
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 2px solid #334155;
+    padding-bottom: 15px;
     margin-bottom: 20px;
-}
-
-.hidden {
-    display: none !important;
+    font-size: 0.9rem;
 }
 
 .form-group {
     margin-bottom: 20px;
 }
 
-input[type="text"] {
+label {
+    display: block;
+    margin-bottom: 8px;
+    color: #94a3b8;
+}
+
+input {
     width: 100%;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    box-sizing: border-box;
-}
-
-button {
-    cursor: pointer;
-    padding: 12px 20px;
-    border: none;
-    border-radius: 4px;
-    font-weight: bold;
-}
-
-#btn-inizio {
-    background-color: #0056b3;
+    padding: 12px;
+    background: #0f172a;
+    border: 1px solid #475569;
     color: white;
-    width: 100%;
+    border-radius: 6px;
 }
 
-.opzioni-container {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    margin-top: 20px;
+/* Dropdown dei 7000 comuni */
+.dropdown-suggerimenti {
+    position: absolute;
+    width: 100%;
+    background: #1e293b;
+    border: 1px solid #475569;
+    border-top: none;
+    max-height: 200px;
+    overflow-y: auto;
+    z-index: 10;
+}
+
+.suggerimento-item {
+    padding: 10px;
+    cursor: pointer;
+    border-bottom: 1px solid #334155;
+}
+
+.suggerimento-item:hover {
+    background: #334155;
 }
 
 .btn-opzione {
-    background-color: #f8f9fa;
-    border: 1px solid #dee2e6;
+    display: block;
+    width: 100%;
+    padding: 14px;
+    background: #334155;
+    color: white;
+    border: 1px solid #475569;
+    border-radius: 8px;
+    margin-bottom: 10px;
     text-align: left;
-    transition: all 0.2s;
+    cursor: pointer;
+    font-size: 1rem;
 }
 
-.btn-opzione:hover:not(:disabled) {
-    background-color: #e2e6ea;
+.btn-opzione:hover {
+    background: #475569;
 }
 
-.btn-opzione.correct {
-    background-color: #d4edda;
-    border-color: #c3e6cb;
-    color: #155724;
-}
-
-.btn-opzione.wrong {
-    background-color: #f8d7da;
-    border-color: #f5c6cb;
-    color: #721c24;
+button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
 }
 
 .feedback-box {
     margin-top: 20px;
-    padding: 15px;
-    background-color: #e2f0d9;
-    border-left: 5px solid #70ad47;
+    padding: 20px;
+    border-radius: 8px;
 }
 
-/* STRUTTURA DEL PROGRAMMA ELETTORALE (STILE MANIFESTO ISTITUZIONALE) */
-.programma-documento {
-    border: 2px solid #1a365d;
-    padding: 30px;
-    background-color: #fff;
-    border-radius: 4px;
-}
+.feedback-box.corretto { background: #064e3b; border: 1px solid #059669; }
+.feedback-box.errato { background: #7f1d1d; border: 1px solid #dc2626; }
 
-.programma-header {
-    text-align: center;
-    border-bottom: 3px double #1a365d;
-    padding-bottom: 15px;
-    margin-bottom: 20px;
-}
-
-.badge-documento {
-    font-size: 0.8rem;
-    letter-spacing: 2px;
-    background: #1a365d;
+#btn-avanti, #btn-avvia-gioco, #btn-inizia-nuovo-livello, #btn-Riavvia {
+    background: #2563eb;
     color: white;
-    padding: 3px 8px;
-    font-weight: bold;
-}
-
-.punteggio-box {
-    background: #f1f5f9;
-    padding: 10px;
+    padding: 12px 24px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
     margin-top: 15px;
-    border-radius: 4px;
 }
-
-.lista-punti-programma li {
-    margin-bottom: 15px;
-    padding-bottom: 10px;
-    border-bottom: 1px dashed #e2e8f0;
-}
-
-.btn-azione {
-    margin-right: 10px;
-}
-
-.stampa { background-color: #2d3748; color: white; }
-.condividi { background-color: #3182ce; color: white; }
-
-/* Ottimizzazione di stampa reale */
-@media print {
-    body { background: white; }
-    .card { box-shadow: none; padding: 0; }
-    .btn-azione, .nota-virale { display: none; }
-}
+.text-center { text-align: center; }
+.badge { background: #db2777; padding: 2px 8px; border-radius: 4px; }
+.punteggio-finale { font-size: 2rem; color: #eab308; margin: 20px 0; font-weight: bold; }
