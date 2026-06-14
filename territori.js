@@ -1,25 +1,38 @@
 export class SistemaCivico {
     constructor() {
         this.utente = { nome: "", comune: "", regione: "" };
-        this.sezioneAttuale = "menu"; // menu, quiz_abilitazione, candidato_politico
-        this.livelloAttuale = "comunali"; // comunali -> regionali -> nazionali
+        this.schermataAttuale = "registrazione"; // registrazione | hub | abilitazione | candidato | riepilogo
+        this.livelloCorrente = "comunali"; // comunali -> regionali -> nazionali
         
-        // Stato Sezione 1 (Abilitazione)
-        this.punteggioQuiz = 0;
-        this.indiceQuiz = 0;
-        this.abilitatoAlVoto = false;
+        // Sezione 1: Stato Abilitazione
+        this.punteggioAbilitazione = 0;
+        this.indiceDomandaAbilitazione = 0;
+        this.isAbilitato = false;
+        this.tentatoEsame = false;
 
-        // Stato Sezione 2 (Candidato)
-        this.indiceScenario = 0;
-        this.programmaElettorale = []; // Contiene le scelte fatte dal candidato
+        // Sezione 2: Stato Candidato per un Giorno
+        this.indiceScenarioCandidato = 0;
+        this.delibereProgramma = []; 
     }
 
-    resetCampagna(nome, comune, regione) {
+    configuraUtente(nome, comune, regione) {
         this.utente = { nome, comune, regione };
-        this.livelloAttuale = "comunali";
-        this.punteggioQuiz = 0;
-        this.indiceQuiz = 0;
-        this.indiceScenario = 0;
-        this.programmaElettorale = [];
+        this.schermataAttuale = "hub";
+    }
+
+    registraRispostaAbilitazione(isCorretta) {
+        if (isCorretta) {
+            this.punteggioAbilitazione += 10;
+        }
+    }
+
+    salvaDeliberaPolitica(delibera) {
+        this.delibereProgramma.push(delibera);
+    }
+
+    resetProgressoSezione() {
+        this.livelloCorrente = "comunali";
+        this.indiceDomandaAbilitazione = 0;
+        this.indiceScenarioCandidato = 0;
     }
 }
