@@ -1,14 +1,9 @@
-// Funzione per caricare TUTTI i comuni italiani da un'API pubblica open-data
+// Recupero di tutti i 7.900+ comuni italiani tramite API Open Data
 export async function caricaTuttiIComuni() {
     try {
-        // Utilizziamo un endpoint open-source affidabile per i comuni italiani
         const response = await fetch('https://raw.githubusercontent.com/matteocontrini/comuni-italiani/master/comuni.json');
-        if (!response.isOk && response.status !== 200) {
-            throw new Error("Impossibile scaricare l'elenco dei comuni.");
-        }
+        if (!response.ok) throw new Error("Errore nel caricamento del server");
         const comuni = await response.json();
-        
-        // Mappiamo i dati per averli pronti con Nome, Regione, Provincia
         return comuni.map(c => ({
             nome: c.nome,
             regione: c.regione,
@@ -16,50 +11,84 @@ export async function caricaTuttiIComuni() {
             sigla: c.provincia.sigla
         }));
     } catch (error) {
-        console.error("Errore nel caricamento del database comuni:", error);
-        // Fallback locale di emergenza se l'API è offline
+        console.error("Uso del database di emergenza locale:", error);
         return [
             { nome: "Roma", regione: "Lazio", provincia: "Roma", sigla: "RM" },
-            { nome: "Milano", regione: "Lombardia", provincia: "Milano", sigla: "MI" }
+            { nome: "Milano", regione: "Lombardia", provincia: "Milano", sigla: "MI" },
+            { nome: "Napoli", regione: "Campania", provincia: "Napoli", sigla: "NA" },
+            { nome: "Torino", regione: "Piemonte", provincia: "Torino", sigla: "TO" }
         ];
     }
 }
 
-// Generatore dinamico di quiz basato sul livello (Comune, Regione, Nazione)
-export function generaQuiz(livello, entita) {
-    // Database di modelli di domande che si adattano dinamicamente a QUALSIASI comune o regione
-    const databaseDomande = {
+// SEZIONE 1: Quiz per l'Abilitazione al Voto (Generati dinamicamente per ogni livello)
+export function ottieniQuizAbilitazione(livello, entita) {
+    const database = {
         comunali: [
             {
-                domanda: `Qual è l'organo principale che approva il bilancio del Comune di ${entita}?`,
-                opzioni: ["Il Consiglio Comunale", "La Giunta", "Il Sindaco da solo", "Il Prefetto"],
+                domanda: `Quale organo approva ufficialmente il Bilancio Comunale di ${entita}?`,
+                opzioni: ["Il Consiglio Comunale", "La Giunta", "Il Sindaco", "Il Segretario Comunale"],
                 risposta: 0,
-                spiegazione: "Il Consiglio Comunale rappresenta l'organo di indirizzo e controllo politico-amministrativo del Comune."
+                spiegazione: "Il Consiglio è l'organo di indirizzo e controllo, ed è l'unico che può approvare il bilancio."
             },
             {
-                domanda: `Chi nomina gli assessori che compongono la Giunta a ${entita}?`,
-                opzioni: ["Il Consiglio", "Il Sindaco", "I Cittadini tramite voto", "La Regione"],
+                domanda: `A chi spettano le ordinanze d'urgenza per la sicurezza stradale o l'igiene pubblica a ${entita}?`,
+                opzioni: ["Al Prefetto", "Al Sindaco come ufficiale di Governo", "Al Comandante dei Vigili", "Alla Regione"],
                 risposta: 1,
-                spiegazione: "Gli assessori sono nominati direttamente dal Sindaco, che può anche revocare le loro deleghe."
+                spiegazione: "Il Sindaco ha il potere di emettere ordinanze contingibili e urgenti per tutelare i cittadini."
             }
         ],
         regionali: [
             {
-                domanda: `Quale di queste materie è di competenza concorrente o esclusiva della Regione ${entita}?`,
-                opzioni: ["Politica Estera", "Tutela della Salute e Sanità", "Forze Armate", "Moneta e Battere moneta"],
+                domanda: `Qual è la principale voce di spesa nel bilancio della Regione ${entita}?`,
+                opzioni: ["Trasporti", "Tutela della Salute e Sanità", "Turismo e Cultura", "Agricoltura"],
                 risposta: 1,
-                spiegazione: "La gestione e l'organizzazione del Servizio Sanitario è una delle principali competenze delle Regioni."
+                spiegazione: "La sanità pubblica assorbe mediamente oltre il 70-80% del bilancio di una Regione."
             }
         ],
         nazionali: [
             {
-                domanda: "In Italia, da quanti membri è composto attualmente il Parlamento (Deputati + Senatori elettivi)?",
-                opzioni: ["945", "630", "600", "500"],
-                risposta: 2,
-                spiegazione: "A seguito della riforma costituzionale, i deputati sono 400 e i senatori elettivi sono 200, per un totale di 600."
+                domanda: "In Italia, come viene eletto il Presidente della Repubblica?",
+                opzioni: ["Dal popolo a suffragio universale", "Dal Parlamento in seduta comune insieme ai delegati regionali", "Dal Presidente del Consiglio", "Dalla Corte Costituzionale"],
+                risposta: 1,
+                spiegazione: "L'art. 83 della Costituzione prevede l'elezione da parte del Parlamento unito ai delegati delle Regioni."
             }
         ]
     };
+    return database[livello] || database.nazionali;
+}
 
-    return databaseDomande[livello] || databaseDomande.nazionali;
+// SEZIONE 2: Problemi e Soluzioni per il Programma Elettorale (Candidato per un Giorno)
+export function ottieniScenariPolitici(livello, entita) {
+    const scenari = {
+        comunali: [
+            {
+                problema: `A ${entita} i cittadini lamentano una gestione inefficiente dei rifiuti urbani e scarso verde pubblico.`,
+                opzioni: [
+                    { testo: "Introdurre la tariffazione puntuale (paghi quanto produci) e avviare patti di collaborazione per i parchi.", tipo: "Progressista/Ecologista" },
+                    { testo: "Affidare totalmente il servizio a un colosso privato esterno e privatizzare la gestione dei parchi storici.", tipo: "Liberale/Manageriale" },
+                    { testo: "Aumentare le sanzioni con fototrappole e videosorveglianza senza modificare il sistema di raccolta.", tipo: "Sicurezza/Conservatore" }
+                ]
+            }
+        ],
+        regionali: [
+            {
+                problema: `Nella Regione ${entita} le liste d'attesa negli ospedali pubblici sono troppo lunghe.`,
+                opzioni: [
+                    { testo: "Finanziare massicciamente le strutture pubbliche aumentando i turni diagnostici anche di notte.", tipo: "Pubblico/Sociale" },
+                    { testo: "Convenzionare nuove cliniche private per smaltire i pazienti pagando con voucher regionali.", tipo: "Privato/Sussidiario" }
+                ]
+            }
+        ],
+        nazionali: [
+            {
+                problema: "L'Italia affronta una crisi energetica e deve raggiungere gli obiettivi di decarbonizzazione.",
+                opzioni: [
+                    { testo: "Sbloccare i vincoli burocratici per parchi eolici e solari diffusi sul territorio.", tipo: "Rinnovabili" },
+                    { testo: "Investire nella ricerca e nella costruzione di centrali nucleari di nuova generazione.", tipo: "Tecnologico/Nucleare" }
+                ]
+            }
+        ]
+    };
+    return scenari[livello] || scenari.nazionali;
 }
