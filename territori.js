@@ -1,35 +1,25 @@
-export class StatoCandidato {
+export class SistemaCivico {
     constructor() {
-        this.nomeCandidato = "";
+        this.utente = { nome: "", comune: "", regione: "" };
+        this.sezioneAttuale = "menu"; // menu, quiz_abilitazione, candidato_politico
         this.livelloAttuale = "comunali"; // comunali -> regionali -> nazionali
-        this.entitaScelta = ""; // Nome del comune o regione corrente
-        this.punteggio = 0;
-        this.indiceDomanda = 0;
-        this.quizAttuali = [];
+        
+        // Stato Sezione 1 (Abilitazione)
+        this.punteggioQuiz = 0;
+        this.indiceQuiz = 0;
+        this.abilitatoAlVoto = false;
+
+        // Stato Sezione 2 (Candidato)
+        this.indiceScenario = 0;
+        this.programmaElettorale = []; // Contiene le scelte fatte dal candidato
     }
 
-    iniziaCampagna(nome, entita, quiz) {
-        this.nomeCandidato = nome;
-        this.entitaScelta = entita;
-        this.quizAttuali = quiz;
-        this.punteggio = 0;
-        this.indiceDomanda = 0;
-    }
-
-    verificaRisposta(indiceScelto) {
-        const domandaCorrente = this.quizAttuali[this.indiceDomanda];
-        const corretto = indiceScelto === domandaCorrente.risposta;
-        if (corretto) {
-            this.punteggio += 10;
-        }
-        return {
-            corretto,
-            spiegazione: domandaCorrente.spiegazione
-        };
-    }
-
-    prossimaDomanda() {
-        this.indiceDomanda++;
-        return this.indiceDomanda < this.quizAttuali.length;
+    resetCampagna(nome, comune, regione) {
+        this.utente = { nome, comune, regione };
+        this.livelloAttuale = "comunali";
+        this.punteggioQuiz = 0;
+        this.indiceQuiz = 0;
+        this.indiceScenario = 0;
+        this.programmaElettorale = [];
     }
 }
